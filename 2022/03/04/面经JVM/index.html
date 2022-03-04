@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"aeowind.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="谈情很好不过也要你拥抱，身体需要觉得未被忘掉过">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM">
+<meta property="og:url" content="https://aeowind.github.io/2022/03/04/%E9%9D%A2%E7%BB%8FJVM/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="谈情很好不过也要你拥抱，身体需要觉得未被忘掉过">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s4.ax1x.com/2021/12/14/ov3drd.md.png">
+<meta property="og:image" content="https://s4.ax1x.com/2022/01/17/7aeYef.md.png">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3251891-25c29a521cfe2a4b.png">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3251891-0bbce21010980518.png">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3251891-977ed6107c0476b7.png">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3251891-af88a9c36b9338d4.png">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3251891-7383aa69926fa5c3.png">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3251891-b1070ff58ce46e24.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/i-beta/1383365/202003/1383365-20200310142826292-418936908.png">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/9/28/1661f3b974272614~tplv-t2oaga2asx-watermark.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/9/28/1661f3b50a287549~tplv-t2oaga2asx-watermark.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/9/28/1661f3b50bf68a9f~tplv-t2oaga2asx-watermark.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/9/28/1661f3b5010433de~tplv-t2oaga2asx-watermark.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/9/28/1661f3b504043412~tplv-t2oaga2asx-watermark.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/9/28/1661f3b957aa61ad~tplv-t2oaga2asx-watermark.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/9/28/1661f3b76cd8ac05~tplv-t2oaga2asx-watermark.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/9/28/1661f3b76dfc400b~tplv-t2oaga2asx-watermark.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/9/28/1661f3b79ca85a8c~tplv-t2oaga2asx-watermark.awebp">
+<meta property="og:image" content="https://segmentfault.com/img/remote/1460000021820580">
+<meta property="og:image" content="https://segmentfault.com/img/remote/1460000021820582">
+<meta property="og:image" content="https://s4.ax1x.com/2022/03/03/bJYCTA.md.png">
+<meta property="article:published_time" content="2022-03-04T12:46:25.462Z">
+<meta property="article:modified_time" content="2022-03-04T05:17:17.224Z">
+<meta property="article:author" content="aeowind">
+<meta property="article:tag" content="学习">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="面经">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s4.ax1x.com/2021/12/14/ov3drd.md.png">
+
+<link rel="canonical" href="https://aeowind.github.io/2022/03/04/%E9%9D%A2%E7%BB%8FJVM/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>JVM | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://aeowind.github.io/2022/03/04/%E9%9D%A2%E7%BB%8FJVM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="aeowind">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JVM
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-03-04 20:46:25 / 修改时间：13:17:17" itemprop="dateCreated datePublished" datetime="2022-03-04T20:46:25+08:00">2022-03-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">学习</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/%E9%9D%A2%E7%BB%8F/" itemprop="url" rel="index"><span itemprop="name">面经</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/%E9%9D%A2%E7%BB%8F/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description"><blockquote class="blockquote-center">谈情很好不过也要你拥抱，身体需要觉得未被忘掉过</blockquote></div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="介绍一下Java运行时数据区域，并说一下每个部分都存哪些内容？（JVM内存模型）"><a href="#介绍一下Java运行时数据区域，并说一下每个部分都存哪些内容？（JVM内存模型）" class="headerlink" title="介绍一下Java运行时数据区域，并说一下每个部分都存哪些内容？（JVM内存模型）"></a>介绍一下Java运行时数据区域，并说一下每个部分都存哪些内容？（JVM内存模型）</h1><p><strong>java虚拟机在执行java程序的过程中会把它所管理的内存划分为若干个不同的数据区域</strong>。 这些区域每一个都有自己的用途。java虚拟机所管理的内存包括以下几个<strong>运行时数据区域</strong>。</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/ov3drd"><img src="https://s4.ax1x.com/2021/12/14/ov3drd.md.png" alt="ov3drd.md.png"></a></p>
+<h2 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h2><p>程序计数器是一块较小的内存空间，它可以看作是<code>当前线程所执行的字节码的行号指示器</code>。在虚拟机的概念模型例，<strong>字节码解释器工作时就是通过改变这个计数器的值来选取下一条需要执行的字节码指令，分支、循环、跳转、异常处理、线程恢复等功能都需要来这个计数器完成。</strong></p>
+<p><strong>每个线程都有一个独立的程序计数器</strong>，各线程之间计数器互不影响，独立存储，我们称这类内存区域为“线程私有”的内存。 </p>
+<p> 唯一没有<code>OutOfMemoryError</code>情况的内存区域。 </p>
+<p> 它的⽣命周期随着线程的创建⽽创建，随着线程的结束⽽死亡。</p>
+<p>由于<code>java虚拟机的多线程</code>是通过线程轮流切换并分配处理器执行时间的方式来实现的，在任何一个确定的时刻，一个处理器（对于多核处理器来说是一个内核）都只会执行一条线程中的指令。因此，为了线程切换后能恢复到正确的执行位置，每一条线程都要有一个独立的程序计数器。</p>
+<h2 id="java虚拟机栈"><a href="#java虚拟机栈" class="headerlink" title="java虚拟机栈"></a>java虚拟机栈</h2><p>和程序计数器一样，java虚拟机栈也是线程私有的，他的生命周期和线程相同。<strong>虚拟机栈描述的是java方法执行的内存模型，每一个方法在执行的同时都会创建一个栈帧用于存储局部变量表，操作数栈，动态链接，方法出口等信息。</strong> 每一个方法从调用直到执行完成的过程，就对应这一个栈帧在虚拟机栈中入栈到出栈的过程。</p>
+<p><strong>局部变量表</strong>主要存放了编译器可知的各种数据类型（boolean、byte、char、short、int、float、long、double）、对象引⽤（reference类型，它不同于对象本身，可能是⼀个指向对象起始地址的引⽤指针，也可能是指向⼀个代表对象的句柄或其他与此对象相关的位置）和returnAddress类型（指向了一条字节码指令的地址）。 </p>
+<p> 这些数据类型在局部变量表中的存储空间是以<strong>局部变量槽</strong>来表示，其中64位长度的long和double类型的数据会占用两个变量槽，其余的数据类型只占用一个。</p>
+<p>局部变量表所需的内存空间在编译期间完成分配，当进入一个方法时，这个方法需要在栈帧中分配多大的局部变量空间是完全确定的，在方法运行期间不会改变局部变量表的大小。</p>
+<p>在Java虚拟机规范中，对这个区域规定了两种异常：如果线程请求的栈的深度大于虚拟机所允许的深度，将抛出<code>stackOverllowError异常</code>；如果虚拟机可以动态扩展，如果扩展时无法申请到足够的内存，那么就会抛出<code>OutOfMemoryError异常</code>。</p>
+<h2 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h2><p>本地方法栈于虚拟机栈所发挥的作用非常相似，他们之间的区别是一个执行Java方法，一个执行本地方法 —— 一个Native Method就是一个java调用非java代码的接口。</p>
+<h2 id="java堆"><a href="#java堆" class="headerlink" title="java堆"></a>java堆</h2><p>java堆是虚拟机所管理内存最大的一块。<strong>java堆内存是被所有的线程共享的。java堆里面存放的就是对象的实例，几乎所有的对象实例都在这里分配内存。</strong> 在java虚拟机规范中描述，所有的对象实例以及数组都是要在堆上分配内存的。但是随着一些JIT编译器的发展与逃狱分析技术的逐渐成熟，所有对象都在堆上分配内存并不是那么绝对了。</p>
+<p>java堆是垃圾收集器的主要管理区域，因此也被称作GC堆（Garbage Collected Heap）。从内存回收的的角度来看，现在收集器基本都是采用分代收集算法，java堆还可以分为：新生代和老生代。</p>
+<p>根据java虚拟机的规范，java堆可以处于物理上不连续的内存空间，只要逻辑上是连续的即可，就像我们的磁盘空间一样，在实现的时候，既可以实现固定大小的，也可以实现可扩展的的，如果在分配内存的时候，已满，并且不可扩展，那么将会抛出OutOfMemoryError异常。</p>
+<h2 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h2><p>和java堆一样，是各个线程共享的内存区域，<strong>它用于存储已被虚拟机加载的类信息，常量、静态变量，即时编译器编译后的代码等数据</strong>，方法区也有一个别名叫做Non-Heap（非堆），用于与Java堆区分。对于HotSpot虚拟机来说，方法区又习惯称为“永久代”（Permancent Generation），但这只是对于HotSpot虚拟机来说的，其他虚拟机的实现上并没有这个概念。相对而言，垃圾收集行为在这个区域比较少出现，但也并非不会来收集，这个区域的内存回收目标主要是针对常量池的回收和对类型的卸载上。根据Java 虚拟机规范的规定，当方法区无法满足内存分配需求时，将抛出OutOfMemoryError 异常。</p>
+<blockquote>
+<p><strong>运行时常量池</strong></p>
+</blockquote>
+<p>运行时常量池是方法区的一部分。 Class文件中除了有类的版本、字段、方法、接口等描述信息外，<strong>还有一项信息是常量表，用于存放编译期生成的各种字面常量和符号引用，这部分内容将在类加载后进入方法区的运行时常量池中存放（JDK1.7开始，常量池已经被移到了堆内存中了）。</strong>  也就是说，这部分内容，在编译时只是放入到了常量池信息中，到了加载时，才会放到运行时常量池中去。运行时常量池县归于Class文件常量池的另外一个重要特征是具备动态性，Java语言并不要求常量一定只有编译期才能产生，也就是并非预置入Class文件中常量池的内容才能进入方法区的运行时常量池，运行期间也可能将新的常量放入池中，这种特性被开发人员利用的比较多的是String类的intern()方法。</p>
+<p>当方法区无法满足内存分配需求时，将抛出OutOfMemoryError异常，常量池属于方法区，同样可能抛出OutOfMemoryError异常。</p>
+<h2 id="追问1：程序计数器可以为空吗？"><a href="#追问1：程序计数器可以为空吗？" class="headerlink" title="追问1：程序计数器可以为空吗？"></a>追问1：程序计数器可以为空吗？</h2><p><strong>回答</strong>：可以为空，当执行的是本地方法时。</p>
+<h2 id="追问2：堆中又怎么细分的？"><a href="#追问2：堆中又怎么细分的？" class="headerlink" title="追问2：堆中又怎么细分的？"></a>追问2：堆中又怎么细分的？</h2><p><strong>回答</strong>：堆中可以细分为新生代和老年代，其中新生代又分为Eden区，From Survivor和To Survivor区，比例是8:1:1。</p>
+<h2 id="追问3：哪些区域会造成OOM"><a href="#追问3：哪些区域会造成OOM" class="headerlink" title="追问3：哪些区域会造成OOM"></a>追问3：哪些区域会造成OOM</h2><p><strong>回答</strong>：除了程序计数器不会产生OOM，其余的均可以产生OOM。</p>
+<h1 id="JDK1-7和1-8-内存模型的区别"><a href="#JDK1-7和1-8-内存模型的区别" class="headerlink" title="JDK1.7和1.8 内存模型的区别"></a>JDK1.7和1.8 内存模型的区别</h1><blockquote>
+<p><strong>JDK1.7JVM内存模型：</strong> </p>
+</blockquote>
+<p><strong>线程私有</strong>：Java虚拟机栈、本地方法栈、程序计数器 </p>
+<p> <strong>线程共享</strong>：方法区、堆 </p>
+<blockquote>
+<p> <strong>JDK1.8JVM内存模型：</strong> </p>
+</blockquote>
+<p> JDK1.8与1.7<strong>最大的区别</strong>是1.8将永久代（方法区）取消，取而代之的是<strong>元空间</strong>。 </p>
+<p> JDK1.7方法区是由永久代实现的，JDK1.8方法区是由元空间实现的，元空间属于本地内存，所以元空间的大小受本地内存的限制。</p>
+<h1 id="Java内存模型（JMM）"><a href="#Java内存模型（JMM）" class="headerlink" title="Java内存模型（JMM）"></a>Java内存模型（JMM）</h1><p><strong>Java内存模型</strong>规定所有的变量都存储在主内存中，每条线程还有自己的工作内存，线程的工作内存中保存了<code>被该线程使用到的变量的主内存副本的拷贝</code>，线程对变量的所有操作（读取、赋值等）都必须在工作内存中进行，而不能直接读写主内存中的变量。不同的线程之间也无法访问对方工作内存中的变量，线程间变量值的传递均需要通过主内存来完成。 </p>
+<ul>
+<li><p><strong>主内存</strong>：主要对应Java堆中的对象实例数据部分。 </p>
+</li>
+<li><p><strong>工作内存</strong>：对应于虚拟机栈中的部分区域。</p>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/7aeYef"><img src="https://s4.ax1x.com/2022/01/17/7aeYef.md.png" alt="7aeYef.md.png"></a></p>
+<h1 id="Java中对象的创建过程是什么样的？"><a href="#Java中对象的创建过程是什么样的？" class="headerlink" title="Java中对象的创建过程是什么样的？"></a>Java中对象的创建过程是什么样的？</h1><ol>
+<li><strong>检查类是否已经被加载（类加载检查）</strong></li>
+</ol>
+<p>当JVM遇到一条字节码 new 指令时，首先检查该引用指向的类是否能够在常量池中被找到（也就是检查方法区中有没有该类的信息），如果没有，先加载这个类；有的话就执行下一步，为对象分配内存。</p>
+<ol start="2">
+<li><strong>为对象分配内存空间</strong></li>
+</ol>
+<p>类加载检查通过后，接下来虚拟机会为新生对象分配内存。对象需要多大的内存在类加载完成后便可完全确定，为对象分配内存就是把一块确定大小的内存块从堆上划分出来。</p>
+<p>分配方式有两种：</p>
+<ul>
+<li><p>java堆内存是绝对规整的</p>
+<ul>
+<li>假设Java堆中内存是绝对规整的，所有被使用过的内存都被放在一边，空闲的内存被放在另一边，中间放着一个指针作为分界点的指示器，那所分配内存就仅仅是把那个指针向空闲空间方向挪动一段与对象大小相等的距离，这种分配方式称为“<strong>指针碰撞</strong>” 。</li>
+</ul>
+</li>
+<li><p>java堆内存是不规整的</p>
+<ul>
+<li>若堆内存不规整，已被使用的内存和空闲的内存相互交错在一起， 那就没有办法简单地进行指针碰撞了，虚拟机就必须维护一个列表，记录上哪些内存块是可用的， 在分配的时候从列表中找到一块足够大的空间划分给对象实例，并更新列表上的记录， 这种分配方式称为“<strong>空闲列表</strong>”（Free List）。</li>
+</ul>
+</li>
+</ul>
+<p>选用那种方式来分配内存，取决堆内存分配是否规整。而堆内存是否规整又取决于垃圾收集器。（核心主要是看采用的是那种垃圾回收算法，是否能进行空间压缩整理）</p>
+<ol start="3">
+<li><strong>为对象字段设置零值</strong></li>
+</ol>
+<p>分配完内存后，需要对对象的字段进行零值初始化（也就是对象的实例数据部分，对象的内存布局被分为三个部分，分别是对象头、实例数据、对齐填充），对象头除外，零值初始化意思就是对对象的字段赋0值，或者null值，这也就解释了为什么这些字段在不需要进程初始化时候就能直接使用。</p>
+<ol start="4">
+<li><strong>设置对象头</strong></li>
+</ol>
+<p>虚拟机需要对这个将要创建出来的对象，进行信息标记，包括是否为新生代&#x2F;老年代，对象的哈希码，元数据信息，这些标记存放在对象头信息中。</p>
+<ol start="5">
+<li><strong>执行构造方法</strong></li>
+</ol>
+<p>执行对象的构造方法，初始化对象，这样一个对象才算被成功创建。</p>
+<h2 id="追问1：内存分配的策略有哪些？"><a href="#追问1：内存分配的策略有哪些？" class="headerlink" title="追问1：内存分配的策略有哪些？"></a>追问1：内存分配的策略有哪些？</h2><p>Java中的内存分配策略主要有两种，分别是<strong>指针碰撞</strong>和<strong>空闲列表</strong> 。</p>
+<ul>
+<li><p><strong>指针碰撞</strong>：假设Java堆中的内存都是规整的，所有被使用过的放在一边，未使用过的放在一边，中间有一个指针作为分界，分配内存仅仅需要把这个指针向空闲空间方向移动一段即可。</p>
+</li>
+<li><p><strong>空闲列表</strong>：如果Java堆中的内存不是规整的，已使用过的和空闲的交错，虚拟机就需要维护一个列表，记录哪些内存是可用的，在分配的时候找到足够大的一块内存进行分配。</p>
+</li>
+</ul>
+<h2 id="追问2：对象头包含哪些？"><a href="#追问2：对象头包含哪些？" class="headerlink" title="追问2：对象头包含哪些？"></a>追问2：对象头包含哪些？</h2><p>虚拟机中对象头包含两类信息，第一类是用于存储对象自身运动时数据、如哈希码、GC分代年龄、线程持有的锁、偏向线程ID、偏向时间戳。对象的另外一部分是类型指针，即对象指向它的类型元数据的指针。</p>
+<h2 id="追问3：对象的访问定位方法有几种，各有什么优缺点？"><a href="#追问3：对象的访问定位方法有几种，各有什么优缺点？" class="headerlink" title="追问3：对象的访问定位方法有几种，各有什么优缺点？"></a>追问3：对象的访问定位方法有几种，各有什么优缺点？</h2><p>Java虚拟机中对象的访问方式有<strong>使用句柄</strong>和<strong>直接指针</strong>两种。</p>
+<ul>
+<li><strong>句柄</strong>：如果使用句柄的话，那么Java堆中将会划分出一块内存来作为句柄池，reference 中存储的就是对象的句柄地址，而句柄中包含了对象实例数据与类型数据各自的具体地址信息；</li>
+<li><strong>直接指针</strong>：如果使用直接指针访问，那么 Java 堆对象的布局中就必须考虑如何放置访问类型数据的相关信息，而reference 中存储的直接就是对象的地址。</li>
+</ul>
+<p><strong>总结</strong>：使用句柄最大的好处就是reference中存储的是稳定句柄地址，在对象移动时只会改变句柄中的实例数据指针，而reference本身不需要被修改。使用直接指针访问方式最大的好处就是速度快，它节省了一次指针定位的时间开销。</p>
+<h1 id="堆内存中对象分配的基本策略"><a href="#堆内存中对象分配的基本策略" class="headerlink" title="堆内存中对象分配的基本策略"></a>堆内存中对象分配的基本策略</h1><ol>
+<li><strong>对象优先在Eden分配</strong></li>
+</ol>
+<p> 大多数情况下，对象在新生代Eden区中分配。当Eden区没有足够空间进行分配时，虚拟机将发起一次<code>Minor GC</code> 。</p>
+<ol start="2">
+<li><strong>大对象直接进入老年代</strong></li>
+</ol>
+<p> 所谓的大对象是指需要大量连续内存空间的Java对象，最典型的大对象就是那种很长的字符串以及数组。可通过配置设置令操作设置值的对象直接在老年代分配。 </p>
+<p> 这样做的目的避免在<code>Eden区</code>以及两个<code>Sur[vivo]()r区</code>之间发生大量的内存复制（新生代采用复制<a href="">算法</a>收集内存）。 </p>
+<ol start="3">
+<li><strong>长期存活的对象将进入老年代</strong></li>
+</ol>
+<p> 虚拟机给每个对象定义了一个对象年龄计数器。如果对象在Eden出生并经过第一次Minor GC后仍然存活，并且能被Sur<a href="">vivo</a>r容纳的华，将被移动到Sur<a href="">vivo</a>r空间中，并且对象的年龄设置为 1.对象在Sur<a href="">vivo</a>r区中每熬过一次Minor GC,年龄就增加1岁，当它的年龄增加到一定程度（默认为15岁）就将会被晋升到老年代中。年龄阈值可通过配置调整-XX:MaxTenuringThreshold参数。 </p>
+<ol start="4">
+<li><strong>动态年龄判定</strong></li>
+</ol>
+<p> 虚拟机并不是永远要求对象的年龄必须达到 <code>MaxTenuringThreshold</code>参数才能晋升到老年代。 </p>
+<p> 如果在Sur<a href="">vivo</a>r空间中相同年龄所有对象大小总和大于Sur<a href="">vivo</a>r空间的一半，年龄大于或等于该年龄的对象就可以直接进入老年代，无需等到配置参数中要求的年龄。 </p>
+<ol start="5">
+<li><strong>空间分配担保</strong></li>
+</ol>
+<p> 在发生Minor GC之前，虚拟机会先检查老年代最大可用的连续空间是否大于新生代所有对象总空间，如果这个条件成立，那么Minor GC可以确保是安全的。 </p>
+<p>  如果不成立，则虚拟机会查看HandlePromotionFailure设置值是否允许担保失败。如果允许，那么会继续检查老年代最大可用的连续空间是否大于历次晋升到老年代对象的平均大小，如果大于，将尝试着进行一次Minor GC,尽管这次Minor GC是有风险的。如果小于或者设置不允许冒险，这时要改为进行一次Full GC。 </p>
+<h1 id="如何判断对象已死？"><a href="#如何判断对象已死？" class="headerlink" title="如何判断对象已死？"></a>如何判断对象已死？</h1><p>Java中判断对象死亡的方法有<strong>引用计数法</strong>和<strong>可达性分析</strong> 。</p>
+<ul>
+<li><p><strong>引用计数法</strong>：对象中添加一个引用计数器，每当有一个地方引用它，计数器就加1；当引用失效，计数器就减1；任何时候计数器为0的对象就是不可能再被使用的。</p>
+</li>
+<li><p><strong>可达性分析</strong>：通过一系列的GC Roots的根对象作为起始节点，从这些节点开始，根据引用关系向下搜索，如果某个对象到GC Roots间没有任何引用链相连。</p>
+</li>
+</ul>
+<h2 id="追问1：GCroot可以是哪些？"><a href="#追问1：GCroot可以是哪些？" class="headerlink" title="追问1：GCroot可以是哪些？"></a>追问1：GCroot可以是哪些？</h2><p>在Java中可以作为<code>GC Roots</code>的比较多，分别有</p>
+<ol>
+<li><p>在虚拟机栈中引用的对象，比如各个线程被调用的方法堆栈中使用到的参数、局部变量、临时变量等。</p>
+</li>
+<li><p>在方法区中类静态属性引用的对象，比如Java类的引用类型静态变量。</p>
+</li>
+<li><p>在方法区中常量引用的对象，比如字符串常量池里的引用。</p>
+</li>
+<li><p>在本地方法栈中JNI引用的对象。</p>
+</li>
+<li><p>Java虚拟机内部的引用，如基本数据类型对应的Class对象，一些常驻的异常对象。</p>
+</li>
+<li><p>所有被同步锁持有的对象。</p>
+</li>
+</ol>
+<h2 id="追问2：被标志为GC的对象一定会被GC掉吗？"><a href="#追问2：被标志为GC的对象一定会被GC掉吗？" class="headerlink" title="追问2：被标志为GC的对象一定会被GC掉吗？"></a>追问2：被标志为GC的对象一定会被GC掉吗？</h2><p>不一定，还有逃脱的可能。真正宣告一个对象死亡至少经历两次标记的过程。</p>
+<p>如果对象进行可达性分析后没有与GC Roots相连，那么这是第一次标记，之后会在进行一次筛选，筛选的条件是是否有必要执行finalize()方法。</p>
+<h1 id="双亲委派模型"><a href="#双亲委派模型" class="headerlink" title="双亲委派模型"></a>双亲委派模型</h1><p><strong>双亲委派机制</strong>是当类加载器需要加载某一个.class字节码文件时，则首先会把这个任务委托给他的上级类加载器，<strong>递归</strong>这个操作，如果上级没有加载该.class文件，自己才会去加载这个.class。</p>
+<h1 id="双亲委派的作用"><a href="#双亲委派的作用" class="headerlink" title="双亲委派的作用"></a>双亲委派的作用</h1><ol>
+<li><strong>防止加载同一个.class。</strong>通过委托去询问上级是否已经加载过该.class，如果加载过了，则不需要重新加载。保证了数据安全。</li>
+<li><strong>保证核心.class不被篡改。</strong>通过委托的方式，保证核心.class不被篡改，即使被篡改也不会被加载，即使被加载也不会是同一个class对象，因为不同的加载器加载同一个.class也不是同一个Class对象。这样则保证了Class的执行安全。</li>
+</ol>
+<h1 id="JVM垃圾回收算法"><a href="#JVM垃圾回收算法" class="headerlink" title="JVM垃圾回收算法"></a>JVM垃圾回收算法</h1><h2 id="标记—清除算法（Mark-Sweep）"><a href="#标记—清除算法（Mark-Sweep）" class="headerlink" title="标记—清除算法（Mark-Sweep）"></a>标记—清除算法（Mark-Sweep）</h2><p><strong>标记—清除算法是最基础的收集算法</strong>，它分为“<strong>标记</strong>”和“<strong>清除</strong>”两个阶段：首先标记出所需回收的对象，在标记完成后统一回收掉所有被标记的对象，它的标记过程其实就是前面的可达性分析算法中判定垃圾对象的标记过程。标记—清除算法的执行情况如下图所示：</p>
+<ul>
+<li>回收前状态</li>
+</ul>
+<p><img src="https://upload-images.jianshu.io/upload_images/3251891-25c29a521cfe2a4b.png" alt="img"></p>
+<ul>
+<li>回收后状态</li>
+</ul>
+<p><img src="https://upload-images.jianshu.io/upload_images/3251891-0bbce21010980518.png" alt="img"></p>
+<p>该算法有如下缺点：</p>
+<ul>
+<li>标记和清除过程的<strong>效率都不高</strong></li>
+<li>标记清除后会产生大量不连续的<strong>内存碎片</strong>，空间碎片太多可能会导致，当程序在以后的运行过程中需要分配较大对象时无法找到足够的连续内存而不得不触发另一次垃圾收集动作</li>
+</ul>
+<h2 id="复制算法（Copy）"><a href="#复制算法（Copy）" class="headerlink" title="复制算法（Copy）"></a>复制算法（Copy）</h2><p>复制算法是针对标记—清除算法的缺点，在其基础上进行改进而得到的，它将可用内存按容量分为大小相等的两块，每次只使用其中的一块，<strong>当这一块的内存用完了，就将还存活着的对象复制到另外一块内存上面，然后再把已使用过的内存空间一次清理掉</strong>。复制算法有如下优点：</p>
+<ul>
+<li>每次只对一块内存进行回收，运行高效</li>
+<li>只需移动栈顶指针，按顺序分配内存即可，实现简单</li>
+<li>内存回收时不用考虑内存碎片的出现</li>
+</ul>
+<p>它的缺点是：可一次性分配的<strong>最大内存缩小了一半</strong></p>
+<p>复制算法的执行情况如下图所示：</p>
+<ul>
+<li>回收前状态</li>
+</ul>
+<p><img src="https://upload-images.jianshu.io/upload_images/3251891-977ed6107c0476b7.png" alt="img"></p>
+<ul>
+<li>回收后状态</li>
+</ul>
+<p><img src="https://upload-images.jianshu.io/upload_images/3251891-af88a9c36b9338d4.png" alt="img"></p>
+<p>现在的商业虚拟机都采用这种收集算法来回收新生代，新生代中的对象98%都是“朝生夕死”的，所以并不需要按照1:1的比例来划分内存空间，而是将内存分为<strong>一块比较大的Eden空间和两块较小的Survivor空间</strong>，每次使用Eden和其中一块Survivor。当回收时，将Eden和Survivor中还存活着的对象一次性地复制到另外一块Survivor空间上，最后清理掉Eden和刚才用过的Survivor空间。HotSpot虚拟机默认Eden和Survivor的大小比例是<strong>8:1</strong>，也就是说，每次新生代中可用内存空间为整个新生代容量的90%（80%+10%），只有10%的空间会被浪费。</p>
+<p>当然，98%的对象可回收只是一般场景下的数据，我们没有办法保证每次回收都只有不多于10%的对象存活，当Survivor空间不够用时，需要依赖于<strong>老年代</strong>进行<strong>分配担保</strong>，所以大对象直接进入老年代。</p>
+<h2 id="标记—整理算法（Mark-Compact）"><a href="#标记—整理算法（Mark-Compact）" class="headerlink" title="标记—整理算法（Mark-Compact）"></a>标记—整理算法（Mark-Compact）</h2><p>复制算法比较适合于新生代，在老年代中，对象存活率比较高，如果执行较多的复制操作，效率将会变低，所以老年代一般会选用其他算法，如标记—整理算法。该算法标记的过程与标记—清除算法中的标记过程一样，但对标记后出的垃圾对象的处理情况有所不同，它不是直接对可回收对象进行清理，<strong>而是让所有的对象都向一端移动，然后直接清理掉端边界以外的内存</strong>。标记—整理算法的回收情况如下所示：</p>
+<ul>
+<li>回收前状态：</li>
+</ul>
+<p><img src="https://upload-images.jianshu.io/upload_images/3251891-7383aa69926fa5c3.png" alt="img"></p>
+<ul>
+<li>回收后状态：</li>
+</ul>
+<p><img src="https://upload-images.jianshu.io/upload_images/3251891-b1070ff58ce46e24.png" alt="img"></p>
+<h2 id="分代收集"><a href="#分代收集" class="headerlink" title="分代收集"></a>分代收集</h2><p>当前商业虚拟机的垃圾收集都采用分代收集，它<strong>根据对象的存活周期的不同将内存划分为几块</strong>，一般是把Java堆分为<strong>新生代</strong>和<strong>老年代</strong>。</p>
+<ul>
+<li>在新生代中，每次垃圾收集时都会发现有大量对象死去，只有少量存活，因此可选用<strong>复制算法</strong>来完成收集</li>
+<li>老年代中因为对象存活率高、没有额外空间对它进行分配担保，就必须使用<strong>标记—清除算法</strong>或<strong>标记—整理算法</strong>来进行回收</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">GC算法</th>
+<th align="center">优点</th>
+<th align="center">缺点</th>
+<th align="center">存活对象移动</th>
+<th align="center">内存碎片</th>
+<th align="center">适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">引用计数</td>
+<td align="center">实现简单</td>
+<td align="center">不能处理循环引用</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">标记清除</td>
+<td align="center">不需要额外空间</td>
+<td align="center">两次扫描，耗时严重</td>
+<td align="center">N</td>
+<td align="center">Y</td>
+<td align="center">老年代</td>
+</tr>
+<tr>
+<td align="center">复制</td>
+<td align="center">没有标记和清除</td>
+<td align="center">需要额外空间</td>
+<td align="center">Y</td>
+<td align="center">N</td>
+<td align="center">新生代</td>
+</tr>
+<tr>
+<td align="center">标记整理</td>
+<td align="center">没有内存碎片</td>
+<td align="center">需要移动对象的成本</td>
+<td align="center">Y</td>
+<td align="center">N</td>
+<td align="center">老年代</td>
+</tr>
+</tbody></table>
+<h1 id="类加载机制"><a href="#类加载机制" class="headerlink" title="类加载机制"></a>类加载机制</h1><p>每个 Java 文件都存储着需要执行的程序逻辑，这些 java 文件经过 Java 编译器编译成 class 文件，class 文件中保存着 JVM 虚拟机指令，当需要某个类时，虚拟机将会加载它的 class 文件，并创建对应的 class 对象，将 class 文件加载到虚拟机的内存，这个过程称为<strong>类加载</strong>。</p>
+<h2 id="类文件到虚拟机-类加载机制"><a href="#类文件到虚拟机-类加载机制" class="headerlink" title="类文件到虚拟机(类加载机制):"></a>类文件到虚拟机(类加载机制):</h2><p>JVM 将类的加载过程分为三个大的步骤：<strong>加载(loading)，链接(link)，初始化(initialize)<strong>。其中链接又分为三个步骤：</strong>验证，准备，解析</strong>。</p>
+<p><img src="https://img2020.cnblogs.com/i-beta/1383365/202003/1383365-20200310142826292-418936908.png" alt="img"></p>
+<h3 id="加载-loading-："><a href="#加载-loading-：" class="headerlink" title="加载(loading)："></a><strong>加载(loading)：</strong></h3><p>加载是类加载过程中的第一个阶段，加载过程虚拟机需要完成以下三件事情：</p>
+<ol>
+<li>通过一个类的全限定名获取定义此类的二进制字节流</li>
+<li>将这个字节流所代表的静态存储结构转化为方法区的运行时数据结构</li>
+<li>在Java堆中生成一个代表这个类的java.lang.Class对象，作为对方法区中这些数据的访问入口</li>
+</ol>
+<p>这个过程主要就是<strong>类加载器</strong>完成。</p>
+<h3 id="链接-link-："><a href="#链接-link-：" class="headerlink" title="链接(link)："></a><strong>链接(link)：</strong></h3><p><strong>链接</strong>分为3个小部分，验证、准备、解析。</p>
+<p><strong>验证</strong>：验证的目的在于确保class文件的字节流中包含信息符合当前虚拟机要求，不会危害虚拟机自身安全。主要包括四种验证，文件格式验证，元数据验证，字节码验证，符号引用验证；</p>
+<p><strong>准备</strong>：给静态方法和静态变量赋予初值，比如static int a；给其中的a赋予初值为0，但是这里不会给final修饰的静态变量赋予初值，因为被final修饰的静态变量在编译期间就已经被赋予初值了；<strong>内存分配的对象。</strong>Java 中的变量有「类变量」和「类成员变量」两种类型，「类变量」指的是被 static 修饰的变量，而其他所有类型的变量都属于「类成员变量」。在准备阶段，JVM 只会为「类变量」分配内存，而不会为「类成员变量」分配内存。「类成员变量」的内存分配需要等到初始化阶段才开始。例如下面的代码在准备阶段之后，num 的值将是 7，而不是 0。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public static final int num = 7;</span><br></pre></td></tr></table></figure>
+
+<p><strong>解析</strong>：主要将常量池中的符号引用替换为直接引用的过程。</p>
+<h3 id="初始化-initialize-："><a href="#初始化-initialize-：" class="headerlink" title="初始化(initialize)："></a><strong>初始化(initialize)：</strong></h3><p>到了初始化阶段，用户定义的 Java 程序代码才真正开始执行。在这个阶段，JVM 会根据语句执行顺序对类对象进行初始化，一般来说当 JVM 遇到下面 5 种情况的时候会触发初始化：</p>
+<ol>
+<li>遇到 new、getstatic、putstatic、invokestatic 这四条字节码指令时，如果类没有进行过初始化，则需要先触发其初始化。生成这4条指令的最常见的Java代码场景是：使用new关键字实例化对象的时候、读取或设置一个类的静态字段（被final修饰、已在编译器把结果放入常量池的静态字段除外）的时候，以及调用一个类的静态方法的时候。</li>
+<li>使用 java.lang.reflect 包的方法对类进行反射调用的时候，如果类没有进行过初始化，则需要先触发其初始化。</li>
+<li>当初始化一个类的时候，如果发现其父类还没有进行过初始化，则需要先触发其父类的初始化。</li>
+<li>当虚拟机启动时，用户需要指定一个要执行的主类（包含main()方法的那个类），虚拟机会先初始化这个主类。</li>
+<li>当使用 JDK1.7 动态语言支持时，如果一个 java.lang.invoke.MethodHandle实例最后的解析结果 REF_getstatic,REF_putstatic,REF_invokeStatic 的方法句柄，并且这个方法句柄所对应的类没有进行初始化，则需要先出触发其初始化。</li>
+</ol>
+<h1 id="Jvm垃圾回收器"><a href="#Jvm垃圾回收器" class="headerlink" title="Jvm垃圾回收器"></a>Jvm垃圾回收器</h1><p>上文提到过现代的商用虚拟机的都是采用分代收集的，不同的区域用不同的收集器。常用的7种收集器，其适用的范围如图所示</p>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/9/28/1661f3b974272614~tplv-t2oaga2asx-watermark.awebp" alt="img"></p>
+<ul>
+<li><strong>Serial、ParNew、Parallel Scavenge</strong>用于新生代；</li>
+<li><strong>CMS、Serial Old、Paralled Old</strong>用于老年代。 并且他们相互之间以相对固定的组合使用（具体组合关系如上图）。</li>
+<li><strong>G1</strong>是一个独立的收集器不依赖其他6种收集器。</li>
+<li><strong>ZGC</strong>是目前JDK 11的实验收集器。</li>
+</ul>
+<h2 id="Serial收集器"><a href="#Serial收集器" class="headerlink" title="Serial收集器"></a>Serial收集器</h2><p><strong>Serial</strong>，是单线程执行垃圾回收的。当需要执行垃圾回收时，程序会暂停一切手上的工作，然后单线程执行垃圾回收。</p>
+<p>因为新生代的特点是对象存活率低，所以收集算法用的是复制算法，把新生代存活对象复制到老年代，复制的内容不多，性能较好。</p>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/9/28/1661f3b50a287549~tplv-t2oaga2asx-watermark.awebp" alt="img"></p>
+<p>单线程的好处就是减少上下文切换，减少系统资源的开销。但这种方式的缺点也很明显，在GC的过程中，会暂停程序的执行。若GC不是频繁发生，这或许是一个不错的选择，否则将会影响程序的执行性能。 对于新生代来说，区域比较小，停顿时间短，所以比较使用。</p>
+<h2 id="ParNew收集器"><a href="#ParNew收集器" class="headerlink" title="ParNew收集器"></a>ParNew收集器</h2><p><strong>ParNew</strong>同样用于新生代，是Serial的多线程版本，并且在参数、算法（同样是复制算法）上也完全和Serial相同。</p>
+<p>Par是Parallel的缩写，但它的并行仅仅指的是收集多线程并行，并不是收集和原程序可以并行进行。ParNew也是需要暂停程序一切的工作，然后多线程执行垃圾回收。</p>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/9/28/1661f3b50bf68a9f~tplv-t2oaga2asx-watermark.awebp" alt="img"></p>
+<p>因为是多线程执行，所以在多CPU下，ParNew效果通常会比Serial好。但如果是单CPU则会因为线程的切换，性能反而更差。</p>
+<h2 id="Parallel-Scavenge收集器"><a href="#Parallel-Scavenge收集器" class="headerlink" title="Parallel Scavenge收集器"></a>Parallel Scavenge收集器</h2><p>新生代的收集器，同样用的是复制算法，也是并行多线程收集。与ParNew最大的不同，<strong>它关注的是垃圾回收的吞吐量</strong>。</p>
+<p>这里的吞吐量指的是总时间与垃圾回收时间的比例。这个比例越高，证明垃圾回收占整个程序运行的比例越小。</p>
+<p>Parallel Scavenge收集器提供两个参数控制垃圾回收的执行：</p>
+<ul>
+<li><strong>-XX:MaxGCPauseMillis</strong>，最大垃圾回收停顿时间。这个参数的原理是空间换时间，收集器会控制新生代的区域大小，从而尽可能保证回收少于这个最大停顿时间。简单的说就是回收的区域越小，那么耗费的时间也越小。<br> 所以这个参数并不是设置得越小越好。设太小的话，新生代空间会太小，从而更频繁的触发GC。</li>
+<li><strong>-XX:GCTimeRatio</strong>，垃圾回收时间与总时间占比。这个是吞吐量的倒数，原理和MaxGCPauseMillis相同。</li>
+</ul>
+<p>因为Parallel Scavenge收集器关注的是吞吐量，所以当设置好以上参数的时候，同时不想设置各个区域大小（新生代，老年代等）。可以开启**-XX:UseAdaptiveSizePolicy**参数，让JVM监控收集的性能，动态调整这些区域大小参数。</p>
+<h2 id="Serial-Old收集器"><a href="#Serial-Old收集器" class="headerlink" title="Serial Old收集器"></a>Serial Old收集器</h2><p>老年代的收集器，与Serial一样是单线程，不同的是算法用的是标记-整理（Mark-Compact）。</p>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/9/28/1661f3b5010433de~tplv-t2oaga2asx-watermark.awebp" alt="img"></p>
+<p>因为老年代里面对象的存活率高，如果依旧是用复制算法，需要复制的内容较多，性能较差。并且在极端情况下，当存活为100%时，没有办法用复制算法。所以需要用Mark-Compact，以有效地避免这些问题。</p>
+<h2 id="Parallel-Old收集器"><a href="#Parallel-Old收集器" class="headerlink" title="Parallel Old收集器"></a>Parallel Old收集器</h2><p>老年代的收集器，是Parallel Scavenge老年代的版本。其中的算法替换成<strong>Mark-Compact</strong>。</p>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/9/28/1661f3b504043412~tplv-t2oaga2asx-watermark.awebp" alt="img"></p>
+<h2 id="CMS收集器"><a href="#CMS收集器" class="headerlink" title="CMS收集器"></a>CMS收集器</h2><p>CMS，Concurrent Mark Sweep，同样是老年代的收集器。<strong>它关注的是垃圾回收最短的停顿时间（低停顿）</strong>，在老年代并不频繁GC的场景下，是比较适用的。</p>
+<p>命名中用的是concurrent，而不是parallel，说明这个收集器是有与工作执行并发的能力的。MS则说明算法用的是<strong>Mark Sweep</strong>算法。</p>
+<p>来看看具体的工作原理。CMS整个过程比之前的收集器要复杂，整个过程分为四步：</p>
+<ul>
+<li>初始标记（initial mark），单线程执行，需要“Stop The World”，但仅仅把GC Roots的直接关联可达的对象给标记一下，由于直接关联对象比较小，所以这里的速度非常快。</li>
+<li>并发标记（concurrent mark），对于初始标记过程所标记的初始标记对象，进行并发追踪标记，此时其他线程仍可以继续工作。此处时间较长，但不停顿。</li>
+<li>重新标记（remark），在并发标记的过程中，由于可能还会产生新的垃圾，所以此时需要重新标记新产生的垃圾。此处执行并行标记，与用户线程不并发，所以依然是“Stop The World”，时间比初始时间要长一点。</li>
+<li>并发清除（concurrent sweep），并发清除之前所标记的垃圾。其他用户线程仍可以工作，不需要停顿。</li>
+</ul>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/9/28/1661f3b957aa61ad~tplv-t2oaga2asx-watermark.awebp" alt="img"></p>
+<p>由于最耗费时间的并发标记与并发清除阶段都不需要暂停工作，所以整体的回收是低停顿的。</p>
+<p>由于CMS以上特性，缺点也是比较明显的，</p>
+<ul>
+<li>Mark Sweep算法会导致内存碎片比较多</li>
+<li>CMS的并发能力依赖于CPU资源，所以在CPU数少和CPU资源紧张的情况下，性能较差</li>
+<li>并发清除阶段，用户线程依然在运行，所以依然会产生新的垃圾，此阶段的垃圾并不会再本次GC中回收，而放到下次。所以GC不能等待内存耗尽的时候才进行GC，这样的话会导致并发清除的时候，用户线程可以了利用的空间不足。所以这里会浪费一些内存空间给用户线程预留。</li>
+</ul>
+<p><strong>有人会觉得既然Mark Sweep会造成内存碎片，那么为什么不把算法换成Mark Compact呢？</strong></p>
+<p><strong>答案其实很简答，因为当并发清除的时候，用Compact整理内存的话，原来的用户线程使用的内存还怎么用呢？要保证用户线程能继续执行，前提的它运行的资源不受影响嘛。Mark Compact更适合“Stop the World”这种场景下使用。</strong></p>
+<h2 id="G1收集器"><a href="#G1收集器" class="headerlink" title="G1收集器"></a>G1收集器</h2><p>G1，Garbage First，在JDK 1.7版本正式启用，是当时最前沿的垃圾收集器。G1可以说是CMS的终极改进版，解决了CMS内存碎片、更多的内存空间的问题。虽然流程与CMS比较相似，但底层的原理已是完全不同。</p>
+<p><strong>高效益优先</strong>。G1会预测垃圾回收的停顿时间，原理是计算老年代对象的效益率，优先回收最大效益的对象。</p>
+<p><strong>堆内存结构的不同</strong>。以前的收集器分代是划分新生代、老年代、持久代等。</p>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/9/28/1661f3b76cd8ac05~tplv-t2oaga2asx-watermark.awebp" alt="img"></p>
+<p>G1则是把内存分为多个大小相同的区域Region，每个Region拥有各自的分代属性，但这些分代不需要连续。</p>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/9/28/1661f3b76dfc400b~tplv-t2oaga2asx-watermark.awebp" alt="img"></p>
+<p>这样的分区可以有效避免内存碎片化问题。</p>
+<p>但是这样同样会引申一个新的问题，就是分代的内存不连续，导致在GC搜索垃圾对象的时候需要全盘扫描找出引用内存所在。</p>
+<p>为了解决这个问题，G1对于每个Region都维护一个Remembered Set，用于记录对象引用的情况。当GC发生的时候根据Remembered Set的引用情况去搜索。</p>
+<p><strong>两种GC模式</strong>：</p>
+<ul>
+<li>Young GC，关注于所有年轻代的Region，通过控制收集年轻代的Region个数，从而控制GC的回收时间。</li>
+<li>Mixed GC，关注于所有年轻代的Region，并且加上通过预测计算最大收益的若干个老年代Region。</li>
+</ul>
+<p>整体的执行流程：</p>
+<ul>
+<li>初始标记（initial mark），标记了从GC Root开始直接关联可达的对象。STW（Stop the World）执行。</li>
+<li>并发标记（concurrent marking），并发标记初始标记的对象，此时用户线程依然可以执行。</li>
+<li>最终标记（Remark），STW，标记再并发标记过程中产生的垃圾。</li>
+<li>筛选回收（Live Data Counting And Evacuation），评估标记垃圾，根据GC模式回收垃圾。STW执行。</li>
+</ul>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/9/28/1661f3b79ca85a8c~tplv-t2oaga2asx-watermark.awebp" alt="img"></p>
+<p>在Region层面上，整体的算法偏向于Mark-Compact。因为是Compact，会影响用户线程执行，所以回收阶段需要STW执行。</p>
+<h2 id="令人惊叹的ZGC"><a href="#令人惊叹的ZGC" class="headerlink" title="令人惊叹的ZGC"></a>令人惊叹的ZGC</h2><p>在JDK 11当中，加入了实验性质的ZGC。它的回收耗时平均不到2毫秒。它是一款低停顿高并发的收集器。</p>
+<p>ZGC几乎在所有地方并发执行的，除了初始标记的是STW的。所以停顿时间几乎就耗费在初始标记上，这部分的实际是非常少的。那么其他阶段是怎么做到可以并发执行的呢？</p>
+<p>ZGC主要新增了两项技术，一个是<strong>着色指针Colored Pointer</strong>，另一个是<strong>读屏障Load Barrier</strong>。</p>
+<p><strong>着色指针Colored Pointer</strong><br> ZGC利用指针的64位中的几位表示Finalizable、Remapped、Marked1、Marked0（ZGC仅支持64位平台），以标记该指向内存的存储状态。相当于在对象的指针上标注了对象的信息。注意，这里的指针相当于Java术语当中的引用。</p>
+<p>在这个被指向的内存发生变化的时候（内存在Compact被移动时），颜色就会发生变化。</p>
+<p>在G1的时候就说到过，Compact阶段是需要STW，否则会影响用户线程执行。那么怎么解决这个问题呢？</p>
+<p><strong>读屏障Load Barrier</strong> 由于着色指针的存在，在程序运行时访问对象的时候，可以轻易知道对象在内存的存储状态（通过指针访问对象），若请求读的内存在被着色了。那么则会触发读屏障。读屏障会更新指针再返回结果，此过程有一定的耗费，从而达到与用户线程并发的效果。</p>
+<p>把这两项技术联合下理解，引用R大（RednaxelaFX）的话</p>
+<blockquote>
+<p>与标记对象的传统算法相比，ZGC在指针上做标记，在访问指针时加入Load Barrier（读屏障），比如当对象正被GC移动，指针上的颜色就会不对，这个屏障就会先把指针更新为有效地址再返回，也就是，永远只有单个对象读取时有概率被减速，而不存在为了保持应用与GC一致而粗暴整体的Stop The World。</p>
+</blockquote>
+<p>ZGC虽然目前还在JDK 11还在实验阶段，但由于算法与思想是一个非常大的提升，相信在未来不久会成为主流的GC收集器使用。</p>
+<h1 id="整体介绍垃圾回收"><a href="#整体介绍垃圾回收" class="headerlink" title="整体介绍垃圾回收"></a>整体介绍垃圾回收</h1><h2 id="GC的主要任务"><a href="#GC的主要任务" class="headerlink" title="GC的主要任务"></a>GC的主要任务</h2><ol>
+<li><p>分配内存；</p>
+</li>
+<li><p>确保被引用对象的内存不被错误的回收；</p>
+</li>
+<li><p>回收不再被引用的对象的内存空间。</p>
+</li>
+</ol>
+<h2 id="垃圾回收机制的主要解决问题"><a href="#垃圾回收机制的主要解决问题" class="headerlink" title="垃圾回收机制的主要解决问题"></a>垃圾回收机制的主要解决问题</h2><ol>
+<li><p>哪些内存需要回收？</p>
+</li>
+<li><p>什么时候回收？</p>
+</li>
+<li><p>如何回收？</p>
+</li>
+</ol>
+<p><strong>针对问题一</strong>，垃圾收集器会对堆进行回收前，确定对象中哪些是“存活”，哪些是”死亡“（不可能再被任何途径使用的对象）</p>
+<blockquote>
+<p>判断方法</p>
+</blockquote>
+<ol>
+<li>引用计数法</li>
+</ol>
+<ul>
+<li>每当一个地方引用它时，计数器+1；引用失效时，计数器-1；计数值&#x3D;0——不可能再被引用。</li>
+</ul>
+<ol start="2">
+<li>可达性分析法：</li>
+</ol>
+<ul>
+<li>向图，树图，把一系列“GC Roots”作为起始点，从节点向下搜索，路径称为引用链，当一个对象到GC Roots没有任何引用链相连，即不可达时，则证明此对象时不可用的。</li>
+</ul>
+<p><strong>针对问题2——什么时候回收？</strong></p>
+<p>即使是被判断不可达的对象，也要再进行筛选，当对象没有覆盖finalize()方法，或者finalize方法已经被虚拟机调用过，则没有必要执行；</p>
+<p>如果有必要执行——放置在F-Queue的队列中——Finalizer线程执行。</p>
+<p>注意：对象可以在被GC时可以自我拯救(this)，机会只有一次，因为任何一个对象的finalize（）方法都只会被系统自动调用一次。并不建议使用，应该避免。使用try_finaly或者其他方式。</p>
+<p><strong>问题3——如何回收,这就牵扯到垃圾收集算法和垃圾收集器</strong></p>
+<p><strong>垃圾收集算法：</strong></p>
+<ol>
+<li><p>标记—清除算法</p>
+</li>
+<li><p>复制算法</p>
+</li>
+<li><p>标记—整理算法</p>
+</li>
+</ol>
+<p><strong>垃圾收集器</strong></p>
+<h2 id="最后来讲一下流程"><a href="#最后来讲一下流程" class="headerlink" title="最后来讲一下流程"></a>最后来讲一下流程</h2><p>新建的对象在新生代中，如果新生代内存不够，就进行Minor GC释放掉不活跃对象；如果还是不够，就把部分活跃对象复制到老年代中，如果还是不够，就进行MajorGC释放老年代，如果还是不够，JVM会抛出内存不足，发生oom，内存泄漏。</p>
+<h1 id="可达性分析"><a href="#可达性分析" class="headerlink" title="可达性分析"></a>可达性分析</h1><p><strong>引用计数算法</strong>和<strong>可达性分析算法</strong>。</p>
+<ul>
+<li><p><strong>引用计数法</strong>：在对象中添加一个引用计数器，每当一个地方引用它时，计数器就加一；当引用失效时，计数器值就减一；任何时刻计数器为零的对象就是不可能再被使用的。</p>
+<p>但是这样的算法有个问题，就是不能解决循环依赖的问题。Object 1和Object 2其实都可以被回收，但是它们之间还有相互引用，所以它们各自的计数器为1，则还是不会被回收。</p>
+<p>所以，Java虚拟机没有采用引用计数法。它采用的是可达性分析算法。</p>
+</li>
+</ul>
+<p><img src="https://segmentfault.com/img/remote/1460000021820580" alt="img"></p>
+<ul>
+<li><p><strong>可达性分析算法：</strong>就是通过一系列的“GC Roots”，也就是根对象作为起始节点集合，从根节点开始，根据<strong>引用关系</strong>向下搜索，搜索过程所走过的路径称为<strong>引用链</strong>，如果某个对象到GC Roots间没有任何引用链相连。</p>
+<p>用图论的话来说就是从GC Roots到这个对象不可达时，则证明此对象是不可能再被使用的。所以此对象就是可以被回收的对象。</p>
+</li>
+</ul>
+<p><img src="https://segmentfault.com/img/remote/1460000021820582" alt="img"></p>
+<h1 id="GC-Root有哪几种"><a href="#GC-Root有哪几种" class="headerlink" title="GC Root有哪几种"></a>GC Root有哪几种</h1><ol>
+<li><p><strong>虚拟机栈中引用的对象</strong><br>比如：各个线程被调用的方法中使用到的参数、局部变量等。</p>
+</li>
+<li><p><strong>本地方法栈内JNI（通常说的本地方法）引用的对象</strong></p>
+</li>
+<li><p><strong>方法区中类静态属性引用的对象</strong><br>比如：Java类的引用类型静态变量</p>
+</li>
+<li><p><strong>方法区中常量引用的对象</strong><br>比如：字符串常量池（string Table） 里的引用</p>
+</li>
+<li><p><strong>所有被同步锁synchronized持有的对象</strong></p>
+</li>
+<li><p><strong>Java虚拟机内部的引用</strong><br>基本数据类型对应的Class对象，一些常驻的异常对象（如：<br>NullPointerException、OutOfMemoryError） ，系统类加载器。</p>
+</li>
+<li><p><strong>反映java虚拟机内部情况的JMXBean、JVMTI中注册的回调、本地代码缓存等</strong></p>
+</li>
+<li><p><strong>除了这些固定的GCRoots集合以外，根据用户所选用的垃圾收集器以及当前回收的内存区域不同，还可以有其他对象“临时性”地加入，共同构成完整GC Roots集合。比如：分代收集和局部回收（Partial GC）。</strong><br>如果只针对Java堆中的某一块区域进行垃圾回收（比如：典型的只针对新生代），必须考虑到内存区域是虚拟机自己的实现细节，更不是孤立封闭的，这个区域的对象完全有可能被其他区域的对象所引用，这时候就需要一并将关联的区域对象也加入GC Roots集合中去考虑，才能保证可达性分析的准确性。</p>
+</li>
+</ol>
+<h1 id="遇到的OOM问题，如何定位、排查与解决"><a href="#遇到的OOM问题，如何定位、排查与解决" class="headerlink" title="遇到的OOM问题，如何定位、排查与解决"></a>遇到的OOM问题，如何定位、排查与解决</h1><h2 id="OOM排查过程步骤"><a href="#OOM排查过程步骤" class="headerlink" title="OOM排查过程步骤"></a>OOM排查过程步骤</h2><ol>
+<li><p><strong>先查看应用进程号pid</strong>：     <code>ps  -ef | grep  应用名</code></p>
+</li>
+<li><p><strong>查看pid垃圾回收情况</strong>：  <code>jstat  -gc  pid  5000（时间间隔）</code></p>
+</li>
+</ol>
+<p>即会每5秒一次显示进程号为68842的java进成的GC情况，显示内容如下图：</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/bJYCTA"><img src="https://s4.ax1x.com/2022/03/03/bJYCTA.md.png" alt="bJYCTA.md.png"></a></p>
+<ol start="3">
+<li><strong>开启OOM快照</strong>：</li>
+</ol>
+<p><code>-XX：+HeapDumpOnOutOfMemoryError</code>（开启堆快照）</p>
+<p><code>-XX：HeapDumpPath=C:/m.hprof</code>（保存文件到哪个目录）</p>
+<ol start="4">
+<li><strong>dump 查看方法栈信息：</strong></li>
+</ol>
+<p><code>jstack -l  pid  &gt;  /home/test/jstack.txt</code></p>
+<ol start="5">
+<li><strong>dump 查看JVM内存分配以及使用情况</strong></li>
+</ol>
+<p><code>jmap  -heap  pid  &gt;  /home/test/jmapHeap.txt</code></p>
+<ol start="6">
+<li><strong>dump jvm二进制的内存详细使用情况</strong> （效果同在Tomcat的catalina.sh中添加 set JAVA_OPTS&#x3D;%JAVA_OPTS% -server -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath&#x3D;&#x2F;home&#x2F;test&#x2F;&#x2F;oom.hprof  此文件需要借用内存分析工具如：Memory Analyzer (MAT)来分析）</li>
+</ol>
+<p><code>jmap -dump:format=b,file=/home/test/oom.hprof  pid</code> </p>
+<h2 id="OOM一般有以下两种情况："><a href="#OOM一般有以下两种情况：" class="headerlink" title="OOM一般有以下两种情况："></a>OOM一般有以下两种情况：</h2><ol>
+<li><strong>老年代堆空间被占满</strong></li>
+</ol>
+<p>异常：java.lang.OutOfMemoryError：java  heap space</p>
+<p>说明：这是最典型的内存泄漏方式，简单说就是所有堆空间都被无法回收的垃圾对象占满，虚拟机再也无法分配新空间</p>
+<p><strong>解决方案</strong>：这种方式解决起来比较简单，一般就是根据垃圾回收前后的情况对比，同时根据对象引用情况（常见的集合对象引用）分析，基本都可以找到泄漏点。</p>
+<ol start="2">
+<li><strong>持久代被占满</strong></li>
+</ol>
+<p>异常：java.lang.OutOfMemoryError：PermGen space</p>
+<p>说明：Perm 空间被占满，无法为新的 class 分配存储空间而引发的异常。这个异常以前是没有的，但是在 java 大量使用反射的今天这个异常就比较常见了。主要原因是大量动态反射生成的类不断被加载，最终导致 Perm 区被占满。更可怕的是，不同的 classLoader 即便使用相同的类，但是都会对其进行加载，相当于同一个东西，如果有 N 个classLoader 那么它将会被加载 N 次。因此，在某些情况下，这个问题基本视为无解，当然，存在大量 classLoader 和大量反射类的情况并不多</p>
+<p><strong>解决方案</strong>：增加持久代内存 ，例如：-XX：MaxPermSize&#x3D;16M</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag"># 学习</a>
+              <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/%E9%9D%A2%E7%BB%8F/" rel="tag"># 面经</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/03/04/%E9%9D%A2%E7%BB%8FJava%E5%AE%B9%E5%99%A8/" rel="prev" title="Java容器">
+      <i class="fa fa-chevron-left"></i> Java容器
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/03/04/%E9%9D%A2%E7%BB%8FLinux/" rel="next" title="Linux">
+      Linux <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D%E4%B8%80%E4%B8%8BJava%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA%E5%9F%9F%EF%BC%8C%E5%B9%B6%E8%AF%B4%E4%B8%80%E4%B8%8B%E6%AF%8F%E4%B8%AA%E9%83%A8%E5%88%86%E9%83%BD%E5%AD%98%E5%93%AA%E4%BA%9B%E5%86%85%E5%AE%B9%EF%BC%9F%EF%BC%88JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">介绍一下Java运行时数据区域，并说一下每个部分都存哪些内容？（JVM内存模型）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8"><span class="nav-number">1.1.</span> <span class="nav-text">程序计数器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#java%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88"><span class="nav-number">1.2.</span> <span class="nav-text">java虚拟机栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88"><span class="nav-number">1.3.</span> <span class="nav-text">本地方法栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#java%E5%A0%86"><span class="nav-number">1.4.</span> <span class="nav-text">java堆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E5%8C%BA"><span class="nav-number">1.5.</span> <span class="nav-text">方法区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%BD%E9%97%AE1%EF%BC%9A%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8%E5%8F%AF%E4%BB%A5%E4%B8%BA%E7%A9%BA%E5%90%97%EF%BC%9F"><span class="nav-number">1.6.</span> <span class="nav-text">追问1：程序计数器可以为空吗？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%BD%E9%97%AE2%EF%BC%9A%E5%A0%86%E4%B8%AD%E5%8F%88%E6%80%8E%E4%B9%88%E7%BB%86%E5%88%86%E7%9A%84%EF%BC%9F"><span class="nav-number">1.7.</span> <span class="nav-text">追问2：堆中又怎么细分的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%BD%E9%97%AE3%EF%BC%9A%E5%93%AA%E4%BA%9B%E5%8C%BA%E5%9F%9F%E4%BC%9A%E9%80%A0%E6%88%90OOM"><span class="nav-number">1.8.</span> <span class="nav-text">追问3：哪些区域会造成OOM</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JDK1-7%E5%92%8C1-8-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">2.</span> <span class="nav-text">JDK1.7和1.8 内存模型的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%EF%BC%88JMM%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">Java内存模型（JMM）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java%E4%B8%AD%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%88%9B%E5%BB%BA%E8%BF%87%E7%A8%8B%E6%98%AF%E4%BB%80%E4%B9%88%E6%A0%B7%E7%9A%84%EF%BC%9F"><span class="nav-number">4.</span> <span class="nav-text">Java中对象的创建过程是什么样的？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%BD%E9%97%AE1%EF%BC%9A%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%9A%84%E7%AD%96%E7%95%A5%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="nav-number">4.1.</span> <span class="nav-text">追问1：内存分配的策略有哪些？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%BD%E9%97%AE2%EF%BC%9A%E5%AF%B9%E8%B1%A1%E5%A4%B4%E5%8C%85%E5%90%AB%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="nav-number">4.2.</span> <span class="nav-text">追问2：对象头包含哪些？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%BD%E9%97%AE3%EF%BC%9A%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%AE%BF%E9%97%AE%E5%AE%9A%E4%BD%8D%E6%96%B9%E6%B3%95%E6%9C%89%E5%87%A0%E7%A7%8D%EF%BC%8C%E5%90%84%E6%9C%89%E4%BB%80%E4%B9%88%E4%BC%98%E7%BC%BA%E7%82%B9%EF%BC%9F"><span class="nav-number">4.3.</span> <span class="nav-text">追问3：对象的访问定位方法有几种，各有什么优缺点？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A0%86%E5%86%85%E5%AD%98%E4%B8%AD%E5%AF%B9%E8%B1%A1%E5%88%86%E9%85%8D%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%AD%96%E7%95%A5"><span class="nav-number">5.</span> <span class="nav-text">堆内存中对象分配的基本策略</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%88%A4%E6%96%AD%E5%AF%B9%E8%B1%A1%E5%B7%B2%E6%AD%BB%EF%BC%9F"><span class="nav-number">6.</span> <span class="nav-text">如何判断对象已死？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%BD%E9%97%AE1%EF%BC%9AGCroot%E5%8F%AF%E4%BB%A5%E6%98%AF%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="nav-number">6.1.</span> <span class="nav-text">追问1：GCroot可以是哪些？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%BD%E9%97%AE2%EF%BC%9A%E8%A2%AB%E6%A0%87%E5%BF%97%E4%B8%BAGC%E7%9A%84%E5%AF%B9%E8%B1%A1%E4%B8%80%E5%AE%9A%E4%BC%9A%E8%A2%ABGC%E6%8E%89%E5%90%97%EF%BC%9F"><span class="nav-number">6.2.</span> <span class="nav-text">追问2：被标志为GC的对象一定会被GC掉吗？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%A8%A1%E5%9E%8B"><span class="nav-number">7.</span> <span class="nav-text">双亲委派模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">8.</span> <span class="nav-text">双亲委派的作用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95"><span class="nav-number">9.</span> <span class="nav-text">JVM垃圾回收算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%87%E8%AE%B0%E2%80%94%E6%B8%85%E9%99%A4%E7%AE%97%E6%B3%95%EF%BC%88Mark-Sweep%EF%BC%89"><span class="nav-number">9.1.</span> <span class="nav-text">标记—清除算法（Mark-Sweep）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%8D%E5%88%B6%E7%AE%97%E6%B3%95%EF%BC%88Copy%EF%BC%89"><span class="nav-number">9.2.</span> <span class="nav-text">复制算法（Copy）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%87%E8%AE%B0%E2%80%94%E6%95%B4%E7%90%86%E7%AE%97%E6%B3%95%EF%BC%88Mark-Compact%EF%BC%89"><span class="nav-number">9.3.</span> <span class="nav-text">标记—整理算法（Mark-Compact）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E4%BB%A3%E6%94%B6%E9%9B%86"><span class="nav-number">9.4.</span> <span class="nav-text">分代收集</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6"><span class="nav-number">10.</span> <span class="nav-text">类加载机制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E6%96%87%E4%BB%B6%E5%88%B0%E8%99%9A%E6%8B%9F%E6%9C%BA-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6"><span class="nav-number">10.1.</span> <span class="nav-text">类文件到虚拟机(类加载机制):</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E8%BD%BD-loading-%EF%BC%9A"><span class="nav-number">10.1.1.</span> <span class="nav-text">加载(loading)：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%93%BE%E6%8E%A5-link-%EF%BC%9A"><span class="nav-number">10.1.2.</span> <span class="nav-text">链接(link)：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96-initialize-%EF%BC%9A"><span class="nav-number">10.1.3.</span> <span class="nav-text">初始化(initialize)：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Jvm%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8"><span class="nav-number">11.</span> <span class="nav-text">Jvm垃圾回收器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Serial%E6%94%B6%E9%9B%86%E5%99%A8"><span class="nav-number">11.1.</span> <span class="nav-text">Serial收集器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ParNew%E6%94%B6%E9%9B%86%E5%99%A8"><span class="nav-number">11.2.</span> <span class="nav-text">ParNew收集器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Parallel-Scavenge%E6%94%B6%E9%9B%86%E5%99%A8"><span class="nav-number">11.3.</span> <span class="nav-text">Parallel Scavenge收集器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Serial-Old%E6%94%B6%E9%9B%86%E5%99%A8"><span class="nav-number">11.4.</span> <span class="nav-text">Serial Old收集器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Parallel-Old%E6%94%B6%E9%9B%86%E5%99%A8"><span class="nav-number">11.5.</span> <span class="nav-text">Parallel Old收集器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CMS%E6%94%B6%E9%9B%86%E5%99%A8"><span class="nav-number">11.6.</span> <span class="nav-text">CMS收集器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#G1%E6%94%B6%E9%9B%86%E5%99%A8"><span class="nav-number">11.7.</span> <span class="nav-text">G1收集器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A4%E4%BA%BA%E6%83%8A%E5%8F%B9%E7%9A%84ZGC"><span class="nav-number">11.8.</span> <span class="nav-text">令人惊叹的ZGC</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E4%BB%8B%E7%BB%8D%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6"><span class="nav-number">12.</span> <span class="nav-text">整体介绍垃圾回收</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#GC%E7%9A%84%E4%B8%BB%E8%A6%81%E4%BB%BB%E5%8A%A1"><span class="nav-number">12.1.</span> <span class="nav-text">GC的主要任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6%E7%9A%84%E4%B8%BB%E8%A6%81%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98"><span class="nav-number">12.2.</span> <span class="nav-text">垃圾回收机制的主要解决问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%90%8E%E6%9D%A5%E8%AE%B2%E4%B8%80%E4%B8%8B%E6%B5%81%E7%A8%8B"><span class="nav-number">12.3.</span> <span class="nav-text">最后来讲一下流程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%AF%E8%BE%BE%E6%80%A7%E5%88%86%E6%9E%90"><span class="nav-number">13.</span> <span class="nav-text">可达性分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GC-Root%E6%9C%89%E5%93%AA%E5%87%A0%E7%A7%8D"><span class="nav-number">14.</span> <span class="nav-text">GC Root有哪几种</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%81%87%E5%88%B0%E7%9A%84OOM%E9%97%AE%E9%A2%98%EF%BC%8C%E5%A6%82%E4%BD%95%E5%AE%9A%E4%BD%8D%E3%80%81%E6%8E%92%E6%9F%A5%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="nav-number">15.</span> <span class="nav-text">遇到的OOM问题，如何定位、排查与解决</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#OOM%E6%8E%92%E6%9F%A5%E8%BF%87%E7%A8%8B%E6%AD%A5%E9%AA%A4"><span class="nav-number">15.1.</span> <span class="nav-text">OOM排查过程步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OOM%E4%B8%80%E8%88%AC%E6%9C%89%E4%BB%A5%E4%B8%8B%E4%B8%A4%E7%A7%8D%E6%83%85%E5%86%B5%EF%BC%9A"><span class="nav-number">15.2.</span> <span class="nav-text">OOM一般有以下两种情况：</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="aeowind"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">aeowind</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aeowind</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

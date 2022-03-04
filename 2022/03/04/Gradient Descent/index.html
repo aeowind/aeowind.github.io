@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"aeowind.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="某一剎骤觉 感情深得可爱">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gradient Descent">
+<meta property="og:url" content="https://aeowind.github.io/2022/03/04/Gradient%20Descent/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="某一剎骤觉 感情深得可爱">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/scarleatt/image/raw/master/img/image-20200603152209444.png">
+<meta property="og:image" content="https://gitee.com/scarleatt/image/raw/master/img/image-20200603152117920.png">
+<meta property="og:image" content="https://gitee.com/scarleatt/image/raw/master/img/image-20200603161210664.png">
+<meta property="og:image" content="https://gitee.com/scarleatt/image/raw/master/img/image-20200603165047318.png">
+<meta property="og:image" content="https://gitee.com/scarleatt/image/raw/master/img/image-20200603165417281.png">
+<meta property="og:image" content="https://gitee.com/scarleatt/image/raw/master/img/image-20200603172539601.png">
+<meta property="og:image" content="https://gitee.com/scarleatt/image/raw/master/img/image-20200603173305074.png">
+<meta property="og:image" content="https://gitee.com/scarleatt/image/raw/master/img/image-20200603174942400.png">
+<meta property="og:image" content="https://gitee.com/scarleatt/image/raw/master/img/image-20200603175920345.png">
+<meta property="og:image" content="https://gitee.com/scarleatt/image/raw/master/img/image-20200603180425226.png">
+<meta property="og:image" content="https://gitee.com/scarleatt/image/raw/master/img/image-20200603215238564.png">
+<meta property="og:image" content="https://gitee.com/scarleatt/image/raw/master/img/image-20200603215557501.png">
+<meta property="og:image" content="https://gitee.com/scarleatt/image/raw/master/img/image-20200603220106332.png">
+<meta property="og:image" content="https://gitee.com/scarleatt/image/raw/master/img/image-20200603225755433.png">
+<meta property="og:image" content="https://gitee.com/scarleatt/image/raw/master/img/image-20200604110917247.png">
+<meta property="og:image" content="https://gitee.com/scarleatt/image/raw/master/img/image-20200604114112061.png">
+<meta property="og:image" content="https://gitee.com/scarleatt/image/raw/master/img/image-20200604114656448.png">
+<meta property="og:image" content="https://gitee.com/scarleatt/image/raw/master/img/image-20200604123420086.png">
+<meta property="article:published_time" content="2022-03-04T12:46:25.399Z">
+<meta property="article:modified_time" content="2022-03-04T11:28:53.070Z">
+<meta property="article:author" content="aeowind">
+<meta property="article:tag" content="学习">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="深度学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/scarleatt/image/raw/master/img/image-20200603152209444.png">
+
+<link rel="canonical" href="https://aeowind.github.io/2022/03/04/Gradient%20Descent/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Gradient Descent | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://aeowind.github.io/2022/03/04/Gradient%20Descent/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="aeowind">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Gradient Descent
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-03-04 20:46:25 / 修改时间：19:28:53" itemprop="dateCreated datePublished" datetime="2022-03-04T20:46:25+08:00">2022-03-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">学习</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description"><blockquote class="blockquote-center">某一剎骤觉 感情深得可爱</blockquote></div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="Gradient-Descent"><a href="#Gradient-Descent" class="headerlink" title="Gradient Descent"></a>Gradient Descent</h4><p>梯度下降的目标是使损失函数L最小化，<br>$$ θ∗&#x3D;arg min L(θ) $$<br><a target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200603152209444.png"><img src="https://gitee.com/scarleatt/image/raw/master/img/image-20200603152209444.png" alt="image-20200603152209444"></a></p>
+<h4 id="Learning-Rate"><a href="#Learning-Rate" class="headerlink" title="Learning Rate"></a>Learning Rate</h4><p>从θ0θ0开始，先计算出θ0θ0的梯度，其中红色箭头表示梯度的方向，蓝色箭头表示移动的方向。<br>梯度的方向是函数值在这个点增长最快的方向，想要使损失函数L的值达到最小值，就必须要往相反的方向运动。</p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200603152117920.png"><img src="https://gitee.com/scarleatt/image/raw/master/img/image-20200603152117920.png" alt="image-20200603152117920"></a></p>
+<p>学习率会出现以下四种不同的情况：</p>
+<ul>
+<li>学习率太小，即图中蓝色的线，每次跨越的步长很小很小，梯度每次变化的值也小，模型要达到local minima，就必须需要更多的训练时间；</li>
+<li>学习率太大，即图中绿色的线，每次跨越的步长会很大，很可能形成在山谷之间震荡的现象；</li>
+<li>学习率特别大，即图中黄色的线，就很可能会直接跳出local minima，loss会越来越大；</li>
+<li>学习率刚好合适，即图中红色的线，每次跨越的步长非常合适，达到local minima的时间也不需要特别多。</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200603161210664.png"><img src="https://gitee.com/scarleatt/image/raw/master/img/image-20200603161210664.png" alt="image-20200603161210664"></a></p>
+<p>由于手动设置learning rate会导致很多问题，就出现了一些自适应的梯度调整方法。</p>
+<p>- </p>
+<ul>
+<li>在经过多次的训练后，离local minimum的距离已经很近了，所以这时可以使用小的learning rate；</li>
+<li>在经过t次的训练后，learning rate可以衰减为ηt&#x3D;ηt+1√ηt&#x3D;ηt+1</li>
+</ul>
+<h4 id="Adagrad"><a href="#Adagrad" class="headerlink" title="Adagrad"></a>Adagrad</h4><blockquote>
+<p>Divide the learning rate of each parameter by the <strong>root mean square of its previous derivatives</strong></p>
+</blockquote>
+<h5 id="理论推导"><a href="#理论推导" class="headerlink" title="理论推导"></a>理论推导</h5><p>使用这个公式来更新参数w，wt+1←wt−ηtσtgtwt+1←wt−ηtσtgt<br>其中，t表示第t次的update，gt&#x3D;∂L(θt)∂wgt&#x3D;∂L(θt)∂w，是损失函数L对参数w的导数，σtσt表示其先前导数的均方根（root mean square）</p>
+<p>计算w的具体例子如下所示，</p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200603165047318.png"><img src="https://gitee.com/scarleatt/image/raw/master/img/image-20200603165047318.png" alt="image-20200603165047318"></a></p>
+<p>得出了σtσt和ηtηt的表达式后，再带入原式，消除分母上的t+1−−−−√t+1即可得出下面的公式，</p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200603165417281.png"><img src="https://gitee.com/scarleatt/image/raw/master/img/image-20200603165417281.png" alt="image-20200603165417281"></a></p>
+<h5 id="Contradiction"><a href="#Contradiction" class="headerlink" title="Contradiction"></a>Contradiction</h5><p>如上图所示，对于一般的梯度下降算法（vanilla gradient descent），当梯度g越大时，步长就越大；对于Adagrad， gtgt在分子上，梯度越大步长也越大，∑ti&#x3D;0(gi)2∑i&#x3D;0t(gi)2在分母上，数值越大步长也就越小，看似出现了一个矛盾。</p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200603172539601.png"><img src="https://gitee.com/scarleatt/image/raw/master/img/image-20200603172539601.png" alt="image-20200603172539601"></a></p>
+<p>有学者对此也做出了解释，认为Adagrad可以解释gtgt和∑ti&#x3D;0(gi)2∑i&#x3D;0t(gi)2之间的反差，造成了反差的效果。</p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200603173305074.png"><img src="https://gitee.com/scarleatt/image/raw/master/img/image-20200603173305074.png" alt="image-20200603173305074"></a></p>
+<p><strong>gradient越大，函数值离minima的距离就越远</strong>这个说法不一定在所有情况下都是成立的。</p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200603174942400.png"><img src="https://gitee.com/scarleatt/image/raw/master/img/image-20200603174942400.png" alt="image-20200603174942400"></a></p>
+<p>对于左图中的两个参数w1和w2，画两条直线，保持其中一个变量不变，得出另一个变量的变化曲线，分别对应右图中的曲线。在右图中，对于w1中的a点和w2中的c点，c点距离minimum的距离最近，但梯度却更大。因此在分析梯度和步长时，我们不能只考虑一阶导数的大小，还必须要要考虑二阶导数的大小，即y‘′&#x3D;2ay‘′&#x3D;2a。</p>
+<p>右图中的w1曲线，曲率半径比w2的曲线更大，一阶导数变化得更平缓，因此二阶导数的变化就比w2大</p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200603175920345.png"><img src="https://gitee.com/scarleatt/image/raw/master/img/image-20200603175920345.png" alt="image-20200603175920345"></a></p>
+<p>再来回顾下Adagrad中每次更新w的表达式，wt+1←wt−η∑tt&#x3D;0(gi)2√gtwt+1←wt−η∑t&#x3D;0t(gi)2gt</p>
+<p>一阶导数用gtgt表示，二阶导数的值则用分母中的∑ti&#x3D;0(gi)2∑i&#x3D;0t(gi)2来进行评估，即使用一阶导数的值来表示二阶导数的值。</p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200603180425226.png"><img src="https://gitee.com/scarleatt/image/raw/master/img/image-20200603180425226.png" alt="image-20200603180425226"></a></p>
+<h4 id="Stochastic-Gradient-Descent"><a href="#Stochastic-Gradient-Descent" class="headerlink" title="Stochastic Gradient Descent"></a>Stochastic Gradient Descent</h4><p>对于传统的梯度下降算法，损失函数L的计算包含了所有的样本;<br>随机梯度下降算法，损失函数LnLn则只使用其中一个样本，计算效率可以提高很多</p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200603215238564.png"><img src="https://gitee.com/scarleatt/image/raw/master/img/image-20200603215238564.png" alt="image-20200603215238564"></a></p>
+<p>对比示意图如下，</p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200603215557501.png"><img src="https://gitee.com/scarleatt/image/raw/master/img/image-20200603215557501.png" alt="image-20200603215557501"></a></p>
+<h4 id="Feature-scaling"><a href="#Feature-scaling" class="headerlink" title="Feature scaling"></a>Feature scaling</h4><h5 id="原理介绍"><a href="#原理介绍" class="headerlink" title="原理介绍"></a>原理介绍</h5><blockquote>
+<p>Make different features have the same scaling</p>
+</blockquote>
+<p>使不同量级的数据集都具有相同的规模，比如x2的都是大于100的值，经过feature scaling，就可以使x2的数值范围和x1相接近。</p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200603220106332.png"><img src="https://gitee.com/scarleatt/image/raw/master/img/image-20200603220106332.png" alt="image-20200603220106332"></a></p>
+<p>x2对应w2，x1对应w1，对于同一个w1、w2，但x2的数值不同</p>
+<p>在左图中，由于x1的数值相对于x2来说都很小，x1的变化对于y来说影响很小，w1对y的影响也很小，对loss的影响也小，因此梯度∂L∂w1∂L∂w1在w1方向的变换也比较平缓；x2的数值较大，对loss的影响也大，因此梯度∂L∂w2∂L∂w2在w2方向的变换就比较sharp</p>
+<p>在右图中，x1和x2的规模（scale）是接近的，对y的影响不相上下，对loss的影响也差不多</p>
+<h5 id="计算"><a href="#计算" class="headerlink" title="计算"></a>计算</h5><p><a target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200603225755433.png"><img src="https://gitee.com/scarleatt/image/raw/master/img/image-20200603225755433.png" alt="image-20200603225755433"></a></p>
+<p>计算方式：用mimi表示当前样本的平均值，σiσi为当前样本的标准差，i表示维度，xrixir表示第r个example，使用公式xri←xri−miσixir←xir−miσi来进行归一化计算</p>
+<p>feature scaling其实就是将每一个example都进行归一化，使之服从标准正态分布f(x)&#x3D;12π√e−x22f(x)&#x3D;12πe−x22</p>
+<p>X−X¯D(x)−−−−√∼N(0,1)X−X¯D(x)∼N(0,1)</p>
+<h4 id="Gradient-Descent-Theory"><a href="#Gradient-Descent-Theory" class="headerlink" title="Gradient Descent Theory"></a>Gradient Descent Theory</h4><h5 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h5><p>在求解最小化问题时，θ∗&#x3D;arg min L(θ)θ∗&#x3D;arg min L(θ)，每次更新θθ的值，并不一定能使L(θ0)&gt;L(θ1)&gt;L(θ2)&gt;⋯𝐿(θ0)&gt;𝐿(θ1)&gt;𝐿(θ2)&gt;⋯成立</p>
+<p>对于给出的θ1,θ2θ1,θ2，我们要如何根据这些值来找出最小的loss？这也是我们接下来会研究的问题</p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200604110917247.png"><img src="https://gitee.com/scarleatt/image/raw/master/img/image-20200604110917247.png" alt="image-20200604110917247"></a></p>
+<h5 id="Taylor-Series"><a href="#Taylor-Series" class="headerlink" title="Taylor Series"></a>Taylor Series</h5><p>泰勒公式定义如下，将函数h(x)在x&#x3D;x0处展开</p>
+<p>h(x)&#x3D;∑k&#x3D;0∞h(k)(x0)k!(x−x0)kh(x)&#x3D;∑k&#x3D;0∞h(k)(x0)k!(x−x0)k</p>
+<p>当x→x0x→x0时，表达式可写为h(x)≈h(x0)+h′(x0)(x−x0)h(x)≈h(x0)+h′(x0)(x−x0)</p>
+<p>对于二元函数，当x→x0,y→y0x→x0,y→y0时，相应的表达式可以简化为</p>
+<p>h(x,y)≈h(x0,y0)+∂h(x0,y0)∂x(x−x0)+∂h(x0,y0)∂y(y−y0)h(x,y)≈h(x0,y0)+∂h(x0,y0)∂x(x−x0)+∂h(x0,y0)∂y(y−y0)</p>
+<h5 id="Back-to-Formal-Derivation"><a href="#Back-to-Formal-Derivation" class="headerlink" title="Back to Formal Derivation"></a>Back to Formal Derivation</h5><p>损失函数loss可以用以下公式表示，</p>
+<p>L(θ)&#x3D;L(a,b)+∂L(a,b)∂θ1(θ1−a)+∂L(a,b)∂θ2(θ2−b)L(θ)&#x3D;L(a,b)+∂L(a,b)∂θ1(θ1−a)+∂L(a,b)∂θ2(θ2−b)</p>
+<p>简化表达形式，令s&#x3D;L(a,b), u&#x3D;∂L(a,b)∂θ1, v&#x3D;∂L(a,b)∂θ2s&#x3D;L(a,b), u&#x3D;∂L(a,b)∂θ1, v&#x3D;∂L(a,b)∂θ2</p>
+<p>则L(θ)≈s+u(θ1−a)+v(θ2−b)L(θ)≈s+u(θ1−a)+v(θ2−b)</p>
+<p>如下图所示，在图中red circle的范围内，找到θ1,θ2θ1,θ2，使得loss最小化，设red circle的半径为d，圆心坐标为(a,b)，就新增了一个限制条件(θ1−a)2+(θ2−b)2≤d2(θ1−a)2+(θ2−b)2≤d2</p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200604114112061.png"><img src="https://gitee.com/scarleatt/image/raw/master/img/image-20200604114112061.png" alt="image-20200604114112061"></a></p>
+<p>由于s与θ1,θ2θ1,θ2不相关，这里把s项去掉，L(θ)L(θ)可以转为内积</p>
+<p>L(θ)min≈u(θ1−a)+v(θ2−b)&#x3D;(u,v)⋅(θ1−a,θ2−b)&#x3D;(u,v)⋅(Δθ1,Δθ2)L(θ)min≈u(θ1−a)+v(θ2−b)&#x3D;(u,v)⋅(θ1−a,θ2−b)&#x3D;(u,v)⋅(Δθ1,Δθ2)</p>
+<p>当(Δθ1,Δθ2)(Δθ1,Δθ2)与(u,v)(u,v)方向相反时，两者的内积为最小值，由于两者的模长不同，用参数ηη来表示两者之间的关系。</p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200604114656448.png"><img src="https://gitee.com/scarleatt/image/raw/master/img/image-20200604114656448.png" alt="image-20200604114656448"></a></p>
+<p>由于Δθ1&#x3D;θ1−a,Δθ2&#x3D;θ2−bΔθ1&#x3D;θ1−a,Δθ2&#x3D;θ2−b，则θ1&#x3D;a+Δθ1,θ2&#x3D;b+Δθ2θ1&#x3D;a+Δθ1,θ2&#x3D;b+Δθ2，可得出</p>
+<p>[θ1θ2]&#x3D;[ab]−η[uv]&#x3D;[ab]−η⎡⎣⎢∂L(a,b)∂θ1∂L(a,b)∂θ2⎤⎦⎥[θ1θ2]&#x3D;[ab]−η[uv]&#x3D;[ab]−η[∂L(a,b)∂θ1∂L(a,b)∂θ2]</p>
+<h5 id="Limitation"><a href="#Limitation" class="headerlink" title="Limitation"></a>Limitation</h5><p>在真实的实验环境中，我们往往会设置一个临界值（比如10−410−4），当该点的梯度小于该值（即≈0≈0）时，就停止训练。</p>
+<p>因此，gradient descent的限制是，gradient为0的点并不一定是local minimum，还有可能是saddle point，也有可能是接近于0的点</p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200604123420086.png"><img src="https://gitee.com/scarleatt/image/raw/master/img/image-20200604123420086.png" alt="image-20200604123420086"></a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag"># 学习</a>
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag"># 深度学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/03/04/DramaSomeday/" rel="prev" title="Drama Someday">
+      <i class="fa fa-chevron-left"></i> Drama Someday
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/03/04/Java%20%E5%B9%B6%E5%8F%91/" rel="next" title="Java并发笔记">
+      Java并发笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Gradient-Descent"><span class="nav-number">1.</span> <span class="nav-text">Gradient Descent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Learning-Rate"><span class="nav-number">2.</span> <span class="nav-text">Learning Rate</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Adagrad"><span class="nav-number">3.</span> <span class="nav-text">Adagrad</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%90%86%E8%AE%BA%E6%8E%A8%E5%AF%BC"><span class="nav-number">3.1.</span> <span class="nav-text">理论推导</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Contradiction"><span class="nav-number">3.2.</span> <span class="nav-text">Contradiction</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Stochastic-Gradient-Descent"><span class="nav-number">4.</span> <span class="nav-text">Stochastic Gradient Descent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Feature-scaling"><span class="nav-number">5.</span> <span class="nav-text">Feature scaling</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8E%9F%E7%90%86%E4%BB%8B%E7%BB%8D"><span class="nav-number">5.1.</span> <span class="nav-text">原理介绍</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97"><span class="nav-number">5.2.</span> <span class="nav-text">计算</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Gradient-Descent-Theory"><span class="nav-number">6.</span> <span class="nav-text">Gradient Descent Theory</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Question"><span class="nav-number">6.1.</span> <span class="nav-text">Question</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Taylor-Series"><span class="nav-number">6.2.</span> <span class="nav-text">Taylor Series</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Back-to-Formal-Derivation"><span class="nav-number">6.3.</span> <span class="nav-text">Back to Formal Derivation</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Limitation"><span class="nav-number">6.4.</span> <span class="nav-text">Limitation</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="aeowind"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">aeowind</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aeowind</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
