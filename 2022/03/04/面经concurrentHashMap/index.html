@@ -27,13 +27,6 @@
 <meta property="og:site_name" content="Aeo&#39;s Blog">
 <meta property="og:description" content="唯求与他车厢中可抵达未来，到车毁都不放开">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://www.justdojava.com/assets/images/2019/java/image_zjkl/java-collection-15/292dbd7671e1479197d580ffa12f0dd5.jpg">
-<meta property="og:image" content="http://www.justdojava.com/assets/images/2019/java/image_zjkl/java-collection-15/d11a95b13bc6410ab536e0b7ad272bd4.jpg">
-<meta property="og:image" content="https://s4.ax1x.com/2021/12/23/TGCOcF.md.png">
-<meta property="og:image" content="https://s4.ax1x.com/2021/12/23/TGkqa9.md.png">
-<meta property="og:image" content="https://s4.ax1x.com/2021/12/23/TGkj8x.png">
-<meta property="og:image" content="https://s4.ax1x.com/2021/12/23/TGEUpt.md.png">
-<meta property="og:image" content="https://s4.ax1x.com/2021/12/23/TGeeYj.png">
 <meta property="article:published_time" content="2022-03-04T12:46:25.456Z">
 <meta property="article:modified_time" content="2022-03-04T05:14:40.582Z">
 <meta property="article:author" content="aeowind">
@@ -41,7 +34,6 @@
 <meta property="article:tag" content="Java">
 <meta property="article:tag" content="面经">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://www.justdojava.com/assets/images/2019/java/image_zjkl/java-collection-15/292dbd7671e1479197d580ffa12f0dd5.jpg">
 
 <link rel="canonical" href="https://aeowind.github.io/2022/03/04/%E9%9D%A2%E7%BB%8FconcurrentHashMap/">
 
@@ -261,157 +253,207 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p><strong>ConcurrentHashMap 类所采用的正是分段锁的思想，将 HashMap 进行切割，把 HashMap 中的哈希数组切分成小数组，每个小数组有 n 个 HashEntry 组成，其中小数组继承自<code>ReentrantLock（可重入锁）</code>，这个小数组名叫<code>Segment</code>，</strong> 如下图：</p>
-<p><img src="http://www.justdojava.com/assets/images/2019/java/image_zjkl/java-collection-15/292dbd7671e1479197d580ffa12f0dd5.jpg" alt="img"></p>
+        <h1 id="原理">原理</h1>
+<p><strong>ConcurrentHashMap 类所采用的正是分段锁的思想，将 HashMap
+进行切割，把 HashMap 中的哈希数组切分成小数组，每个小数组有 n 个
+HashEntry
+组成，其中小数组继承自<code>ReentrantLock（可重入锁）</code>，这个小数组名叫<code>Segment</code>，</strong>
+如下图：</p>
+<figure>
+<img
+src="http://www.justdojava.com/assets/images/2019/java/image_zjkl/java-collection-15/292dbd7671e1479197d580ffa12f0dd5.jpg"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <p>当然，JDK1.7 和 JDK1.8 对 ConcurrentHashMap 的实现有很大的不同！</p>
-<p>JDK1.8 对 HashMap 做了改造，<strong>当冲突链表长度大于8时，会将链表转变成红黑树结构</strong>，上图是 ConcurrentHashMap 的整体结构，参考 JDK1.7！</p>
-<p>我们再来看看 <code>JDK1.8</code> 中 ConcurrentHashMap 的整体结构，内容如下：</p>
-<p><img src="http://www.justdojava.com/assets/images/2019/java/image_zjkl/java-collection-15/d11a95b13bc6410ab536e0b7ad272bd4.jpg" alt="img"></p>
-<p>JDK1.8 中 ConcurrentHashMap 类取消了 Segment 分段锁，采用 <code>CAS</code> + <code>synchronized</code> 来保证并发安全，数据结构跟 jdk1.8 中 HashMap 结构类似，都是<strong>数组 + 链表（当链表长度大于8时，链表结构转为红黑二叉树</strong>）结构。</p>
-<p>ConcurrentHashMap 中 synchronized 只锁定当前链表或红黑二叉树的首节点，只要节点 hash 不冲突，就不会产生并发，相比 JDK1.7 的 ConcurrentHashMap 效率又提升了 N 倍！</p>
-<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><ul>
-<li><p>众所周知，<strong>Map</strong>是非常经典的数据结构，常用于在内存中存放数据；</p>
-</li>
-<li><p>本篇主要想讨论 <strong>ConcurrentHashMap</strong> 这样一个并发容器，不过在讨论前，我认为有必要了解它的由来，以及它所谓的前身”HashMap”。了解其发展，有助于我们更深刻的认识并掌握 ConcurrentHashMap；</p>
-</li>
-<li><p>如果对于HashMap不了解的，可以先去学习HashMap；</p>
-</li>
+<p>JDK1.8 对 HashMap
+做了改造，<strong>当冲突链表长度大于8时，会将链表转变成红黑树结构</strong>，上图是
+ConcurrentHashMap 的整体结构，参考 JDK1.7！</p>
+<p>我们再来看看 <code>JDK1.8</code> 中 ConcurrentHashMap
+的整体结构，内容如下：</p>
+<figure>
+<img
+src="http://www.justdojava.com/assets/images/2019/java/image_zjkl/java-collection-15/d11a95b13bc6410ab536e0b7ad272bd4.jpg"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>JDK1.8 中 ConcurrentHashMap 类取消了 Segment 分段锁，采用
+<code>CAS</code> + <code>synchronized</code> 来保证并发安全，数据结构跟
+jdk1.8 中 HashMap 结构类似，都是<strong>数组 +
+链表（当链表长度大于8时，链表结构转为红黑二叉树</strong>）结构。</p>
+<p>ConcurrentHashMap 中 synchronized
+只锁定当前链表或红黑二叉树的首节点，只要节点 hash
+不冲突，就不会产生并发，相比 JDK1.7 的 ConcurrentHashMap 效率又提升了 N
+倍！</p>
+<h1 id="前言">前言</h1>
+<ul>
+<li><p>众所周知，<strong>Map</strong>是非常经典的数据结构，常用于在内存中存放数据；</p></li>
+<li><p>本篇主要想讨论 <strong>ConcurrentHashMap</strong>
+这样一个并发容器，不过在讨论前，我认为有必要了解它的由来，以及它所谓的前身"HashMap"。了解其发展，有助于我们更深刻的认识并掌握
+ConcurrentHashMap；</p></li>
+<li><p>如果对于HashMap不了解的，可以先去学习HashMap；</p></li>
 <li><p><strong>HashMap</strong>：</p>
 <ul>
 <li>底层是基于 <strong>数组 + 链表(红黑树)</strong> 组成的；</li>
-<li>其实在不同的jdk版本它中的实现方式变化并不是很大，尤其是<code>jdk1.8</code>到现在的16基本没有变化，而<code>jdk1.7</code>以前也是变化不大，所以我们主要关注点就是：<strong>jdk1.7➡➡ jdk1.8</strong> 的<strong>HashMap</strong>的某一方面的优化；</li>
-</ul>
-</li>
-<li><p><strong>并发场景</strong>下：jdk1.7 中的 <code>HashMap</code> 存在的三大问题：</p>
+<li>其实在不同的jdk版本它中的实现方式变化并不是很大，尤其是<code>jdk1.8</code>到现在的16基本没有变化，而<code>jdk1.7</code>以前也是变化不大，所以我们主要关注点就是：<strong>jdk1.7➡➡
+jdk1.8</strong> 的<strong>HashMap</strong>的某一方面的优化；</li>
+</ul></li>
+<li><p><strong>并发场景</strong>下：jdk1.7 中的 <code>HashMap</code>
+存在的三大问题：</p>
 <ul>
 <li><strong>数据重复</strong>；</li>
 <li><strong>死循环</strong>：</li>
-<li><strong>数据丢失</strong>： 在多线程下<code>put操作</code>时，执行<code>addEntry(hash, key, value, i)</code>，可能产生哈希冲突，造成数据的丢失；</li>
-</ul>
-</li>
+<li><strong>数据丢失</strong>：
+在多线程下<code>put操作</code>时，执行<code>addEntry(hash, key, value, i)</code>，可能产生哈希冲突，造成数据的丢失；</li>
+</ul></li>
 <li><p><code>jdk1.8</code>中的<strong>HashMap</strong>解决了两大问题：</p>
 <ul>
 <li>解决了jdk1.7中的HashMap在并发场景下造成死循环的问题；</li>
 <li>解决了jdk1.7中HashMap查询效率低的问题（通过<strong>红黑树</strong>）；</li>
+</ul></li>
+<li><p>当然，可以用<code>HashTable</code>，或者<code>Collections.synchronizedMap</code>
+来解决并发问题，但是效率不高，因此我们今天的主角就出现了！！！</p></li>
 </ul>
-</li>
-<li><p>当然，可以用<code>HashTable</code>，或者<code>Collections.synchronizedMap</code> 来解决并发问题，但是效率不高，因此我们今天的主角就出现了！！！</p>
-</li>
-</ul>
-<p><strong>【注】：</strong></p>
-<ol>
-<li>为什么<code>Collections.synchronizedMap</code>的效率不高呢？</li>
-</ol>
+<p><strong>【注】：</strong> 1.
+为什么<code>Collections.synchronizedMap</code>的效率不高呢？</p>
 <ul>
 <li>答：我们先看一下<code>Collections.synchronizedMap</code>是怎么实现线程安全的，在<code>SynchronizedMap</code>内部维护了一个普通对象Map，还有<strong>排斥锁mutex</strong>，我们在调用这个方法的时候就需要传入一个Map，mutex参数可以传也可以不传。创建出<code>synchronizedMap</code>之后，再操作map的时候，就会对这些方法上锁(如下)，也就是我们说的同步代码块，所以性能不高;</li>
 </ul>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/TGCOcF"><img src="https://s4.ax1x.com/2021/12/23/TGCOcF.md.png" alt="TGCOcF.md.png"></a></p>
-<ol start="2">
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/TGCOcF"><img
+src="https://s4.ax1x.com/2021/12/23/TGCOcF.md.png"
+alt="TGCOcF.md.png" /></a></p>
+<ol start="2" type="1">
 <li>为什么<code>Hashtable</code>的效率不高呢？</li>
 </ol>
 <ul>
 <li>答：它对数据操作的时候都会通过<code>synchronized</code>上锁，也就是我们在讲<code>synchronized</code>说的同步方法；</li>
 </ul>
-<h1 id="CHM类简介"><a href="#CHM类简介" class="headerlink" title="CHM类简介"></a>CHM类简介</h1><ul>
-<li><strong>ConcurrentHashMap</strong>是jdk1.5版本JUC引入的一个同步集合工具类，这是一个**线程安全的<code>HashMap</code>**；</li>
+<h1 id="chm类简介">CHM类简介</h1>
+<ul>
+<li><strong>ConcurrentHashMap</strong>是jdk1.5版本JUC引入的一个同步集合工具类，这是一个<strong>线程安全的<code>HashMap</code></strong>；</li>
 </ul>
 <p>【注】:不同版本的<strong>ConcurrentHashMap</strong>，内部实现机制的大幅度变化主要来源于<strong>jdk1.7—&gt;jdk1.8</strong>，因此在这里我们先说一下jdk1.7和jdk1.8下的ConcurrentHashMap有何变化。（本文所有的讨论基于jdk1.8和jdk16;差别不大，个别有差异的已经标注出来）</p>
 <ul>
 <li><p>jdk1.7升级到1.8，<strong>ConcurrentHashMap</strong>的变化：</p>
 <ul>
-<li><strong>锁方面</strong>： 由<code>分段锁</code>（Segment继承自ReentrantLock）升级为 <code>CAS+synchronized</code>实现；<ul>
-<li>【注】：CAS性能很高，但是我知道<code>synchronized</code>性能可不咋地，为啥jdk1.8升级之后反而多了<code>synchronized</code>？</li>
-<li>答：<code>synchronized</code>之前一直都是重量级的锁，性能差，但是后来java官方(jdk1.5还是1.6)对它进行了优化：针对 <code>synchronized</code> 获取锁的方式，JVM 使用了锁升级的优化方式，就是先使用偏向锁优先同一线程，然后再次获取锁，如果失败，就升级为 CAS 轻量级锁，如果失败就会短暂自旋，防止线程被系统挂起。最后如果以上都失败就升级为重量级锁。所以是一步步升级上去的，最初也是通过很多轻量级的方式锁定的（偏向锁–&gt;CAS轻量级锁–&gt;自旋–&gt;重量级锁）。</li>
-</ul>
-</li>
-<li><strong>数据结构层面</strong>： 将Segment变为了<strong>Node</strong>，减小了锁粒度，使每个Node独立，由原来默认的并发度16变成了每个Node都独立，提高了并发度；</li>
-<li><strong>hash冲突</strong>： 1.7中发生hash冲突采用链表存储，1.8中先使用链表存储，后面满足条件后会转换为红黑树来优化查询；<ul>
-<li>【注】： Hashmap中的链表大小超过八个时会自动转化为红黑树，当删除小于六时重新变为链表，为啥呢？</li>
-<li>答：根据泊松分布，在负载因子默认为0.75的时候，单个hash槽内元素个数为8的概率小于百万分之一，所以将7作为一个分水岭，等于7的时候不转换，大于等于8的时候才进行转换，小于等于6的时候就化为链表。</li>
-</ul>
-</li>
-<li><strong>查询复杂度</strong>： <strong>jdk1.7</strong>中链表查询复杂度为<strong>O(N)<strong>，</strong>jdk1.8</strong>中红黑树优化为**O(logN)**；</li>
-</ul>
-</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/TGkqa9"><img src="https://s4.ax1x.com/2021/12/23/TGkqa9.md.png" alt="TGkqa9.md.png"></a></p>
-<p>我们首先看一下 <code>ConcurrentHashMap</code> 的继承关系（第一篇参考博客的图）：</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/TGkj8x"><img src="https://s4.ax1x.com/2021/12/23/TGkj8x.png" alt="TGkj8x.png"></a></p>
+<li><strong>锁方面</strong>：
+由<code>分段锁</code>（Segment继承自ReentrantLock）升级为
+<code>CAS+synchronized</code>实现；
 <ul>
-<li>我们可以看出它<strong>继承</strong>了<strong>两个接口</strong>和<strong>一个抽象类</strong>：<ul>
-<li><strong>AbstractMap</strong>： 这是一个<code>java.util包</code>下的抽象类，提供Map接口的主要方法实现，以最大限度地减少实现Map这类数据结构时所需的工作量；<ul>
+<li>【注】：CAS性能很高，但是我知道<code>synchronized</code>性能可不咋地，为啥jdk1.8升级之后反而多了<code>synchronized</code>？</li>
+<li>答：<code>synchronized</code>之前一直都是重量级的锁，性能差，但是后来java官方(jdk1.5还是1.6)对它进行了优化：针对
+<code>synchronized</code> 获取锁的方式，JVM
+使用了锁升级的优化方式，就是先使用偏向锁优先同一线程，然后再次获取锁，如果失败，就升级为
+CAS
+轻量级锁，如果失败就会短暂自旋，防止线程被系统挂起。最后如果以上都失败就升级为重量级锁。所以是一步步升级上去的，最初也是通过很多轻量级的方式锁定的（偏向锁–&gt;CAS轻量级锁–&gt;自旋–&gt;重量级锁）。</li>
+</ul></li>
+<li><strong>数据结构层面</strong>：
+将Segment变为了<strong>Node</strong>，减小了锁粒度，使每个Node独立，由原来默认的并发度16变成了每个Node都独立，提高了并发度；</li>
+<li><strong>hash冲突</strong>：
+1.7中发生hash冲突采用链表存储，1.8中先使用链表存储，后面满足条件后会转换为红黑树来优化查询；
+<ul>
+<li>【注】：
+Hashmap中的链表大小超过八个时会自动转化为红黑树，当删除小于六时重新变为链表，为啥呢？</li>
+<li>答：根据泊松分布，在负载因子默认为0.75的时候，单个hash槽内元素个数为8的概率小于百万分之一，所以将7作为一个分水岭，等于7的时候不转换，大于等于8的时候才进行转换，小于等于6的时候就化为链表。</li>
+</ul></li>
+<li><strong>查询复杂度</strong>：
+<strong>jdk1.7</strong>中链表查询复杂度为<strong>O(N)</strong>，<strong>jdk1.8</strong>中红黑树优化为<strong>O(logN)</strong>；</li>
+</ul></li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/TGkqa9"><img
+src="https://s4.ax1x.com/2021/12/23/TGkqa9.md.png"
+alt="TGkqa9.md.png" /></a></p>
+<p>我们首先看一下 <code>ConcurrentHashMap</code>
+的继承关系（第一篇参考博客的图）：</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/TGkj8x"><img
+src="https://s4.ax1x.com/2021/12/23/TGkj8x.png"
+alt="TGkj8x.png" /></a></p>
+<ul>
+<li>我们可以看出它<strong>继承</strong>了<strong>两个接口</strong>和<strong>一个抽象类</strong>：
+<ul>
+<li><strong>AbstractMap</strong>：
+这是一个<code>java.util包</code>下的抽象类，提供Map接口的主要方法实现，以最大限度地减少实现Map这类数据结构时所需的工作量；
+<ul>
 <li>一般来讲，如果需要重复造轮子——自己来实现一个Map，那一般就是继承<code>AbstractMap</code>；</li>
-</ul>
-</li>
-<li><strong>Serializable接口</strong>： 其实对某一个类或接口没有特别的含义，就是对其进行序列化，以方便存储或传输，有兴趣可以看一下<code>Serializable</code>的相关介绍；</li>
-<li><strong>ConcurrentMap接口</strong>： 是在JDK1.5时随着<code>J.U.C包</code>引入的，这个接口其实就是提供了一些针对Map的原子操作，我们看一下其到底实现了一些什么方法：</li>
-</ul>
-</li>
+</ul></li>
+<li><strong>Serializable接口</strong>：
+其实对某一个类或接口没有特别的含义，就是对其进行序列化，以方便存储或传输，有兴趣可以看一下<code>Serializable</code>的相关介绍；</li>
+<li><strong>ConcurrentMap接口</strong>：
+是在JDK1.5时随着<code>J.U.C包</code>引入的，这个接口其实就是提供了一些针对Map的原子操作，我们看一下其到底实现了一些什么方法：</li>
+</ul></li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">package</span> java.util.concurrent;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="keyword">import</span> java.util.Objects;</span><br><span class="line"><span class="keyword">import</span> java.util.function.BiConsumer;</span><br><span class="line"><span class="keyword">import</span> java.util.function.BiFunction;</span><br><span class="line"><span class="keyword">import</span> java.util.function.Function;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">ConcurrentMap</span>&lt;K,V&gt; <span class="keyword">extends</span> <span class="title class_">Map</span>&lt;K,V&gt; &#123;</span><br><span class="line"></span><br><span class="line"><span class="comment">//返回指定key对应的值；如果Map不存在该key，则返回defaultValue💦💦</span></span><br><span class="line">    <span class="keyword">default</span> V <span class="title function_">getOrDefault</span><span class="params">(Object key, V defaultValue)</span> &#123; ...&#125; </span><br><span class="line">    </span><br><span class="line"><span class="comment">//遍历Map的所有Entry，并对其进行指定的aciton操作💦💦</span></span><br><span class="line">    <span class="keyword">default</span> <span class="keyword">void</span> <span class="title function_">forEach</span><span class="params">(BiConsumer&lt;? <span class="built_in">super</span> K, ? <span class="built_in">super</span> V&gt; action)</span> &#123;...&#125;</span><br><span class="line">    </span><br><span class="line"><span class="comment">//如果Map不存在指定的key，则插入&lt;K,V&gt;；否则，直接返回该key对应的值💦💦</span></span><br><span class="line">    V <span class="title function_">putIfAbsent</span><span class="params">(K key, V value)</span>;</span><br><span class="line">    </span><br><span class="line"><span class="comment">//删除与&lt;key,value&gt;完全匹配的Entry，并返回true；否则，返回false💦💦</span></span><br><span class="line">    <span class="type">boolean</span> <span class="title function_">remove</span><span class="params">(Object key, Object value)</span>;</span><br><span class="line">    </span><br><span class="line"><span class="comment">//如果存在key，且值和oldValue一致，则更新为newValue，并返回true；否则，返回false💦💦</span></span><br><span class="line">    <span class="type">boolean</span> <span class="title function_">replace</span><span class="params">(K key, V oldValue, V newValue)</span>;</span><br><span class="line">    </span><br><span class="line"><span class="comment">//如果存在key，则更新为value，返回旧value；否则，返回null💦💦</span></span><br><span class="line">    V <span class="title function_">replace</span><span class="params">(K key, V value)</span>;</span><br><span class="line">    </span><br><span class="line"><span class="comment">//遍历Map的所有Entry，并对其进行指定的funtion操作💦💦</span></span><br><span class="line">    <span class="keyword">default</span> <span class="keyword">void</span> <span class="title function_">replaceAll</span><span class="params">(BiFunction&lt;? <span class="built_in">super</span> K, ? <span class="built_in">super</span> V, ? extends V&gt; function)</span> &#123;...&#125;</span><br><span class="line">    </span><br><span class="line"><span class="comment">//如果Map不存在指定的key，则通过mappingFunction计算出value并插入💦💦</span></span><br><span class="line">    <span class="keyword">default</span> V <span class="title function_">computeIfAbsent</span><span class="params">(K key , Function&lt;? <span class="built_in">super</span> K, ? extends V&gt; mappingFunction&#123;...&#125;</span></span><br><span class="line"><span class="params"></span></span><br><span class="line"><span class="params">//如果Map存在指定的key，则通过mappingFunction计算出value并替换旧值💦💦</span></span><br><span class="line"><span class="params">    <span class="keyword">default</span> V computeIfPresent(K key, BiFunction&lt;? <span class="built_in">super</span> K, ? <span class="built_in">super</span> V, ? extends V&gt; remappingFunction)</span> &#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//根据指定的key，查找value；然后根据得到的value和remappingFunction重新计算出新值，并替换旧值💦💦</span></span><br><span class="line">    <span class="keyword">default</span> V <span class="title function_">compute</span><span class="params">(K key , BiFunction&lt;? <span class="built_in">super</span> K, ? <span class="built_in">super</span> V, ? extends V&gt; remappingFunction)</span> &#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//如果key不存在，则插入value；否则，根据key对应的值和remappingFunction计算出新值，并替换旧值💦💦</span></span><br><span class="line">    <span class="keyword">default</span> V <span class="title function_">merge</span><span class="params">(K key, V value , BiFunction&lt;? <span class="built_in">super</span> V, ? <span class="built_in">super</span> V, ? extends V&gt; remappingFunction)</span> &#123;...&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h1 id="CHM基本数据结构"><a href="#CHM基本数据结构" class="headerlink" title="CHM基本数据结构"></a>CHM基本数据结构</h1><p>我们接下来看一下<code>jdk1.8</code>的<code>ConcurrentHashMap</code>的内部数据结构：</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/TGEUpt"><img src="https://s4.ax1x.com/2021/12/23/TGEUpt.md.png" alt="TGEUpt.md.png"></a></p>
+<h1 id="chm基本数据结构">CHM基本数据结构</h1>
+<p>我们接下来看一下<code>jdk1.8</code>的<code>ConcurrentHashMap</code>的内部数据结构：</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/TGEUpt"><img
+src="https://s4.ax1x.com/2021/12/23/TGEUpt.md.png"
+alt="TGEUpt.md.png" /></a></p>
 <ul>
-<li><code>ConcurrentHashMap</code>内部维护了一个<code>Node</code>类型的数组：<strong>table</strong><ul>
-<li><strong>table</strong>一共包含 4 种不同类型的桶，不同的桶用不同颜色表示，这是jdk1.8版本的特点；</li>
+<li><code>ConcurrentHashMap</code>内部维护了一个<code>Node</code>类型的数组：<strong>table</strong>
+<ul>
+<li><strong>table</strong>一共包含 4
+种不同类型的桶，不同的桶用不同颜色表示，这是jdk1.8版本的特点；</li>
 <li>【注】：<strong>TreeBin结点</strong>所连接的是一颗红黑树，红黑树的结点用TreeNode表示，所以<code>ConcurrentHashMap</code>中实际上一共有五种不同类型的Node结点；</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<p>这里我们思考一个问题，为什么没有直接用<code>TreeNode</code>呢？<br>主要是因为红黑树的操作比较复杂，包括构建、左旋、右旋、删除，平衡等操作，用一个代理结TreeBin来包含这些复杂操作，其实是一种 “职责分离”的思想，另外TreeBin中也包含了一些加&#x2F;解锁操作。</p>
+<p>这里我们思考一个问题，为什么没有直接用<code>TreeNode</code>呢？
+主要是因为红黑树的操作比较复杂，包括构建、左旋、右旋、删除，平衡等操作，用一个代理结TreeBin来包含这些复杂操作，其实是一种
+“职责分离”的思想，另外TreeBin中也包含了一些加/解锁操作。</p>
 <ul>
 <li>数组的每一个位置<code>table[i]</code>代表一个桶，当插入键值对时，会根据键的hash值映射到不同的桶位置；</li>
-<li>【注】：<ul>
+<li>【注】：
+<ul>
 <li>在<code>jdk1.8</code>之前，<code>ConcurrentHashMap</code>采用了分段<code>【Segment】锁</code>的设计思路，以减少热点域的冲突，在<code>jdk16</code>中依旧有<code>内部类Segment</code>，目的是为了序列化以及兼容以前的jdk版本；</li>
 <li>jdk1.8不再延续，转而直接对每个桶加锁，并用“红黑树”链接冲突结点。</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<h1 id="CHM类的结点定义"><a href="#CHM类的结点定义" class="headerlink" title="CHM类的结点定义"></a>CHM类的结点定义</h1><p>前面一部分我们讲了<code>ConcurrentHashMap</code>的数据结构，知道其实它包括了 <strong>5 种结点</strong>。我们分别来看一下：</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/TGeeYj"><img src="https://s4.ax1x.com/2021/12/23/TGeeYj.png" alt="TGeeYj.png"></a></p>
-<ol>
+<h1 id="chm类的结点定义">CHM类的结点定义</h1>
+<p>前面一部分我们讲了<code>ConcurrentHashMap</code>的数据结构，知道其实它包括了
+<strong>5 种结点</strong>。我们分别来看一下：</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/TGeeYj"><img
+src="https://s4.ax1x.com/2021/12/23/TGeeYj.png"
+alt="TGeeYj.png" /></a></p>
+<ol type="1">
 <li><strong>Node结点</strong>：</li>
 </ol>
 <ul>
 <li><strong>Node</strong>是其它四种类型结点的父类；</li>
 <li>默认链接到<code>table[i]</code>，即桶上的结点就是<code>Node结点</code>；</li>
-<li>当出现hash冲突时，<code>Node结点</code>会首先以链表的形式链接到<code>table</code>上：<ul>
+<li>当出现hash冲突时，<code>Node结点</code>会首先以链表的形式链接到<code>table</code>上：
+<ul>
 <li>当结点数量超过一定数目时，链表会转化为红黑树；</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<p>&amp;ensp; &amp;ensp;&amp;ensp; &amp;ensp; &amp;ensp; &amp;ensp;  【注】：因为链表查找的时间复杂度为**O(n)<strong>，而红黑树是一种平衡二叉树，其平均时间复杂度为</strong>O(logn)**，这样就提高了效率。</p>
+<p>          
+【注】：因为链表查找的时间复杂度为<strong>O(n)</strong>，而红黑树是一种平衡二叉树，其平均时间复杂度为<strong>O(logn)</strong>，这样就提高了效率。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* 普通的Entry结点, 以链表形式保存时才会使用, 存储实际的数据.</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Node</span>&lt;K,V&gt; <span class="keyword">implements</span> <span class="title class_">Map</span>.Entry&lt;K,V&gt; &#123;</span><br><span class="line">       <span class="keyword">final</span> <span class="type">int</span> hash;		<span class="comment">//通过key计算hash值，通过hash值找相应的桶</span></span><br><span class="line">       <span class="keyword">final</span> K key;</span><br><span class="line">       <span class="keyword">volatile</span> V val;				<span class="comment">//volatile修饰，保证可见性、有序性、但和原子性可没什么关系</span></span><br><span class="line">       <span class="keyword">volatile</span> Node&lt;K,V&gt; next;  <span class="comment">//volatile修饰,链表指针💛</span></span><br><span class="line"></span><br><span class="line">       Node(<span class="type">int</span> hash, K key, V val) &#123;		<span class="comment">//构造器</span></span><br><span class="line">           <span class="built_in">this</span>.hash = hash;</span><br><span class="line">           <span class="built_in">this</span>.key = key;</span><br><span class="line">           <span class="built_in">this</span>.val = val;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       Node(<span class="type">int</span> hash, K key, V val, Node&lt;K,V&gt; next) &#123;</span><br><span class="line">           <span class="built_in">this</span>(hash, key, val);</span><br><span class="line">           <span class="built_in">this</span>.next = next;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">public</span> <span class="keyword">final</span> K <span class="title function_">getKey</span><span class="params">()</span>     &#123; <span class="keyword">return</span> key; &#125;</span><br><span class="line">       <span class="keyword">public</span> <span class="keyword">final</span> V <span class="title function_">getValue</span><span class="params">()</span>   &#123; <span class="keyword">return</span> val; &#125;</span><br><span class="line">       <span class="keyword">public</span> <span class="keyword">final</span> <span class="type">int</span> <span class="title function_">hashCode</span><span class="params">()</span> &#123; <span class="keyword">return</span> key.hashCode() ^ val.hashCode(); &#125;</span><br><span class="line"> <span class="comment">//这里我放的jdk16版本，Helpers我并不太了解，但看其源码就是为JUC包下的一个工具类，帮助toString，如果以后深入了解，再来纠正</span></span><br><span class="line">       <span class="keyword">public</span> <span class="keyword">final</span> String <span class="title function_">toString</span><span class="params">()</span> &#123; <span class="keyword">return</span> Helpers.mapEntryToString(key, val); &#125;</span><br><span class="line">       <span class="keyword">public</span> <span class="keyword">final</span> V <span class="title function_">setValue</span><span class="params">(V value)</span> &#123; <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">UnsupportedOperationException</span>(); &#125;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">public</span> <span class="keyword">final</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object o)</span> &#123;</span><br><span class="line">           Object k, v, u; Map.Entry&lt;?,?&gt; e;</span><br><span class="line">           <span class="keyword">return</span> ((o <span class="keyword">instanceof</span> Map.Entry) &amp;&amp;</span><br><span class="line">                   (k = (e = (Map.Entry&lt;?,?&gt;)o).getKey()) != <span class="literal">null</span> &amp;&amp;</span><br><span class="line">                   (v = e.getValue()) != <span class="literal">null</span> &amp;&amp;</span><br><span class="line">                   (k == key || k.equals(key)) &amp;&amp;</span><br><span class="line">                   (v == (u = val) || v.equals(u)));</span><br><span class="line">       &#125;</span><br><span class="line">	<span class="comment">//链表查找，不同类型的结点有不同的find()方法🧡</span></span><br><span class="line">       Node&lt;K,V&gt; <span class="title function_">find</span><span class="params">(<span class="type">int</span> h, Object k)</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
+<ol start="2" type="1">
 <li><strong>TreeNode结点</strong>：</li>
 </ol>
 <p><strong>TreeNode</strong>是红黑树的结点，TreeNode不会直接链接到桶上面，而是由TreeBin链接，TreeBin会指向红黑树的根结点;</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 红黑树结点，存储实际数据</span></span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">TreeNode</span>&lt;K,V&gt; <span class="keyword">extends</span> <span class="title class_">Node</span>&lt;K,V&gt; &#123;</span><br><span class="line">       TreeNode&lt;K,V&gt; parent;  <span class="comment">// red-black tree links   红黑树链接</span></span><br><span class="line">       TreeNode&lt;K,V&gt; left;</span><br><span class="line">       TreeNode&lt;K,V&gt; right;</span><br><span class="line"><span class="comment">/* needed to unlink next upon deletion ，prev指针是为了方便删除，</span></span><br><span class="line"><span class="comment">   删除链表的非头结点时，需要知道它的前驱结点才能删除，所以直接提供一个prev指针</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">       TreeNode&lt;K,V&gt; prev;   </span><br><span class="line">       <span class="type">boolean</span> red;</span><br><span class="line"></span><br><span class="line">       TreeNode(<span class="type">int</span> hash, K key, V val, Node&lt;K,V&gt; next , TreeNode&lt;K,V&gt; parent) &#123;</span><br><span class="line">           <span class="built_in">super</span>(hash, key, val, next);</span><br><span class="line">           <span class="built_in">this</span>.parent = parent;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       Node&lt;K,V&gt; <span class="title function_">find</span><span class="params">(<span class="type">int</span> h, Object k)</span> &#123;</span><br><span class="line">           <span class="keyword">return</span> findTreeNode(h, k, <span class="literal">null</span>);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//以当前结点（this）为根结点，开始遍历查找指定key.</span></span><br><span class="line">       <span class="keyword">final</span> TreeNode&lt;K,V&gt; <span class="title function_">findTreeNode</span><span class="params">(<span class="type">int</span> h, Object k, Class&lt;?&gt; kc)</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
+<ol start="3" type="1">
 <li><strong>TreeBin结点</strong>：</li>
 </ol>
-<p><strong>TreeBin</strong>相当于TreeNode的代理结点；TreeBin会直接链接到 <code>table[i] </code>上，该结点提供了一系列红黑树相关的操作，以及加锁、解锁操作：</p>
+<p><strong>TreeBin</strong>相当于TreeNode的代理结点；TreeBin会直接链接到
+<code>table[i]</code>上，该结点提供了一系列红黑树相关的操作，以及加锁、解锁操作：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> TreeNode的代理结点（相当于封装了TreeNode的容器，提供针对红黑树的转换操作和锁控制）</span></span><br><span class="line"><span class="comment"> hash值固定为-2</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">TreeBin</span>&lt;K,V&gt; <span class="keyword">extends</span> <span class="title class_">Node</span>&lt;K,V&gt; &#123;</span><br><span class="line">        TreeNode&lt;K,V&gt; root;					<span class="comment">// 红黑树结构的根结点</span></span><br><span class="line">        <span class="keyword">volatile</span> TreeNode&lt;K,V&gt; first;		<span class="comment">// 链表结构的头结点</span></span><br><span class="line">        <span class="keyword">volatile</span> Thread waiter;				<span class="comment">// 最近的一个设置WAITER标识位的线程</span></span><br><span class="line">        <span class="keyword">volatile</span> <span class="type">int</span> lockState;				<span class="comment">// 整体的锁状态标识位，0为初始态</span></span><br><span class="line">        <span class="comment">// values for lockState</span></span><br><span class="line">        <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">WRITER</span> <span class="operator">=</span> <span class="number">1</span>; <span class="comment">// 二进制001，红黑树的写锁状态</span></span><br><span class="line">        <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">WAITER</span> <span class="operator">=</span> <span class="number">2</span>; <span class="comment">// 二进制010，红黑树的等待获取写锁状态（优先锁，当有锁等待，读就不能增加了）</span></span><br><span class="line">	    <span class="comment">// 二进制100，红黑树的读锁状态，读可以并发，每多一个读线程，lockState都加上一个READER值，</span></span><br><span class="line">        <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">READER</span> <span class="operator">=</span> <span class="number">4</span>; </span><br><span class="line">	   <span class="comment">/*</span></span><br><span class="line"><span class="comment">  		 在hashCode相等并且不是Comparable类型时，用此方法判断大小.</span></span><br><span class="line"><span class="comment">  	   */</span></span><br><span class="line">        <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">tieBreakOrder</span><span class="params">(Object a, Object b)</span> &#123;</span><br><span class="line">            <span class="type">int</span> d;</span><br><span class="line">            <span class="keyword">if</span> (a == <span class="literal">null</span> || b == <span class="literal">null</span> ||</span><br><span class="line">                (d = a.getClass().getName().</span><br><span class="line">                 compareTo(b.getClass().getName())) == <span class="number">0</span>)</span><br><span class="line">                d = (System.identityHashCode(a) &lt;= System.identityHashCode(b) ?  -<span class="number">1</span> : <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">return</span> d;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">       <span class="comment">// 将以b为头结点的链表转换为红黑树</span></span><br><span class="line">        TreeBin(TreeNode&lt;K,V&gt; b) &#123;...&#125;</span><br><span class="line">	   <span class="comment">// 通过lockState,对红黑树的根结点➕写锁.</span></span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title function_">lockRoot</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (!U.compareAndSetInt(<span class="built_in">this</span>, LOCKSTATE, <span class="number">0</span>, WRITER))</span><br><span class="line">                contendedLock(); <span class="comment">// offload to separate method ，Possibly blocks awaiting root lock.</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">//释放写锁</span></span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title function_">unlockRoot</span><span class="params">()</span> &#123; lockState = <span class="number">0</span>; &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//  从根结点开始遍历查找，找到“相等”的结点就返回它，没找到就返回null，当存在写锁时，以链表方式进行查找，后会面会介绍</span></span><br><span class="line">        <span class="keyword">final</span> Node&lt;K,V&gt; <span class="title function_">find</span><span class="params">(<span class="type">int</span> h, Object k)</span> &#123;... &#125;</span><br><span class="line"></span><br><span class="line">         <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 查找指定key对应的结点,如果未找到，则直接插入.</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@return</span>  直接插入成功返回null, 替换返回找到的结点的oldVal</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">final</span> TreeNode&lt;K,V&gt; <span class="title function_">putTreeVal</span><span class="params">(<span class="type">int</span> h, K k, V v)</span> &#123;...&#125; </span><br><span class="line">  	    <span class="comment">/*</span></span><br><span class="line"><span class="comment">   		   删除红黑树的结点：</span></span><br><span class="line"><span class="comment"> 		    1. 红黑树规模太小时，返回true，然后进行 树 -&gt; 链表 的转化，最后删除;</span></span><br><span class="line"><span class="comment">  		    2. 红黑树规模足够时，不用变换成链表，但删除结点时需要加写锁;</span></span><br><span class="line"><span class="comment">   	   */</span></span><br><span class="line">        <span class="keyword">final</span> <span class="type">boolean</span> <span class="title function_">removeTreeNode</span><span class="params">(TreeNode&lt;K,V&gt; p)</span> &#123;...&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 以下是红黑树的经典操作方法，改编自《算法导论》💦💦💦💦</span></span><br><span class="line">        <span class="keyword">static</span> &lt;K,V&gt; TreeNode&lt;K,V&gt; <span class="title function_">rotateLeft</span><span class="params">(TreeNode&lt;K,V&gt; root , TreeNode&lt;K,V&gt; p)</span> &#123; ...&#125;</span><br><span class="line">        <span class="keyword">static</span> &lt;K,V&gt; TreeNode&lt;K,V&gt; <span class="title function_">rotateRight</span><span class="params">(TreeNode&lt;K,V&gt; root , TreeNode&lt;K,V&gt; p)</span> &#123;...&#125;</span><br><span class="line">        <span class="keyword">static</span> &lt;K,V&gt; TreeNode&lt;K,V&gt; <span class="title function_">balanceInsertion</span><span class="params">(TreeNode&lt;K,V&gt; root , TreeNode&lt;K,V&gt; x)</span> &#123;...&#125;</span><br><span class="line">        <span class="keyword">static</span> &lt;K,V&gt; TreeNode&lt;K,V&gt; <span class="title function_">balanceDeletion</span><span class="params">(TreeNode&lt;K,V&gt; root, TreeNode&lt;K,V&gt; x)</span> &#123; ... &#125;</span><br><span class="line">        <span class="keyword">static</span> &lt;K,V&gt; <span class="type">boolean</span> <span class="title function_">checkInvariants</span><span class="params">(TreeNode&lt;K,V&gt; t)</span> &#123;...&#125; <span class="comment">//递归检查红黑树的正确性</span></span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> LOCKSTATE= U.objectFieldOffset(TreeBin.class, <span class="string">&quot;lockState&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
+<ol start="4" type="1">
 <li><strong>ForwardingNode结点</strong>:</li>
 </ol>
 <p><strong>ForwardingNode</strong>结点仅仅在<strong>扩容</strong>时才会使用</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * ForwardingNode是一种临时结点，在扩容进行中才会出现，hash值固定为-1，且不存储实际数据。</span></span><br><span class="line"><span class="comment"> * 如果旧table数组的一个桶table[i]中全部的结点都迁移到了新table中，则在这个桶中放置一个ForwardingNode,</span></span><br><span class="line"><span class="comment"> 即table[i]=ForwardingNode。</span></span><br><span class="line"><span class="comment"> * 读操作碰到ForwardingNode时，将操作转到扩容后的新table数组上去执行---》find()方法；写操作碰见它时，则尝试帮助扩容。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">ForwardingNode</span>&lt;K, V&gt; <span class="keyword">extends</span> <span class="title class_">Node</span>&lt;K, V&gt; &#123;</span><br><span class="line">    <span class="keyword">final</span> Node&lt;K, V&gt;[] nextTable;</span><br><span class="line"></span><br><span class="line">    ForwardingNode(Node&lt;K,V&gt;[] tab) &#123;</span><br><span class="line">         <span class="built_in">super</span>(MOVED, <span class="literal">null</span>, <span class="literal">null</span>);</span><br><span class="line">         <span class="built_in">this</span>.nextTable = tab;</span><br><span class="line">     &#125;</span><br><span class="line">    <span class="comment">// 在新的数组(nextTable)上进行查找</span></span><br><span class="line">    Node&lt;K, V&gt; <span class="title function_">find</span><span class="params">(<span class="type">int</span> h, Object k)</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="5">
-<li><strong>ReservationNode结点</strong>:<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 保留结点.</span></span><br><span class="line"><span class="comment"> * hash值固定为-3， 不保存实际数据</span></span><br><span class="line"><span class="comment"> * 只在computeIfAbsent和compute这两个函数式API中充当占位符加锁使用</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">ReservationNode</span>&lt;K, V&gt; <span class="keyword">extends</span> <span class="title class_">Node</span>&lt;K, V&gt; &#123;</span><br><span class="line">    ReservationNode() &#123;</span><br><span class="line">        <span class="built_in">super</span>(RESERVED, <span class="literal">null</span>, <span class="literal">null</span>, <span class="literal">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    Node&lt;K, V&gt; <span class="title function_">find</span><span class="params">(<span class="type">int</span> h, Object k)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<ol start="5" type="1">
+<li><strong>ReservationNode结点</strong>: <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 保留结点.</span></span><br><span class="line"><span class="comment"> * hash值固定为-3， 不保存实际数据</span></span><br><span class="line"><span class="comment"> * 只在computeIfAbsent和compute这两个函数式API中充当占位符加锁使用</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">ReservationNode</span>&lt;K, V&gt; <span class="keyword">extends</span> <span class="title class_">Node</span>&lt;K, V&gt; &#123;</span><br><span class="line">    ReservationNode() &#123;</span><br><span class="line">        <span class="built_in">super</span>(RESERVED, <span class="literal">null</span>, <span class="literal">null</span>, <span class="literal">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    Node&lt;K, V&gt; <span class="title function_">find</span><span class="params">(<span class="type">int</span> h, Object k)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ol>
-<h1 id="ConcurrentHashMap的size-怎么做的"><a href="#ConcurrentHashMap的size-怎么做的" class="headerlink" title="ConcurrentHashMap的size()怎么做的"></a>ConcurrentHashMap的size()怎么做的</h1><ol>
-<li><p>进行第一遍遍历segments数组，将每个segemnt的count加起来作为总数，期间把每个segment的modCount加起来sum作为结果是否被修改的判断依据。<br>这里需要提一下modCount，这个是当segment有任何操作都会进行一次增量操作，代表的是对Segment中元素的数量造成影响的操作的次数，这个值只增不减！！！！只增不减很重要，这样就不会出现一个segment+1，导致modcount+1,而另一个segment-1，即modcount-1 ,从而在统计所有的时候modcount没有变化。</p>
-</li>
-<li><p>size操作就是遍历了两次所有的Segments，每次记录Segment的modCount值，然后将两次的modCount进行比较，如果相同，则表示期间没有发生过写入操作，就将原先遍历的结果返回，如果不相同，则把这个过程再重复做一次，如果再不相同，则就需要将所有的Segment都锁住，然后一个一个遍历了。</p>
-</li>
-<li><p>如果经判断发现两次统计出的modCount并不一致，那就如上所说，要重新启用全部segment加锁的方式来进行count的获取和统计了，这样在此期间每个segement都被锁住，无法进行其他操作，统计出的count自然很准确。</p>
-</li>
+<h1
+id="concurrenthashmap的size怎么做的">ConcurrentHashMap的size()怎么做的</h1>
+<ol type="1">
+<li><p>进行第一遍遍历segments数组，将每个segemnt的count加起来作为总数，期间把每个segment的modCount加起来sum作为结果是否被修改的判断依据。
+这里需要提一下modCount，这个是当segment有任何操作都会进行一次增量操作，代表的是对Segment中元素的数量造成影响的操作的次数，这个值只增不减！！！！只增不减很重要，这样就不会出现一个segment+1，导致modcount+1,而另一个segment-1，即modcount-1
+,从而在统计所有的时候modcount没有变化。</p></li>
+<li><p>size操作就是遍历了两次所有的Segments，每次记录Segment的modCount值，然后将两次的modCount进行比较，如果相同，则表示期间没有发生过写入操作，就将原先遍历的结果返回，如果不相同，则把这个过程再重复做一次，如果再不相同，则就需要将所有的Segment都锁住，然后一个一个遍历了。</p></li>
+<li><p>如果经判断发现两次统计出的modCount并不一致，那就如上所说，要重新启用全部segment加锁的方式来进行count的获取和统计了，这样在此期间每个segement都被锁住，无法进行其他操作，统计出的count自然很准确。</p></li>
 </ol>
 <p>而之所以要先不加锁进行判断，道理很明显，就是不希望因为size操作获取这么多锁，因为获取锁不光占用资源，也会影响其他线程对ConcurrentHash的使用，影响并发情况下程序执行的效率。使用锁要谨慎！</p>
 
@@ -500,7 +542,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">2.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CHM%E7%B1%BB%E7%AE%80%E4%BB%8B"><span class="nav-number">3.</span> <span class="nav-text">CHM类简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CHM%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">4.</span> <span class="nav-text">CHM基本数据结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CHM%E7%B1%BB%E7%9A%84%E7%BB%93%E7%82%B9%E5%AE%9A%E4%B9%89"><span class="nav-number">5.</span> <span class="nav-text">CHM类的结点定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ConcurrentHashMap%E7%9A%84size-%E6%80%8E%E4%B9%88%E5%81%9A%E7%9A%84"><span class="nav-number">6.</span> <span class="nav-text">ConcurrentHashMap的size()怎么做的</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">2.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#chm%E7%B1%BB%E7%AE%80%E4%BB%8B"><span class="nav-number">3.</span> <span class="nav-text">CHM类简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#chm%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">4.</span> <span class="nav-text">CHM基本数据结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#chm%E7%B1%BB%E7%9A%84%E7%BB%93%E7%82%B9%E5%AE%9A%E4%B9%89"><span class="nav-number">5.</span> <span class="nav-text">CHM类的结点定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#concurrenthashmap%E7%9A%84size%E6%80%8E%E4%B9%88%E5%81%9A%E7%9A%84"><span class="nav-number">6.</span> <span class="nav-text">ConcurrentHashMap的size()怎么做的</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -516,7 +558,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-count">53</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

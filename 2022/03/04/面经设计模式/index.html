@@ -27,11 +27,6 @@
 <meta property="og:site_name" content="Aeo&#39;s Blog">
 <meta property="og:description" content="听听北风声 多么冷 快收紧你臂弯，长裙随急风飞舞似浪漫">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://s4.ax1x.com/2022/01/16/7thQd1.md.png">
-<meta property="og:image" content="https://s4.ax1x.com/2022/01/27/7jS0pV.md.png">
-<meta property="og:image" content="https://s4.ax1x.com/2022/01/24/7Thxq1.md.png">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/9794226-e2078d21a593eb82.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/720/format/webp">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/9794226-3bb005c3d9deb06d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1140/format/webp">
 <meta property="article:published_time" content="2022-03-04T12:46:25.472Z">
 <meta property="article:modified_time" content="2022-03-04T05:13:19.682Z">
 <meta property="article:author" content="aeowind">
@@ -39,7 +34,6 @@
 <meta property="article:tag" content="Java">
 <meta property="article:tag" content="面经">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://s4.ax1x.com/2022/01/16/7thQd1.md.png">
 
 <link rel="canonical" href="https://aeowind.github.io/2022/03/04/%E9%9D%A2%E7%BB%8F%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
 
@@ -259,9 +253,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="设计模式——观察者模式"><a href="#设计模式——观察者模式" class="headerlink" title="设计模式——观察者模式"></a>设计模式——观察者模式</h1><p><strong>观察者模式</strong>（又被称为发布-订阅（Publish&#x2F;Subscribe）模式，属于行为型模式的一种，它定义了一种一对多的依赖关系，让多个观察者对象同时监听某一个主题对象。这个主题对象在状态变化时，会通知所有的观察者对象，使他们能够自动更新自己。</p>
+        <h1 id="设计模式观察者模式">设计模式——观察者模式</h1>
+<p><strong>观察者模式</strong>（又被称为发布-订阅（Publish/Subscribe）模式，属于行为型模式的一种，它定义了一种一对多的依赖关系，让多个观察者对象同时监听某一个主题对象。这个主题对象在状态变化时，会通知所有的观察者对象，使他们能够自动更新自己。</p>
 <p><strong>观察者模式结构图</strong></p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/7thQd1"><img src="https://s4.ax1x.com/2022/01/16/7thQd1.md.png" alt="7thQd1.md.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/7thQd1"><img
+src="https://s4.ax1x.com/2022/01/16/7thQd1.md.png"
+alt="7thQd1.md.png" /></a></p>
 <blockquote>
 <p>在观察者模式中有如下角色：</p>
 </blockquote>
@@ -271,30 +268,27 @@
 <li><strong>Observer</strong>：抽象观察者，是观察者者的抽象类，它定义了一个更新接口，使得在得到主题更改通知时更新自己。</li>
 <li><strong>ConcrereObserver</strong>：具体观察者，实现抽象观察者定义的更新接口，以便在得到主题更改通知时更新自身的状态。</li>
 </ul>
-<h2 id="观察者模式简单实现"><a href="#观察者模式简单实现" class="headerlink" title="观察者模式简单实现"></a><strong>观察者模式简单实现</strong></h2><p><strong>观察者模式</strong>这种发布-订阅的形式我们可以拿微信公众号来举例，假设微信用户就是观察者，微信公众号是被观察者，有多个的微信用户关注了程序猿这个公众号，当这个公众号更新时就会通知这些订阅的微信用户。好了我们来看看用代码如何实现：</p>
+<h2 id="观察者模式简单实现"><strong>观察者模式简单实现</strong></h2>
+<p><strong>观察者模式</strong>这种发布-订阅的形式我们可以拿微信公众号来举例，假设微信用户就是观察者，微信公众号是被观察者，有多个的微信用户关注了程序猿这个公众号，当这个公众号更新时就会通知这些订阅的微信用户。好了我们来看看用代码如何实现：</p>
 <p><strong>抽象观察者（Observer）</strong></p>
 <p>里面定义了一个更新的方法：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Observer</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">update</span><span class="params">(String message)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p><strong>具体观察者（ConcrereObserver）</strong></p>
 <p>微信用户是观察者，里面实现了更新的方法：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">WeixinUser</span> <span class="keyword">implements</span> <span class="title class_">Observer</span> &#123;</span><br><span class="line">    <span class="comment">// 微信用户名</span></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">WeixinUser</span><span class="params">(String name)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">update</span><span class="params">(String message)</span> &#123;</span><br><span class="line">        System.out.println(name + <span class="string">&quot;-&quot;</span> + message);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p><strong>抽象被观察者（Subject）</strong></p>
 <p>抽象主题，提供了attach、detach、notify三个方法：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Subject</span> &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 增加订阅者</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> observer</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">attach</span><span class="params">(Observer observer)</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 删除订阅者</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> observer</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">detach</span><span class="params">(Observer observer)</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 通知订阅者更新消息</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">notify</span><span class="params">(String message)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p><strong>具体被观察者（ConcreteSubject）</strong></p>
 <p>微信公众号是具体主题（具体被观察者），里面存储了订阅该公众号的微信用户，并实现了抽象主题中的方法：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SubscriptionSubject</span> <span class="keyword">implements</span> <span class="title class_">Subject</span> &#123;</span><br><span class="line">    <span class="comment">//储存订阅公众号的微信用户</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;Observer&gt; weixinUserlist = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;Observer&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">attach</span><span class="params">(Observer observer)</span> &#123;</span><br><span class="line">        weixinUserlist.add(observer);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">detach</span><span class="params">(Observer observer)</span> &#123;</span><br><span class="line">        weixinUserlist.remove(observer);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">notify</span><span class="params">(String message)</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (Observer observer : weixinUserlist) &#123;</span><br><span class="line">            observer.update(message);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p><strong>客户端调用</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Client</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        SubscriptionSubject mSubscriptionSubject=<span class="keyword">new</span> <span class="title class_">SubscriptionSubject</span>();</span><br><span class="line">        <span class="comment">//创建微信用户</span></span><br><span class="line">        WeixinUser user1=<span class="keyword">new</span> <span class="title class_">WeixinUser</span>(<span class="string">&quot;杨影枫&quot;</span>);</span><br><span class="line">        WeixinUser user2=<span class="keyword">new</span> <span class="title class_">WeixinUser</span>(<span class="string">&quot;月眉儿&quot;</span>);</span><br><span class="line">        WeixinUser user3=<span class="keyword">new</span> <span class="title class_">WeixinUser</span>(<span class="string">&quot;紫轩&quot;</span>);</span><br><span class="line">        <span class="comment">//订阅公众号</span></span><br><span class="line">        mSubscriptionSubject.attach(user1);</span><br><span class="line">        mSubscriptionSubject.attach(user2);</span><br><span class="line">        mSubscriptionSubject.attach(user3);</span><br><span class="line">        <span class="comment">//公众号更新发出消息给订阅的微信用户</span></span><br><span class="line">        mSubscriptionSubject.notify(<span class="string">&quot;刘望舒的专栏更新了&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="使用观察者模式的场景和优缺点"><a href="#使用观察者模式的场景和优缺点" class="headerlink" title="使用观察者模式的场景和优缺点"></a>使用观察者模式的场景和优缺点</h2><blockquote>
+<h2 id="使用观察者模式的场景和优缺点">使用观察者模式的场景和优缺点</h2>
+<blockquote>
 <p>使用场景</p>
 </blockquote>
-<ol>
+<ol type="1">
 <li>关联行为场景，需要注意的是，关联行为是可拆分的，而不是“组合”关系。</li>
 <li>事件多级触发场景。</li>
 <li>跨系统的消息交换场景，如消息队列、事件总线的处理机制。</li>
@@ -303,257 +297,403 @@
 <p>解除耦合，让耦合的双方都依赖于抽象，从而使得各自的变换都不会影响另一边的变换。</p>
 <p><strong>缺点</strong>:</p>
 <p>在应用观察者模式时需要考虑一下开发效率和运行效率的问题，程序中包括一个被观察者、多个观察者，开发、调试等内容会比较复杂，而且在Java中消息的通知一般是顺序执行，那么一个观察者卡顿，会影响整体的执行效率，在这种情况下，一般会采用异步实现。</p>
-<h1 id="常用设计模式的一些优缺点"><a href="#常用设计模式的一些优缺点" class="headerlink" title="常用设计模式的一些优缺点"></a>常用设计模式的一些优缺点</h1><ul>
-<li><p><strong>创建型模式：对象实例化的模式，创建型模式用于解耦对象的实例化过程。</strong></p>
-</li>
-<li><p><strong>结构型模式：把类或对象结合在一起形成一个更大的结构。</strong></p>
-</li>
-<li><p><strong>行为型模式：类和对象如何交互，及划分责任和算法。</strong></p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://imgtu.com/i/7jS0pV"><img src="https://s4.ax1x.com/2022/01/27/7jS0pV.md.png" alt="7jS0pV.md.png"></a></p>
-</li>
+<h1 id="常用设计模式的一些优缺点">常用设计模式的一些优缺点</h1>
+<ul>
+<li><p><strong>创建型模式：对象实例化的模式，创建型模式用于解耦对象的实例化过程。</strong></p></li>
+<li><p><strong>结构型模式：把类或对象结合在一起形成一个更大的结构。</strong></p></li>
+<li><p><strong>行为型模式：类和对象如何交互，及划分责任和算法。</strong></p></li>
+<li><p><a target="_blank" rel="noopener" href="https://imgtu.com/i/7jS0pV"><img
+src="https://s4.ax1x.com/2022/01/27/7jS0pV.md.png"
+alt="7jS0pV.md.png" /></a></p></li>
 </ul>
-<h2 id="简单工厂模式（Static-Factory-Method）"><a href="#简单工厂模式（Static-Factory-Method）" class="headerlink" title="简单工厂模式（Static Factory Method）"></a>简单工厂模式（Static Factory Method）</h2><h3 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h3><ol>
+<h2 id="简单工厂模式static-factory-method">简单工厂模式（Static Factory
+Method）</h2>
+<h3 id="适用场景">适用场景</h3>
+<ol type="1">
 <li>工厂类负责创建的对象比较少。</li>
 <li>客户只知道传入工厂类的参数，对于如何创建对象（逻辑）不关心。</li>
 <li>由于简单工厂很容易违反高内聚责任分配原则，因此一般只在很简单的情况下应用。</li>
 </ol>
-<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ol>
+<h3 id="优点">优点</h3>
+<ol type="1">
 <li>工厂类是整个模式的关键。包含了必要的逻辑判断，根据外界给定的信息，决定究竟应该创建哪个具体类的对象。</li>
 <li>通过使用工厂类，外界可以从直接创建具体产品对象的尴尬局面摆脱出来，仅仅需要负责“消费”对象就可以了。而不必管这些对象究竟如何创建及如何组织的。明确了各自的职责和权利，有利于整个软件体系结构的优化。</li>
 </ol>
-<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ol>
+<h3 id="缺点">缺点</h3>
+<ol type="1">
 <li>由于工厂类<strong>集中了所有实例的创建逻辑，违反了高内聚责任分配原则</strong>，将全部创建逻辑集中到了一个工厂类中，它所能创建的类只能是事先考虑到的，如果需要添加新的类，则就需要改变工厂类了。</li>
 <li>当系统中的具体产品类不断增多时候，可能会出现要求工厂类根据不同条件创建不同实例的需求。这种对条件的判断和对具体产品类型的判断交错在一起，很难避免模块功能的蔓延，对系统的维护和扩展非常不利。</li>
 <li>这些缺点在工厂方法模式中得到了一定的克服。</li>
 </ol>
-<hr>
-<h2 id="策略模式（Strategy）"><a href="#策略模式（Strategy）" class="headerlink" title="策略模式（Strategy）"></a>策略模式（Strategy）</h2><h3 id="适用场景-1"><a href="#适用场景-1" class="headerlink" title="适用场景"></a>适用场景</h3><ol>
+<hr />
+<h2 id="策略模式strategy">策略模式（Strategy）</h2>
+<h3 id="适用场景-1">适用场景</h3>
+<ol type="1">
 <li>多个类有不同的表现形式，每种表现形式可以独立成单独的算法。</li>
 <li>需要在不同情况下使用不同的算法，以后算法可能还会增加。</li>
 <li>对用户隐藏算法逻辑。</li>
 </ol>
-<h3 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h3><ol>
+<h3 id="优点-1">优点</h3>
+<ol type="1">
 <li>每个算法单独封装，减少了算法和算法调用者的耦合。</li>
 <li>合理使用继承有助于<strong>提取出算法中的公共部分</strong>。</li>
 <li>简化了单元测试。</li>
 </ol>
-<h3 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h3><ol>
+<h3 id="缺点-1">缺点</h3>
+<ol type="1">
 <li>策略模式<strong>只适用于客户端知道所有的算法或行为的情况</strong>。</li>
 <li>策略模式造成很多的策略类，每个具体策略类都会产生一个新类。不过可以使用享元模式来减少对象的数量。</li>
 </ol>
-<hr>
-<h2 id="装饰模式（Decorator）"><a href="#装饰模式（Decorator）" class="headerlink" title="装饰模式（Decorator）"></a>装饰模式（Decorator）</h2><p>装饰器模式（Decorator Pattern）允许向一个现有的对象添加新的功能，同时又不改变其结构。这种类型的设计模式属于<strong>结构型</strong>模式，它是作为现有的类的一个<strong>包装</strong>。</p>
-<h3 id="适用场景-2"><a href="#适用场景-2" class="headerlink" title="适用场景"></a>适用场景</h3><ol>
+<hr />
+<h2 id="装饰模式decorator">装饰模式（Decorator）</h2>
+<p>装饰器模式（Decorator
+Pattern）允许向一个现有的对象添加新的功能，同时又不改变其结构。这种类型的设计模式属于<strong>结构型</strong>模式，它是作为现有的类的一个<strong>包装</strong>。</p>
+<h3 id="适用场景-2">适用场景</h3>
+<ol type="1">
 <li>需要扩展一个类的功能，或给一个类添加附加职责。</li>
 <li>需要动态的给一个对象添加功能，这些功能可以再动态的撤销。</li>
 <li>需要增加由一些基本功能的排列组合而产生的非常大量的功能，从而使继承关系变的不现实。</li>
 <li>当不能采用生成子类的方法进行扩充时。一种情况是，可能有大量独立的扩展，为支持每一种组合将产生大量的子类，使得子类数目呈爆炸性增长。另一种情况可能是因为类定义被隐藏，或类定义不能用于生成子类。</li>
 </ol>
-<h3 id="优点-2"><a href="#优点-2" class="headerlink" title="优点"></a>优点</h3><ol>
+<h3 id="优点-2">优点</h3>
+<ol type="1">
 <li>Decorator模式与继承关系的目的都是要扩展对象的功能，但是Decorator可以提供<strong>比继承更多的灵活性</strong>。</li>
 <li>通过使用不同的具体装饰类以及这些装饰类的排列组合，设计师可以创造出很多不同行为的组合。</li>
 </ol>
-<h3 id="缺点-2"><a href="#缺点-2" class="headerlink" title="缺点"></a>缺点</h3><ol>
+<h3 id="缺点-2">缺点</h3>
+<ol type="1">
 <li>这种比继承更加灵活机动的特性，也同时意味着<strong>更加多的复杂性</strong>。</li>
 <li>装饰模式会导致设计中出现许多小类，如果过度使用，会使程序变得很复杂。</li>
 <li>装饰模式是针对抽象组件（Component）类型编程。但是，如果你要针对具体组件编程时，就应该重新思考你的应用架构，以及装饰者是否合适。当然也可以改变Component接口，增加新的公开的行为，实现“半透明”的装饰者模式。在实际项目中要做出最佳选择。</li>
 </ol>
-<hr>
-<h2 id="代理模式（Proxy）"><a href="#代理模式（Proxy）" class="headerlink" title="代理模式（Proxy）"></a>代理模式（Proxy）</h2><h3 id="适用场景-3"><a href="#适用场景-3" class="headerlink" title="适用场景"></a>适用场景</h3><ol>
+<hr />
+<h2 id="代理模式proxy">代理模式（Proxy）</h2>
+<h3 id="适用场景-3">适用场景</h3>
+<ol type="1">
 <li>远程代理，为一个对象在不同的地址空间提供局部代表，这样就可以隐藏一个对象存在于不同地址空间的事实。</li>
 <li>虚拟代理，是根据需要创建开销很大的对象。通过它来存放实例化需要很长时间的真是对象。</li>
 <li>安全代理，用来控制真实对象访问时的权限。</li>
 <li>智能指引，是指当调用真是的对象时，代理处理另外的一些事情。</li>
 </ol>
-<h3 id="优点-3"><a href="#优点-3" class="headerlink" title="优点"></a>优点</h3><ol>
+<h3 id="优点-3">优点</h3>
+<ol type="1">
 <li><strong>职责清晰，真实的角色就是实现实际的业务逻辑，不用关心其他非本职责的事务</strong>，通过后期的代理完成一件完成事务，附带的结果就是编程简洁清晰。</li>
 <li>代理对象可以在客户端和目标对象之间起到<strong>中介</strong>的作用，这样起到了中介的作用和<strong>保护了目标对象</strong>的作用。</li>
 <li>高扩展性</li>
 </ol>
-<h3 id="缺点-3"><a href="#缺点-3" class="headerlink" title="缺点"></a>缺点</h3><ol>
+<h3 id="缺点-3">缺点</h3>
+<ol type="1">
 <li>在客户端和目标对象增加一个代理对象，会造成<strong>请求处理速度变慢</strong>。</li>
 <li>增加了系统的复杂度。</li>
 </ol>
-<hr>
-<h2 id="工厂方法模式（Factory-Method）"><a href="#工厂方法模式（Factory-Method）" class="headerlink" title="工厂方法模式（Factory Method）"></a>工厂方法模式（Factory Method）</h2><h3 id="适用场景-4"><a href="#适用场景-4" class="headerlink" title="适用场景"></a>适用场景</h3><ol>
+<hr />
+<h2 id="工厂方法模式factory-method">工厂方法模式（Factory Method）</h2>
+<h3 id="适用场景-4">适用场景</h3>
+<ol type="1">
 <li>工厂方法模式是new一个对象的替代品，所以在所有需要生成对象的地方都可以使用，但是需要慎重地考虑是否要增加一个工厂类进行管理，增加代码的复杂度。</li>
 <li>需要灵活的、可扩展的框架时，可以考虑采用工厂方法模式。</li>
 <li>工厂方法模式可以用在异构项目中，例如通过WebService与一个非Java的项目交互，虽然WebService号称是可以做到异构系统的同构化，但是在实际的开发中，还是会碰到很多问题，如类型问题、WSDL文件的支持问题，等等，从WSDL中产生的对象都认为是一个产品，然后由一个具体的工厂类进行管理，减少与外围系统的耦合。</li>
 <li>可以使用在测试驱动开发的框架下，例如，测试一个类A，就需要把与类A有关联关系的类B也同时产生出来，我们可以使用工厂方法模式把类B虚拟出来，避免类A与类B的耦合。目前由于JMock和EasyMock的诞生，该使用场景已经弱化了，读者可以在遇到此种情况时直接考虑使用JMock或EasyMock。</li>
 </ol>
-<h3 id="优点-4"><a href="#优点-4" class="headerlink" title="优点"></a>优点</h3><ol>
+<h3 id="优点-4">优点</h3>
+<ol type="1">
 <li>良好的封装性，代码结构清晰，减少模块间的耦合。</li>
 <li>工厂方法模式的扩展性非常优秀。</li>
 <li>屏蔽产品类。</li>
 <li>工厂方法模式是典型的解耦框架。</li>
 </ol>
-<h3 id="缺点-4"><a href="#缺点-4" class="headerlink" title="缺点"></a>缺点</h3><ol>
+<h3 id="缺点-4">缺点</h3>
+<ol type="1">
 <li>使用者必须知道相应工厂的存在。</li>
 <li>每次增加一个产品时，都需要增加一个具体类和对象实现工厂，使得系统中类的个数成倍增加，在一定程度上增加了系统的复杂度，同时也增加了系统具体类的依赖。</li>
 </ol>
-<hr>
-<h2 id="原型模式（Prototype）"><a href="#原型模式（Prototype）" class="headerlink" title="原型模式（Prototype）"></a>原型模式（Prototype）</h2><h3 id="适用场景-5"><a href="#适用场景-5" class="headerlink" title="适用场景"></a>适用场景</h3><ol>
+<hr />
+<h2 id="原型模式prototype">原型模式（Prototype）</h2>
+<h3 id="适用场景-5">适用场景</h3>
+<ol type="1">
 <li>某些结构复杂的对象的创建工作；由于需求的变化，这些对象经常面临着剧烈的变化，但是他们却拥有比较稳定一致的接口。</li>
 <li>一般在初始化的信息不发生变化的情况下，克隆是最好的方法。</li>
 </ol>
-<h3 id="优点-5"><a href="#优点-5" class="headerlink" title="优点"></a>优点</h3><ol>
+<h3 id="优点-5">优点</h3>
+<ol type="1">
 <li><strong>隐藏了对象创建的细节</strong>。</li>
 <li>提高了性能。</li>
 <li><strong>不用重新初始化</strong>，动态获得对象运行时的状态。</li>
 </ol>
-<h3 id="缺点-5"><a href="#缺点-5" class="headerlink" title="缺点"></a>缺点</h3><ol>
+<h3 id="缺点-5">缺点</h3>
+<ol type="1">
 <li>适用性不是很广。</li>
 <li>每一个类必须配备一个克隆方法。</li>
 <li>配备克隆方法需要对类的功能进行通盘考虑，这对于全新的类不是很难，但对于已有的类不一定很容易，特别当一个类引用不支持串行化的间接对象，或者引用含有循环结构的时候。</li>
 </ol>
-<hr>
-<h2 id="模板方法模式（Template-Method）"><a href="#模板方法模式（Template-Method）" class="headerlink" title="模板方法模式（Template Method）"></a>模板方法模式（Template Method）</h2><h3 id="适用场景-6"><a href="#适用场景-6" class="headerlink" title="适用场景"></a>适用场景</h3><p>适用于子类中有重复的代码，可以把重复代码提取出来，放到父类中。</p>
-<h3 id="优点-6"><a href="#优点-6" class="headerlink" title="优点"></a>优点</h3><ol>
+<hr />
+<h2 id="模板方法模式template-method">模板方法模式（Template
+Method）</h2>
+<h3 id="适用场景-6">适用场景</h3>
+<p>适用于子类中有重复的代码，可以把重复代码提取出来，放到父类中。</p>
+<h3 id="优点-6">优点</h3>
+<ol type="1">
 <li><strong>提高代码复用性</strong>。</li>
 <li><strong>帮助子类摆脱重复的不变行为</strong>。</li>
 </ol>
-<h3 id="缺点-6"><a href="#缺点-6" class="headerlink" title="缺点"></a>缺点</h3><ol>
+<h3 id="缺点-6">缺点</h3>
+<ol type="1">
 <li><strong>统一出现问题考虑不全面</strong>。</li>
 </ol>
-<h1 id="单例模式的几种实现方式（手写单例模式）"><a href="#单例模式的几种实现方式（手写单例模式）" class="headerlink" title="单例模式的几种实现方式（手写单例模式）"></a>单例模式的几种实现方式（手写单例模式）</h1><h2 id="什么是单例模式"><a href="#什么是单例模式" class="headerlink" title="什么是单例模式"></a>什么是单例模式</h2><p><strong>单例</strong>：保证一个类仅有一个实例，并提供一个访问它的全局访问点。</p>
+<h1
+id="单例模式的几种实现方式手写单例模式">单例模式的几种实现方式（手写单例模式）</h1>
+<h2 id="什么是单例模式">什么是单例模式</h2>
+<p><strong>单例</strong>：保证一个类仅有一个实例，并提供一个访问它的全局访问点。</p>
 <p>单例模式是一种常用的软件设计模式之一，其目的是<strong>保证整个应用中只存在类的唯一个实例</strong>。</p>
 <p>比如我们在系统启动时，需要加载一些公共的配置信息，对整个应用程序的整个生命周期中都可见且唯一，这时需要设计成单例模式。如：spring容器，session工厂，缓存，数据库连接池等等。</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/7Thxq1"><img src="https://s4.ax1x.com/2022/01/24/7Thxq1.md.png" alt="7Thxq1.md.png"></a></p>
-<h2 id="如何保证实例的唯一"><a href="#如何保证实例的唯一" class="headerlink" title="如何保证实例的唯一"></a>如何保证实例的唯一</h2><ol>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/7Thxq1"><img
+src="https://s4.ax1x.com/2022/01/24/7Thxq1.md.png"
+alt="7Thxq1.md.png" /></a></p>
+<h2 id="如何保证实例的唯一">如何保证实例的唯一</h2>
+<ol type="1">
 <li>防止外部初始化</li>
 <li>由类本身进行实例化</li>
 <li>保证实例化一次</li>
 <li>对外提供获取实例的方法</li>
 <li>线程安全</li>
 </ol>
-<h2 id="几种单例模式的比较"><a href="#几种单例模式的比较" class="headerlink" title="几种单例模式的比较"></a>几种单例模式的比较</h2><h3 id="饿汉式"><a href="#饿汉式" class="headerlink" title="饿汉式"></a>饿汉式</h3><p>“因为饿，所以要立即吃饭，刻不容缓”，在定义类的静态私有变量同时进行实例化。</p>
+<h2 id="几种单例模式的比较">几种单例模式的比较</h2>
+<h3 id="饿汉式">饿汉式</h3>
+<p>“因为饿，所以要立即吃饭，刻不容缓”，在定义类的静态私有变量同时进行实例化。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Singleton</span> <span class="variable">singleton</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> singleton;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ol>
+<ol type="1">
 <li>声明静态私有类变量，且立即实例化，保证实例化一次</li>
 <li>私有构造，防止外部实例化（通过反射是可以实例化的，不考虑此种情况）</li>
 <li>提供public的getInstance（）方法供外部获取单例实例</li>
 </ol>
 <ul>
-<li><strong>好处</strong>：线程安全；获取实例速度快 </li>
+<li><strong>好处</strong>：线程安全；获取实例速度快</li>
 <li><strong>缺点</strong>：类加载即初始化实例，内存浪费。</li>
 </ul>
-<h3 id="懒汉式"><a href="#懒汉式" class="headerlink" title="懒汉式"></a>懒汉式</h3><p>“这个人比较懒，等用着你的时候才去实例化”，延迟加载。</p>
+<h3 id="懒汉式">懒汉式</h3>
+<p>“这个人比较懒，等用着你的时候才去实例化”，延迟加载。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">Singleton</span> <span class="variable">singleton</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (singleton == <span class="literal">null</span>) &#123;</span><br><span class="line">            singleton = <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> singleton;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li><strong>优点</strong>：在获取实例的方法中，进行实例的初始化，节省系统资源</li>
-<li><strong>缺点</strong>：<ul>
+<li><strong>缺点</strong>：
+<ul>
 <li>如果获取实例时，初始化工作较多，加载速度会变慢，影响系统系能</li>
 <li>每次获取实例都要进行非空检查，系统开销大</li>
 <li>非线程安全，当多个线程同时访问<code>getInstance()</code>时，可能会产生多个实例。</li>
-</ul>
-</li>
+</ul></li>
 </ul>
 <blockquote>
 <p>接下来对上述例子进行线程安全改造：</p>
 </blockquote>
-<h3 id="同步锁"><a href="#同步锁" class="headerlink" title="同步锁"></a>同步锁</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">Singleton</span> <span class="variable">singleton</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (singleton == <span class="literal">null</span>) &#123;</span><br><span class="line">            singleton = <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> singleton;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<h3 id="同步锁">同步锁</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">Singleton</span> <span class="variable">singleton</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (singleton == <span class="literal">null</span>) &#123;</span><br><span class="line">            singleton = <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> singleton;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li><strong>优点</strong>：线程安全</li>
 <li><strong>缺点</strong>：每次获取实例都要加锁，耗费资源，其实只要实例已经生成，以后获取就不需要再锁了。</li>
 </ul>
-<h3 id="双重检查锁"><a href="#双重检查锁" class="headerlink" title="双重检查锁"></a>双重检查锁</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public class Singleton &#123;</span><br><span class="line">    private static Singleton singleton = null;</span><br><span class="line"></span><br><span class="line">    private Singleton() &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static Singleton getInstance() &#123;</span><br><span class="line">        if (singleton == null) &#123;</span><br><span class="line">            synchronized (Singleton.class) &#123;</span><br><span class="line">                if (singleton == null) &#123;</span><br><span class="line">                    singleton = new Singleton();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return singleton;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<h3 id="双重检查锁">双重检查锁</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public class Singleton &#123;</span><br><span class="line">    private static Singleton singleton = null;</span><br><span class="line"></span><br><span class="line">    private Singleton() &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static Singleton getInstance() &#123;</span><br><span class="line">        if (singleton == null) &#123;</span><br><span class="line">            synchronized (Singleton.class) &#123;</span><br><span class="line">                if (singleton == null) &#123;</span><br><span class="line">                    singleton = new Singleton();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return singleton;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
-<li><strong>优点</strong>：线程安全，进行双重检查，保证只在实例未初始化前进行同步，效率高 </li>
+<li><strong>优点</strong>：线程安全，进行双重检查，保证只在实例未初始化前进行同步，效率高</li>
 <li><strong>缺点</strong>：还是实例非空判断，耗费一定资源。</li>
 </ul>
-<h3 id="静态内部类"><a href="#静态内部类" class="headerlink" title="静态内部类"></a>静态内部类</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class Singleton &#123;</span><br><span class="line">    private Singleton() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private static class SingletonHolder &#123;</span><br><span class="line">        private static final Singleton singleton = new Singleton();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static Singleton getInstance() &#123;</span><br><span class="line">        return SingletonHolder.singleton;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<h3 id="静态内部类">静态内部类</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class Singleton &#123;</span><br><span class="line">    private Singleton() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private static class SingletonHolder &#123;</span><br><span class="line">        private static final Singleton singleton = new Singleton();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static Singleton getInstance() &#123;</span><br><span class="line">        return SingletonHolder.singleton;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>优点</strong>：既避免了同步带来的性能损耗，又能够延迟加载。</p>
-<h3 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public enum Singleton &#123;</span><br><span class="line">    INSTANCE;</span><br><span class="line">    public void init() &#123;</span><br><span class="line">        System.out.println(&quot;资源初始化&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<h3 id="枚举">枚举</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public enum Singleton &#123;</span><br><span class="line">    INSTANCE;</span><br><span class="line">    public void init() &#123;</span><br><span class="line">        System.out.println(&quot;资源初始化&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>天然线程安全，可防止反射生成实例。</p>
-<h2 id="单例模式的优缺点"><a href="#单例模式的优缺点" class="headerlink" title="单例模式的优缺点"></a>单例模式的优缺点</h2><p><strong>优点</strong>：该类只存在一个实例，节省系统资源；对于需要频繁创建销毁的对象，使用单例模式可以提高系统性能。 </p>
+<h2 id="单例模式的优缺点">单例模式的优缺点</h2>
+<p><strong>优点</strong>：该类只存在一个实例，节省系统资源；对于需要频繁创建销毁的对象，使用单例模式可以提高系统性能。</p>
 <p><strong>缺点</strong>：不能外部实例化（new），调用人员不清楚调用哪个方法获取实例时会感到迷惑，尤其当看不到源代码时。</p>
-<h1 id="Spring中用到的设计模式"><a href="#Spring中用到的设计模式" class="headerlink" title="Spring中用到的设计模式"></a>Spring中用到的设计模式</h1><ul>
-<li><strong>工厂模式</strong> : Spring 使用工厂模式通过 BeanFactory、ApplicationContext 创建 bean 对象。</li>
+<h1 id="spring中用到的设计模式">Spring中用到的设计模式</h1>
+<ul>
+<li><strong>工厂模式</strong> : Spring 使用工厂模式通过
+BeanFactory、ApplicationContext 创建 bean 对象。</li>
 <li><strong>代理模式</strong> : Spring AOP 功能的实现。</li>
 <li><strong>单例模式</strong> : Spring 中的 Bean 默认都是单例的。</li>
-<li><strong>模板方法模式</strong> : Spring 中 jdbcTemplate、hibernateTemplate 等以 Template 结尾的对数据库操作的类，它们就使用到了模板模式。</li>
-<li><strong>装饰者模式</strong> : 我们的项目需要连接多个数据库，而且不同的客户在每次访问中根据需要会去访问不同的数据库。这种模式让我们可以根据客户的需求能够动态切换不同的数据源。</li>
-<li><strong>观察者模式:</strong> <code>Spring 事件驱动模型</code>就是观察者模式很经典的一个应用。</li>
-<li><strong>适配器模式</strong> :<code>Spring AOP 的增强或通知(Advice)</code>使用到了适配器模式、spring MVC 中也是用到了适配器模式适配Controller。</li>
+<li><strong>模板方法模式</strong> : Spring 中
+jdbcTemplate、hibernateTemplate 等以 Template
+结尾的对数据库操作的类，它们就使用到了模板模式。</li>
+<li><strong>装饰者模式</strong> :
+我们的项目需要连接多个数据库，而且不同的客户在每次访问中根据需要会去访问不同的数据库。这种模式让我们可以根据客户的需求能够动态切换不同的数据源。</li>
+<li><strong>观察者模式:</strong>
+<code>Spring 事件驱动模型</code>就是观察者模式很经典的一个应用。</li>
+<li><strong>适配器模式</strong>
+:<code>Spring AOP 的增强或通知(Advice)</code>使用到了适配器模式、spring
+MVC 中也是用到了适配器模式适配Controller。</li>
 </ul>
-<h2 id="控制反转-IoC-和依赖注入-DI"><a href="#控制反转-IoC-和依赖注入-DI" class="headerlink" title="控制反转(IoC)和依赖注入(DI)"></a>控制反转(IoC)和依赖注入(DI)</h2><p><strong>IoC</strong>(Inversion of Control) 是 Spring 中一个重要的概念，是一种解耦的设计思想、一个原则，而不是一个模式。它主要作用是通过 IOC 容器实现具有依赖关系的对象之间的解耦(IOC 容易管理对象，你只管使用即可)，从而降低代码之间的耦合度。</p>
-<p><strong>DI</strong>(Dependecy Inject)是实现控制反转的一种设计模式，依赖注入就是将实例变量传入到一个对象中去。</p>
-<h2 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h2><p>在 Spring 的 BeanFactory 或 ApplicationContext 中，使用了<strong>工厂模式</strong>创建 bean 对象。</p>
-<h3 id="两种创建-bean-对象方式的区别："><a href="#两种创建-bean-对象方式的区别：" class="headerlink" title="两种创建 bean 对象方式的区别："></a>两种创建 bean 对象方式的区别：</h3><ul>
-<li><code>BeanFactory</code> ：延迟注入(使用到某个 bean 的时候才会注入), 相比于ApplicationContext 来说会占用更少的内存，程序启动速度更快。</li>
-<li><code>ApplicationContext</code>：容器启动的时候，不管用没用到，一次性创建所有 bean 。BeanFactory 仅提供了最基本的依赖注入支持，ApplicationContext 扩展了 BeanFactory ,除了有BeanFactory的功能还有额外更多功能，所以一般开发人员使用ApplicationContext会更多。</li>
-</ul>
-<h2 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h2><p><strong>Spring 中 bean 的默认作用域就是 singleton(单例)的。</strong> 除了 singleton 作用域，Spring 中 bean 还有下面几种作用域：</p>
+<h2 id="控制反转ioc和依赖注入di">控制反转(IoC)和依赖注入(DI)</h2>
+<p><strong>IoC</strong>(Inversion of Control) 是 Spring
+中一个重要的概念，是一种解耦的设计思想、一个原则，而不是一个模式。它主要作用是通过
+IOC 容器实现具有依赖关系的对象之间的解耦(IOC
+容易管理对象，你只管使用即可)，从而降低代码之间的耦合度。</p>
+<p><strong>DI</strong>(Dependecy
+Inject)是实现控制反转的一种设计模式，依赖注入就是将实例变量传入到一个对象中去。</p>
+<h2 id="工厂模式">工厂模式</h2>
+<p>在 Spring 的 BeanFactory 或 ApplicationContext
+中，使用了<strong>工厂模式</strong>创建 bean 对象。</p>
+<h3 id="两种创建-bean-对象方式的区别">两种创建 bean
+对象方式的区别：</h3>
 <ul>
-<li><strong>prototype</strong> : 每次请求都会创建一个新的 bean 实例。</li>
-<li><strong>request</strong> : 每一次 HTTP 请求都会产生一个新的 bean，该 bean 仅在当前HTTP request 内有效。</li>
-<li><strong>session</strong> : 每一次 HTTP 请求都会产生一个新的 bean，该 bean 仅在当前 HTTP session 内有效。</li>
-<li><strong>global-session</strong>： 全局 session 作用域，仅仅在基于 portlet 的 web 应用中才有意义，Spring5 已经没有了。Portlet 是能够生成语义代码(例如：HTML)片段的小型 Java Web 插件。它们基于portlet容器，可以像 servlet 一样处理HTTP请求。但与 servlet 不同，每个 portlet 都有不同的会话</li>
+<li><code>BeanFactory</code> ：延迟注入(使用到某个 bean 的时候才会注入),
+相比于ApplicationContext 来说会占用更少的内存，程序启动速度更快。</li>
+<li><code>ApplicationContext</code>：容器启动的时候，不管用没用到，一次性创建所有
+bean 。BeanFactory 仅提供了最基本的依赖注入支持，ApplicationContext
+扩展了 BeanFactory
+,除了有BeanFactory的功能还有额外更多功能，所以一般开发人员使用ApplicationContext会更多。</li>
 </ul>
-<h3 id="Spring-实现单例的方式："><a href="#Spring-实现单例的方式：" class="headerlink" title="Spring 实现单例的方式："></a>Spring 实现单例的方式：</h3><ul>
-<li>xml : <bean id="userService" class="top.snailclimb.UserService" scope="singleton"/></li>
-<li>注解：@Scope(value &#x3D; “singleton”)</li>
+<h2 id="单例模式">单例模式</h2>
+<p><strong>Spring 中 bean 的默认作用域就是 singleton(单例)的。</strong>
+除了 singleton 作用域，Spring 中 bean 还有下面几种作用域：</p>
+<ul>
+<li><strong>prototype</strong> : 每次请求都会创建一个新的 bean
+实例。</li>
+<li><strong>request</strong> : 每一次 HTTP 请求都会产生一个新的 bean，该
+bean 仅在当前HTTP request 内有效。</li>
+<li><strong>session</strong> : 每一次 HTTP 请求都会产生一个新的 bean，该
+bean 仅在当前 HTTP session 内有效。</li>
+<li><strong>global-session</strong>： 全局 session 作用域，仅仅在基于
+portlet 的 web 应用中才有意义，Spring5 已经没有了。Portlet
+是能够生成语义代码(例如：HTML)片段的小型 Java Web
+插件。它们基于portlet容器，可以像 servlet 一样处理HTTP请求。但与 servlet
+不同，每个 portlet 都有不同的会话</li>
 </ul>
-<p><strong>Spring 通过 <code>ConcurrentHashMap</code> 实现单例注册表的特殊方式实现单例模式。</strong> Spring 实现单例的核心代码如下:</p>
+<h3 id="spring-实现单例的方式">Spring 实现单例的方式：</h3>
+<ul>
+<li>xml :
+<bean id="userService" class="top.snailclimb.UserService" scope="singleton"/></li>
+<li>注解：<span class="citation" data-cites="Scope">@Scope</span>(value
+= "singleton")</li>
+</ul>
+<p><strong>Spring 通过 <code>ConcurrentHashMap</code>
+实现单例注册表的特殊方式实现单例模式。</strong> Spring
+实现单例的核心代码如下:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 通过 ConcurrentHashMap（线程安全） 实现单例注册表</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; singletonObjects = <span class="keyword">new</span> <span class="title class_">ConcurrentHashMap</span>&lt;String, Object&gt;(<span class="number">64</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> Object <span class="title function_">getSingleton</span><span class="params">(String beanName, ObjectFactory&lt;?&gt; singletonFactory)</span> &#123;</span><br><span class="line">        Assert.notNull(beanName, <span class="string">&quot;&#x27;beanName&#x27; must not be null&quot;</span>);</span><br><span class="line">        <span class="keyword">synchronized</span> (<span class="built_in">this</span>.singletonObjects) &#123;</span><br><span class="line">            <span class="comment">// 检查缓存中是否存在实例  </span></span><br><span class="line">            <span class="type">Object</span> <span class="variable">singletonObject</span> <span class="operator">=</span> <span class="built_in">this</span>.singletonObjects.get(beanName);</span><br><span class="line">            <span class="keyword">if</span> (singletonObject == <span class="literal">null</span>) &#123;</span><br><span class="line">                <span class="comment">//...</span></span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    singletonObject = singletonFactory.getObject();</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">//...</span></span><br><span class="line">                <span class="comment">// 如果实例对象在不存在，我们注册到单例注册表中。</span></span><br><span class="line">                addSingleton(beanName, singletonObject);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> (singletonObject != NULL_OBJECT ? singletonObject : <span class="literal">null</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//将对象添加到单例注册表</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">addSingleton</span><span class="params">(String beanName, Object singletonObject)</span> &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (<span class="built_in">this</span>.singletonObjects) &#123;</span><br><span class="line">                <span class="built_in">this</span>.singletonObjects.put(beanName, (singletonObject != <span class="literal">null</span> ? singletonObject : NULL_OBJECT));</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="代理模式"><a href="#代理模式" class="headerlink" title="代理模式"></a>代理模式</h2><h3 id="代理模式在-AOP-中的应用"><a href="#代理模式在-AOP-中的应用" class="headerlink" title="代理模式在 AOP 中的应用"></a>代理模式在 AOP 中的应用</h3><p>AOP(Aspect-Oriented Programming:面向切面编程)能够将那些与业务无关，却为业务模块所共同调用的逻辑或责任（例如事务处理、日志管理、权限控制等）封装起来，便于减少系统的重复代码，降低模块间的耦合度，并有利于未来的可拓展性和可维护性。</p>
-<p>Spring AOP 就是基于<strong>动态代理</strong>。如果要代理的对象，实现了某个接口，Spring AOP 则使用 JDK Proxy，去创建代理对象；如果没有实现接口的对象，Spring AOP 则使用 Cglib 生成一个被代理对象的子类来作为代理，如下图所示：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/9794226-e2078d21a593eb82.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/720/format/webp" alt="img"></p>
-<h3 id="Spring-AOP-和-AspectJ-AOP-的区别和联系："><a href="#Spring-AOP-和-AspectJ-AOP-的区别和联系：" class="headerlink" title="Spring AOP 和 AspectJ AOP 的区别和联系："></a>Spring AOP 和 AspectJ AOP 的区别和联系：</h3><ul>
-<li>Spring AOP 属于运行时增强，而 AspectJ 是编译时增强。 Spring AOP 基于代理(Proxying)，而 AspectJ 基于字节码操作(Bytecode Manipulation)。</li>
-<li>Spring AOP 已经集成了 AspectJ ，AspectJ 应该算的上是 Java 生态系统中最完整的 AOP 框架了。AspectJ 相比于 Spring AOP 功能更加强大，但是 Spring AOP 相对更简单。</li>
-<li>如果我们的切面比较少，那么两者性能差异不大。但当切面太多的话，最好选择 AspectJ ，它比Spring AOP 快很多。</li>
+<h2 id="代理模式">代理模式</h2>
+<h3 id="代理模式在-aop-中的应用">代理模式在 AOP 中的应用</h3>
+<p>AOP(Aspect-Oriented
+Programming:面向切面编程)能够将那些与业务无关，却为业务模块所共同调用的逻辑或责任（例如事务处理、日志管理、权限控制等）封装起来，便于减少系统的重复代码，降低模块间的耦合度，并有利于未来的可拓展性和可维护性。</p>
+<p>Spring AOP
+就是基于<strong>动态代理</strong>。如果要代理的对象，实现了某个接口，Spring
+AOP 则使用 JDK Proxy，去创建代理对象；如果没有实现接口的对象，Spring AOP
+则使用 Cglib 生成一个被代理对象的子类来作为代理，如下图所示：</p>
+<figure>
+<img
+src="https:////upload-images.jianshu.io/upload_images/9794226-e2078d21a593eb82.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/720/format/webp"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h3 id="spring-aop-和-aspectj-aop-的区别和联系">Spring AOP 和 AspectJ
+AOP 的区别和联系：</h3>
+<ul>
+<li>Spring AOP 属于运行时增强，而 AspectJ 是编译时增强。 Spring AOP
+基于代理(Proxying)，而 AspectJ 基于字节码操作(Bytecode
+Manipulation)。</li>
+<li>Spring AOP 已经集成了 AspectJ ，AspectJ 应该算的上是 Java
+生态系统中最完整的 AOP 框架了。AspectJ 相比于 Spring AOP
+功能更加强大，但是 Spring AOP 相对更简单。</li>
+<li>如果我们的切面比较少，那么两者性能差异不大。但当切面太多的话，最好选择
+AspectJ ，它比Spring AOP 快很多。</li>
 </ul>
-<h2 id="模板方法"><a href="#模板方法" class="headerlink" title="模板方法"></a>模板方法</h2><p>模板方法模式是一种行为设计模式，<strong>它定义一个操作中的算法的骨架，而将一些步骤延迟到子类中。模板方法使得子类可以不改变一个算法的结构即可重定义该算法的某些特定步骤的实现方式。</strong></p>
-<p><img src="https://upload-images.jianshu.io/upload_images/9794226-3bb005c3d9deb06d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1140/format/webp" alt="img"></p>
+<h2 id="模板方法">模板方法</h2>
+<p>模板方法模式是一种行为设计模式，<strong>它定义一个操作中的算法的骨架，而将一些步骤延迟到子类中。模板方法使得子类可以不改变一个算法的结构即可重定义该算法的某些特定步骤的实现方式。</strong></p>
+<figure>
+<img
+src="https:////upload-images.jianshu.io/upload_images/9794226-3bb005c3d9deb06d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1140/format/webp"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">Template</span> &#123;</span><br><span class="line">    <span class="comment">// 模板方法</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title function_">TemplateMethod</span><span class="params">()</span>&#123;</span><br><span class="line">        PrimitiveOperation1();  </span><br><span class="line">        PrimitiveOperation2();</span><br><span class="line">        PrimitiveOperation3();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span>  <span class="title function_">PrimitiveOperation1</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="comment">//当前类实现</span></span><br><span class="line">    &#125;    </span><br><span class="line">    <span class="comment">//被子类实现的方法</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">PrimitiveOperation2</span><span class="params">()</span>;</span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">PrimitiveOperation3</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TemplateImpl</span> <span class="keyword">extends</span> <span class="title class_">Template</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">PrimitiveOperation2</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">//当前类实现</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">PrimitiveOperation3</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">//当前类实现</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Spring 中 <code>jdbcTemplate、hibernateTemplate</code> 等以 <code>Template</code> 结尾的数据库操作类，就使用到了模板模式。</p>
-<p>一般地，我们使用继承的方式来实现模板模式，但是 Spring 并没有使用这种方式，而是使用 Callback 模式与模板方法模式配合，既达到了代码复用的效果，同时增加了灵活性。</p>
-<h2 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h2><p>观察者模式是一种对象行为型模式。<strong>它表示的是一种对象与对象之间具有依赖关系，当一个对象发生改变的时候，这个对象所依赖的对象也会做出反应。</strong></p>
-<p>Spring 事件驱动模型就是观察者模式很经典的一个应用。Spring 事件驱动模型非常有用，在很多场景都可以解耦我们的代码。比如我们每次添加商品的时候都需要重新更新商品索引，这个时候就可以利用观察者模式来解决这个问题。</p>
-<h3 id="Spring-事件驱动模型中的三种角色"><a href="#Spring-事件驱动模型中的三种角色" class="headerlink" title="Spring 事件驱动模型中的三种角色"></a>Spring 事件驱动模型中的三种角色</h3><h4 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h4><p><code>org.springframework.context.ApplicationEvent</code> 充当事角色基类。</p>
-<p>Spring 中默认存在以下事件，他们都是对 ApplicationContextEvent 的子类：</p>
+<p>Spring 中 <code>jdbcTemplate、hibernateTemplate</code> 等以
+<code>Template</code> 结尾的数据库操作类，就使用到了模板模式。</p>
+<p>一般地，我们使用继承的方式来实现模板模式，但是 Spring
+并没有使用这种方式，而是使用 Callback
+模式与模板方法模式配合，既达到了代码复用的效果，同时增加了灵活性。</p>
+<h2 id="观察者模式">观察者模式</h2>
+<p>观察者模式是一种对象行为型模式。<strong>它表示的是一种对象与对象之间具有依赖关系，当一个对象发生改变的时候，这个对象所依赖的对象也会做出反应。</strong></p>
+<p>Spring 事件驱动模型就是观察者模式很经典的一个应用。Spring
+事件驱动模型非常有用，在很多场景都可以解耦我们的代码。比如我们每次添加商品的时候都需要重新更新商品索引，这个时候就可以利用观察者模式来解决这个问题。</p>
+<h3 id="spring-事件驱动模型中的三种角色">Spring
+事件驱动模型中的三种角色</h3>
+<h4 id="事件">事件</h4>
+<p><code>org.springframework.context.ApplicationEvent</code>
+充当事角色基类。</p>
+<p>Spring 中默认存在以下事件，他们都是对 ApplicationContextEvent
+的子类：</p>
 <ul>
 <li>ContextStartedEvent：ApplicationContext 启动后触发的事件;</li>
 <li>ContextStoppedEvent：ApplicationContext 停止后触发的事件;</li>
-<li>ContextRefreshedEvent：ApplicationContext 初始化或刷新完成后触发的事件;</li>
+<li>ContextRefreshedEvent：ApplicationContext
+初始化或刷新完成后触发的事件;</li>
 <li>ContextClosedEvent：ApplicationContext 关闭后触发的事件。</li>
 </ul>
-<h4 id="事件监听者"><a href="#事件监听者" class="headerlink" title="事件监听者"></a>事件监听者</h4><p><code>org.springframework.context.ApplicationEvent.ApplicationListener</code> 充当了事件监听者角色基类，通过 ApplicationListener 的 onApplicationEvent() 方法进行监听事件。</p>
+<h4 id="事件监听者">事件监听者</h4>
+<p><code>org.springframework.context.ApplicationEvent.ApplicationListener</code>
+充当了事件监听者角色基类，通过 ApplicationListener 的
+onApplicationEvent() 方法进行监听事件。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FunctionalInterface</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">ApplicationListener</span>&lt;E <span class="keyword">extends</span> <span class="title class_">ApplicationEvent</span>&gt; <span class="keyword">extends</span> <span class="title class_">EventListener</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">onApplicationEvent</span><span class="params">(E var1)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="事件发布者"><a href="#事件发布者" class="headerlink" title="事件发布者"></a>事件发布者</h4><p><code>org.springframework.context.ApplicationEventPublisher</code> 充当了事件的发布者基类，通过 ApplicationEventPublisher 的 publishEvent() 发布消息。</p>
+<h4 id="事件发布者">事件发布者</h4>
+<p><code>org.springframework.context.ApplicationEventPublisher</code>
+充当了事件的发布者基类，通过 ApplicationEventPublisher 的 publishEvent()
+发布消息。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FunctionalInterface</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">ApplicationEventPublisher</span> &#123;</span><br><span class="line">    <span class="keyword">default</span> <span class="keyword">void</span> <span class="title function_">publishEvent</span><span class="params">(ApplicationEvent event)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.publishEvent((Object)event);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">publishEvent</span><span class="params">(Object var1)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义一个事件,继承自ApplicationEvent并且写相应的构造函数</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DemoEvent</span> <span class="keyword">extends</span> <span class="title class_">ApplicationEvent</span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> <span class="variable">serialVersionUID</span> <span class="operator">=</span> <span class="number">1L</span>;</span><br><span class="line">    <span class="keyword">private</span> String message;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">DemoEvent</span><span class="params">(Object source,String message)</span>&#123;</span><br><span class="line">        <span class="built_in">super</span>(source);</span><br><span class="line">        <span class="built_in">this</span>.message = message;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getMessage</span><span class="params">()</span> &#123;</span><br><span class="line">         <span class="keyword">return</span> message;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义一个事件监听者,实现ApplicationListener接口，重写 onApplicationEvent() 方法；</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DemoListener</span> <span class="keyword">implements</span> <span class="title class_">ApplicationListener</span>&lt;DemoEvent&gt;&#123;</span><br><span class="line">    <span class="comment">//使用onApplicationEvent接收消息</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onApplicationEvent</span><span class="params">(DemoEvent event)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">msg</span> <span class="operator">=</span> event.getMessage();</span><br><span class="line">        System.out.println(<span class="string">&quot;接收到的信息是：&quot;</span>+msg);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发布事件，可以通过ApplicationEventPublisher  的 publishEvent() 方法发布消息。</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DemoPublisher</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    ApplicationContext applicationContext;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">publish</span><span class="params">(String message)</span>&#123;</span><br><span class="line">        <span class="comment">//发布事件</span></span><br><span class="line">        applicationContext.publishEvent(<span class="keyword">new</span> <span class="title class_">DemoEvent</span>(<span class="built_in">this</span>, message));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="适配器模式"><a href="#适配器模式" class="headerlink" title="适配器模式"></a>适配器模式</h2><p>适配器模式(Adapter Pattern) 将一个接口转换成客户希望的另一个接口，适配器模式使接口不兼容的那些类可以一起工作。</p>
-<h3 id="spring-AOP-中的适配器模式"><a href="#spring-AOP-中的适配器模式" class="headerlink" title="spring AOP 中的适配器模式"></a>spring AOP 中的适配器模式</h3><p>我们知道 Spring AOP 的实现是基于代理模式，但是 Spring AOP 的增强或通知(<code>Advice</code>)使用到了适配器模式，与之相关的接口是 <code>AdvisorAdapter</code> 。<code>Advice</code> 常用的类型有：<code>BeforeAdvice、AfterAdvice、AfterReturningAdvice</code> 等。每个类型 <code>Advice</code> 都有对应的拦截器: <code>MethodBeforeAdviceInterceptor、AfterReturningAdviceAdapter、AfterReturningAdviceInterceptor</code>。Spring 预定义的通知要通过对应的适配器，适配成 <code>MethodInterceptor</code> 接口(方法拦截器)类型的对象（如：MethodBeforeAdviceInterceptor 负责适配 MethodBeforeAdvice）。</p>
-<h3 id="spring-MVC-中的适配器模式"><a href="#spring-MVC-中的适配器模式" class="headerlink" title="spring MVC 中的适配器模式"></a>spring MVC 中的适配器模式</h3><p>在 Spring MVC 中，<code>DispatcherServlet</code> 根据请求信息调用 <code>HandlerMapping</code>，解析请求对应的 <code>Handler</code>。解析到对应的 <code>Handler</code>（Controller 控制器）后，开始由 <code>HandlerAdapter</code>  适配器处理。HandlerAdapter 作为期望接口，具体的适配器实现类用于对目标类进行适配，Controller 作为需要适配的类。</p>
-<p>为什么要在 Spring MVC 中使用适配器模式？ Spring MVC 中的 Controller 种类众多，不同类型的 Controller 通过不同的方法来对请求进行处理。如果不利用适配器模式的话，DispatcherServlet 直接获取对应类型的 Controller，需要的自行来判断，像下面这段代码一样：</p>
+<h4 id="举例">举例</h4>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义一个事件,继承自ApplicationEvent并且写相应的构造函数</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DemoEvent</span> <span class="keyword">extends</span> <span class="title class_">ApplicationEvent</span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> <span class="variable">serialVersionUID</span> <span class="operator">=</span> <span class="number">1L</span>;</span><br><span class="line">    <span class="keyword">private</span> String message;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">DemoEvent</span><span class="params">(Object source,String message)</span>&#123;</span><br><span class="line">        <span class="built_in">super</span>(source);</span><br><span class="line">        <span class="built_in">this</span>.message = message;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getMessage</span><span class="params">()</span> &#123;</span><br><span class="line">         <span class="keyword">return</span> message;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义一个事件监听者,实现ApplicationListener接口，重写 onApplicationEvent() 方法；</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DemoListener</span> <span class="keyword">implements</span> <span class="title class_">ApplicationListener</span>&lt;DemoEvent&gt;&#123;</span><br><span class="line">    <span class="comment">//使用onApplicationEvent接收消息</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onApplicationEvent</span><span class="params">(DemoEvent event)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">msg</span> <span class="operator">=</span> event.getMessage();</span><br><span class="line">        System.out.println(<span class="string">&quot;接收到的信息是：&quot;</span>+msg);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发布事件，可以通过ApplicationEventPublisher  的 publishEvent() 方法发布消息。</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DemoPublisher</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    ApplicationContext applicationContext;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">publish</span><span class="params">(String message)</span>&#123;</span><br><span class="line">        <span class="comment">//发布事件</span></span><br><span class="line">        applicationContext.publishEvent(<span class="keyword">new</span> <span class="title class_">DemoEvent</span>(<span class="built_in">this</span>, message));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="适配器模式">适配器模式</h2>
+<p>适配器模式(Adapter Pattern)
+将一个接口转换成客户希望的另一个接口，适配器模式使接口不兼容的那些类可以一起工作。</p>
+<h3 id="spring-aop-中的适配器模式">spring AOP 中的适配器模式</h3>
+<p>我们知道 Spring AOP 的实现是基于代理模式，但是 Spring AOP
+的增强或通知(<code>Advice</code>)使用到了适配器模式，与之相关的接口是
+<code>AdvisorAdapter</code> 。<code>Advice</code>
+常用的类型有：<code>BeforeAdvice、AfterAdvice、AfterReturningAdvice</code>
+等。每个类型 <code>Advice</code> 都有对应的拦截器:
+<code>MethodBeforeAdviceInterceptor、AfterReturningAdviceAdapter、AfterReturningAdviceInterceptor</code>。Spring
+预定义的通知要通过对应的适配器，适配成 <code>MethodInterceptor</code>
+接口(方法拦截器)类型的对象（如：MethodBeforeAdviceInterceptor 负责适配
+MethodBeforeAdvice）。</p>
+<h3 id="spring-mvc-中的适配器模式">spring MVC 中的适配器模式</h3>
+<p>在 Spring MVC 中，<code>DispatcherServlet</code> 根据请求信息调用
+<code>HandlerMapping</code>，解析请求对应的
+<code>Handler</code>。解析到对应的 <code>Handler</code>（Controller
+控制器）后，开始由 <code>HandlerAdapter</code>
+适配器处理。HandlerAdapter
+作为期望接口，具体的适配器实现类用于对目标类进行适配，Controller
+作为需要适配的类。</p>
+<p>为什么要在 Spring MVC 中使用适配器模式？ Spring MVC 中的 Controller
+种类众多，不同类型的 Controller
+通过不同的方法来对请求进行处理。如果不利用适配器模式的话，DispatcherServlet
+直接获取对应类型的
+Controller，需要的自行来判断，像下面这段代码一样：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(mappedHandler.getHandler() <span class="keyword">instanceof</span> MultiActionController)&#123;  </span><br><span class="line">   ((MultiActionController)mappedHandler.getHandler()).xxx  </span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(mappedHandler.getHandler() <span class="keyword">instanceof</span> XXX)&#123;  </span><br><span class="line">    ...  </span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(...)&#123;  </span><br><span class="line">   ...  </span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
-
-<h2 id="装饰者模式"><a href="#装饰者模式" class="headerlink" title="装饰者模式"></a>装饰者模式</h2><p>Spring 中配置 DataSource 的时候，DataSource 可能是不同的数据库和数据源。我们能否根据客户的需求在少修改原有类的代码下动态切换不同的数据源？Spring 中用到的包装器模式在类名上含有 Wrapper或者 Decorator。这些类基本上都是动态地给一个对象添加一些额外的职责。</p>
-<h1 id="什么是装饰器模式"><a href="#什么是装饰器模式" class="headerlink" title="什么是装饰器模式"></a>什么是装饰器模式</h1><p>装饰器模式又名包装(Wrapper)模式。装饰器模式以对客户端透明的方式拓展对象的功能，是继承关系的一种替代方案。</p>
-<h1 id="简述面向对象的理解"><a href="#简述面向对象的理解" class="headerlink" title="简述面向对象的理解"></a>简述面向对象的理解</h1><p><strong>面向对象是一种编程范式，与面向过程相对，代表一种以数据（对象）为单元的对现实世界的抽象方式。</strong>用程序描述”我吃饭”。面向过程的写法：eat(I, food)，面向对象的写法：I.eat(food)。两者最直观的区别是程序的组织方式不同，面向过程的程序以动作（函数）为构建单元，通过在函数中调用其它函数完成对现实世界的描述。<strong>面向对象是以数据（名词）为核心，通过对象之间的消息传递构建程序。</strong>面向过程关注的是解决问题涉及的步骤，<strong>面向对象关注的是设计能够实现解决问题所需功能的类</strong>。OC语言是面向对象的，c语言是面向过程的。</p>
-<p>面向对象更符合人类对现实世界的认知，人对抽象的“类”和具体的“对象实例”这些概念从童年起能有很好的理解，例如 “人类”就是一个抽象的 class，而”张三”就是一个属于”人类” class 的 object。总结来说就是把一组数据结构和处理它们的方法组成对象（object），把相同行为的对象归纳为类（class），通过类的封装（encapsulation）隐藏内部细节，通过继承（inheritance）实现类的特化（specialization）／泛化（generalization），通过多态（polymorphism）实现基于对象类型的动态分派（dynamic dispatch）。</p>
+<h2 id="装饰者模式">装饰者模式</h2>
+<p>Spring 中配置 DataSource 的时候，DataSource
+可能是不同的数据库和数据源。我们能否根据客户的需求在少修改原有类的代码下动态切换不同的数据源？Spring
+中用到的包装器模式在类名上含有 Wrapper或者
+Decorator。这些类基本上都是动态地给一个对象添加一些额外的职责。</p>
+<h1 id="什么是装饰器模式">什么是装饰器模式</h1>
+<p>装饰器模式又名包装(Wrapper)模式。装饰器模式以对客户端透明的方式拓展对象的功能，是继承关系的一种替代方案。</p>
+<h1 id="简述面向对象的理解">简述面向对象的理解</h1>
+<p><strong>面向对象是一种编程范式，与面向过程相对，代表一种以数据（对象）为单元的对现实世界的抽象方式。</strong>用程序描述"我吃饭"。面向过程的写法：eat(I,
+food)，面向对象的写法：I.eat(food)。两者最直观的区别是程序的组织方式不同，面向过程的程序以动作（函数）为构建单元，通过在函数中调用其它函数完成对现实世界的描述。<strong>面向对象是以数据（名词）为核心，通过对象之间的消息传递构建程序。</strong>面向过程关注的是解决问题涉及的步骤，<strong>面向对象关注的是设计能够实现解决问题所需功能的类</strong>。OC语言是面向对象的，c语言是面向过程的。</p>
+<p>面向对象更符合人类对现实世界的认知，人对抽象的“类”和具体的“对象实例”这些概念从童年起能有很好的理解，例如
+"人类"就是一个抽象的 class，而"张三"就是一个属于"人类" class 的
+object。总结来说就是把一组数据结构和处理它们的方法组成对象（object），把相同行为的对象归纳为类（class），通过类的封装（encapsulation）隐藏内部细节，通过继承（inheritance）实现类的特化（specialization）／泛化（generalization），通过多态（polymorphism）实现基于对象类型的动态分派（dynamic
+dispatch）。</p>
 <p>面向对象的编程方法具有四个基本特征：抽象，封装，继承和多态。能够避免命名冲突、实现代码复用，对于构建大型程序十分有利。</p>
 <p>抽象是忽略一个主题中与当前目标无关的那些方面，以便更充分地注意与当前目标有关的方面。抽象包括两个方面，一是过程抽象，二是数据抽象。过程抽象是指任何一个明确定义功能的操作都可被使用者看作单个的实体看待，尽管这个操作实际上可能由一系列更低级的操作来完成。数据抽象定义了数据类型和施加于该类型对象上的操作，并限定了对象的值只能通过使用这些操作修改和观察。</p>
 <p>继承是一种联结类的层次模型，并且允许和鼓励类的重用，它提供了一种明确表述共性的方法。新类继承了原始类的特性，新类称为原始类的派生类（子类），而原始类称为新类的基类（父类）。派生类可以从它的基类那里继承方法和实例变量，并且类可以修改或增加新的方法使之更适合特殊的需要。继承性很好的解决了软件的可重用性问题。</p>
 <p>封装是把过程和数据包围起来，对数据的访问只能通过已定义的界面。面向对象计算始于这个基本概念，即现实世界可以被描绘成一系列完全自治、封装的对象，这些对象通过一个受保护的接口访问其他对象。一旦定义了一个对象的特性，则有必要决定这些特性的可见性，封装保证了模块具有较好的独立性，使得程序维护修改较为容易。对应用程序的修改仅限于类的内部，因而可以将应用程序修改带来的影响减少到最低限度。</p>
 <p>多态性是指允许不同类的对象对同一消息作出响应。多态性包括参数化多态性和包含多态性。多态性语言具有灵活、抽象、行为共享、代码共享的优势，很好的解决了应用程序函数同名问题。<strong>多态是依赖于接口的</strong>。</p>
-<p>但是，在C++使用OOP的编程方式在一些场合未能提供最高性能。现在内存存取成为计算机性能的重要瓶颈，这个问题在C++设计OOP编程范式的实现方式之初并未能考虑周全。现时的OOP编程有可能不缓存友好（cache friendly），导致有时候并不能发挥硬件最佳性能。大概就是过度封装，多态增加cache miss的可能性，数据存取时导致载入缓存的浪费等。</p>
+<p>但是，在C++使用OOP的编程方式在一些场合未能提供最高性能。现在内存存取成为计算机性能的重要瓶颈，这个问题在C++设计OOP编程范式的实现方式之初并未能考虑周全。现时的OOP编程有可能不缓存友好（cache
+friendly），导致有时候并不能发挥硬件最佳性能。大概就是过度封装，多态增加cache
+miss的可能性，数据存取时导致载入缓存的浪费等。</p>
 <p>面向对象相对于面向过程来说，它从现实世界中客观存在的事物（即对象）出发来构造软件系统，并根据这些事物的本质特点，把它们抽象地表示为系统中的基本构成单位，更能接近现实事物本来的特性和面貌。</p>
-<p>面向对象优点：<br> 1.一切皆对象，相对于面向过程编程而言提高了代码的可重用性；<br> 2.面向对象的三个重要特征：封装、继承、多态，提高了系统的灵活性与健壮性；<br> 3.面向对象的中的属性和方法的可访问性提高了程序的安全性，数据调取的多样性.</p>
+<p>面向对象优点：
+1.一切皆对象，相对于面向过程编程而言提高了代码的可重用性；
+2.面向对象的三个重要特征：封装、继承、多态，提高了系统的灵活性与健壮性；
+3.面向对象的中的属性和方法的可访问性提高了程序的安全性，数据调取的多样性.</p>
 
     </div>
 
@@ -640,7 +780,12 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">设计模式——观察者模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.1.</span> <span class="nav-text">观察者模式简单实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%9C%BA%E6%99%AF%E5%92%8C%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">1.2.</span> <span class="nav-text">使用观察者模式的场景和优缺点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%9A%84%E4%B8%80%E4%BA%9B%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">常用设计模式的一些优缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%EF%BC%88Static-Factory-Method%EF%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">简单工厂模式（Static Factory Method）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">2.1.1.</span> <span class="nav-text">适用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%82%B9"><span class="nav-number">2.1.2.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9"><span class="nav-number">2.1.3.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F%EF%BC%88Strategy%EF%BC%89"><span class="nav-number">2.2.</span> <span class="nav-text">策略模式（Strategy）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">适用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%82%B9-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9-1"><span class="nav-number">2.2.3.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A3%85%E9%A5%B0%E6%A8%A1%E5%BC%8F%EF%BC%88Decorator%EF%BC%89"><span class="nav-number">2.3.</span> <span class="nav-text">装饰模式（Decorator）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF-2"><span class="nav-number">2.3.1.</span> <span class="nav-text">适用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%82%B9-2"><span class="nav-number">2.3.2.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9-2"><span class="nav-number">2.3.3.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F%EF%BC%88Proxy%EF%BC%89"><span class="nav-number">2.4.</span> <span class="nav-text">代理模式（Proxy）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF-3"><span class="nav-number">2.4.1.</span> <span class="nav-text">适用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%82%B9-3"><span class="nav-number">2.4.2.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9-3"><span class="nav-number">2.4.3.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F%EF%BC%88Factory-Method%EF%BC%89"><span class="nav-number">2.5.</span> <span class="nav-text">工厂方法模式（Factory Method）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF-4"><span class="nav-number">2.5.1.</span> <span class="nav-text">适用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%82%B9-4"><span class="nav-number">2.5.2.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9-4"><span class="nav-number">2.5.3.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F%EF%BC%88Prototype%EF%BC%89"><span class="nav-number">2.6.</span> <span class="nav-text">原型模式（Prototype）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF-5"><span class="nav-number">2.6.1.</span> <span class="nav-text">适用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%82%B9-5"><span class="nav-number">2.6.2.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9-5"><span class="nav-number">2.6.3.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F%EF%BC%88Template-Method%EF%BC%89"><span class="nav-number">2.7.</span> <span class="nav-text">模板方法模式（Template Method）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF-6"><span class="nav-number">2.7.1.</span> <span class="nav-text">适用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%82%B9-6"><span class="nav-number">2.7.2.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9-6"><span class="nav-number">2.7.3.</span> <span class="nav-text">缺点</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%87%A0%E7%A7%8D%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%EF%BC%88%E6%89%8B%E5%86%99%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">单例模式的几种实现方式（手写单例模式）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.1.</span> <span class="nav-text">什么是单例模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E5%AE%9E%E4%BE%8B%E7%9A%84%E5%94%AF%E4%B8%80"><span class="nav-number">3.2.</span> <span class="nav-text">如何保证实例的唯一</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%A0%E7%A7%8D%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E7%9A%84%E6%AF%94%E8%BE%83"><span class="nav-number">3.3.</span> <span class="nav-text">几种单例模式的比较</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A5%BF%E6%B1%89%E5%BC%8F"><span class="nav-number">3.3.1.</span> <span class="nav-text">饿汉式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%87%92%E6%B1%89%E5%BC%8F"><span class="nav-number">3.3.2.</span> <span class="nav-text">懒汉式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E9%94%81"><span class="nav-number">3.3.3.</span> <span class="nav-text">同步锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8C%E9%87%8D%E6%A3%80%E6%9F%A5%E9%94%81"><span class="nav-number">3.3.4.</span> <span class="nav-text">双重检查锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%86%85%E9%83%A8%E7%B1%BB"><span class="nav-number">3.3.5.</span> <span class="nav-text">静态内部类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%9A%E4%B8%BE"><span class="nav-number">3.3.6.</span> <span class="nav-text">枚举</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">3.4.</span> <span class="nav-text">单例模式的优缺点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring%E4%B8%AD%E7%94%A8%E5%88%B0%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.</span> <span class="nav-text">Spring中用到的设计模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6%E5%8F%8D%E8%BD%AC-IoC-%E5%92%8C%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5-DI"><span class="nav-number">4.1.</span> <span class="nav-text">控制反转(IoC)和依赖注入(DI)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.2.</span> <span class="nav-text">工厂模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%A4%E7%A7%8D%E5%88%9B%E5%BB%BA-bean-%E5%AF%B9%E8%B1%A1%E6%96%B9%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9A"><span class="nav-number">4.2.1.</span> <span class="nav-text">两种创建 bean 对象方式的区别：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.3.</span> <span class="nav-text">单例模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-%E5%AE%9E%E7%8E%B0%E5%8D%95%E4%BE%8B%E7%9A%84%E6%96%B9%E5%BC%8F%EF%BC%9A"><span class="nav-number">4.3.1.</span> <span class="nav-text">Spring 实现单例的方式：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.4.</span> <span class="nav-text">代理模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F%E5%9C%A8-AOP-%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8"><span class="nav-number">4.4.1.</span> <span class="nav-text">代理模式在 AOP 中的应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-AOP-%E5%92%8C-AspectJ-AOP-%E7%9A%84%E5%8C%BA%E5%88%AB%E5%92%8C%E8%81%94%E7%B3%BB%EF%BC%9A"><span class="nav-number">4.4.2.</span> <span class="nav-text">Spring AOP 和 AspectJ AOP 的区别和联系：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95"><span class="nav-number">4.5.</span> <span class="nav-text">模板方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.6.</span> <span class="nav-text">观察者模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9E%8B%E4%B8%AD%E7%9A%84%E4%B8%89%E7%A7%8D%E8%A7%92%E8%89%B2"><span class="nav-number">4.6.1.</span> <span class="nav-text">Spring 事件驱动模型中的三种角色</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6"><span class="nav-number">4.6.1.1.</span> <span class="nav-text">事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E8%80%85"><span class="nav-number">4.6.1.2.</span> <span class="nav-text">事件监听者</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E5%8F%91%E5%B8%83%E8%80%85"><span class="nav-number">4.6.1.3.</span> <span class="nav-text">事件发布者</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BE%E4%BE%8B"><span class="nav-number">4.6.1.4.</span> <span class="nav-text">举例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.7.</span> <span class="nav-text">适配器模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#spring-AOP-%E4%B8%AD%E7%9A%84%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.7.1.</span> <span class="nav-text">spring AOP 中的适配器模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#spring-MVC-%E4%B8%AD%E7%9A%84%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.7.2.</span> <span class="nav-text">spring MVC 中的适配器模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.8.</span> <span class="nav-text">装饰者模式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E8%A3%85%E9%A5%B0%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.</span> <span class="nav-text">什么是装饰器模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%90%86%E8%A7%A3"><span class="nav-number">6.</span> <span class="nav-text">简述面向对象的理解</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">设计模式——观察者模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.1.</span> <span class="nav-text">观察者模式简单实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%9C%BA%E6%99%AF%E5%92%8C%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">1.2.</span> <span class="nav-text">使用观察者模式的场景和优缺点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%9A%84%E4%B8%80%E4%BA%9B%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">常用设计模式的一些优缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8Fstatic-factory-method"><span class="nav-number">2.1.</span> <span class="nav-text">简单工厂模式（Static Factory
+Method）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">2.1.1.</span> <span class="nav-text">适用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%82%B9"><span class="nav-number">2.1.2.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9"><span class="nav-number">2.1.3.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8Fstrategy"><span class="nav-number">2.2.</span> <span class="nav-text">策略模式（Strategy）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">适用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%82%B9-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9-1"><span class="nav-number">2.2.3.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A3%85%E9%A5%B0%E6%A8%A1%E5%BC%8Fdecorator"><span class="nav-number">2.3.</span> <span class="nav-text">装饰模式（Decorator）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF-2"><span class="nav-number">2.3.1.</span> <span class="nav-text">适用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%82%B9-2"><span class="nav-number">2.3.2.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9-2"><span class="nav-number">2.3.3.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8Fproxy"><span class="nav-number">2.4.</span> <span class="nav-text">代理模式（Proxy）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF-3"><span class="nav-number">2.4.1.</span> <span class="nav-text">适用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%82%B9-3"><span class="nav-number">2.4.2.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9-3"><span class="nav-number">2.4.3.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8Ffactory-method"><span class="nav-number">2.5.</span> <span class="nav-text">工厂方法模式（Factory Method）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF-4"><span class="nav-number">2.5.1.</span> <span class="nav-text">适用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%82%B9-4"><span class="nav-number">2.5.2.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9-4"><span class="nav-number">2.5.3.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8Fprototype"><span class="nav-number">2.6.</span> <span class="nav-text">原型模式（Prototype）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF-5"><span class="nav-number">2.6.1.</span> <span class="nav-text">适用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%82%B9-5"><span class="nav-number">2.6.2.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9-5"><span class="nav-number">2.6.3.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8Ftemplate-method"><span class="nav-number">2.7.</span> <span class="nav-text">模板方法模式（Template
+Method）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF-6"><span class="nav-number">2.7.1.</span> <span class="nav-text">适用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%82%B9-6"><span class="nav-number">2.7.2.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9-6"><span class="nav-number">2.7.3.</span> <span class="nav-text">缺点</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%87%A0%E7%A7%8D%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%E6%89%8B%E5%86%99%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">单例模式的几种实现方式（手写单例模式）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.1.</span> <span class="nav-text">什么是单例模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E5%AE%9E%E4%BE%8B%E7%9A%84%E5%94%AF%E4%B8%80"><span class="nav-number">3.2.</span> <span class="nav-text">如何保证实例的唯一</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%A0%E7%A7%8D%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E7%9A%84%E6%AF%94%E8%BE%83"><span class="nav-number">3.3.</span> <span class="nav-text">几种单例模式的比较</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A5%BF%E6%B1%89%E5%BC%8F"><span class="nav-number">3.3.1.</span> <span class="nav-text">饿汉式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%87%92%E6%B1%89%E5%BC%8F"><span class="nav-number">3.3.2.</span> <span class="nav-text">懒汉式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E9%94%81"><span class="nav-number">3.3.3.</span> <span class="nav-text">同步锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8C%E9%87%8D%E6%A3%80%E6%9F%A5%E9%94%81"><span class="nav-number">3.3.4.</span> <span class="nav-text">双重检查锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%86%85%E9%83%A8%E7%B1%BB"><span class="nav-number">3.3.5.</span> <span class="nav-text">静态内部类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%9A%E4%B8%BE"><span class="nav-number">3.3.6.</span> <span class="nav-text">枚举</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">3.4.</span> <span class="nav-text">单例模式的优缺点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#spring%E4%B8%AD%E7%94%A8%E5%88%B0%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.</span> <span class="nav-text">Spring中用到的设计模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6%E5%8F%8D%E8%BD%ACioc%E5%92%8C%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5di"><span class="nav-number">4.1.</span> <span class="nav-text">控制反转(IoC)和依赖注入(DI)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.2.</span> <span class="nav-text">工厂模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%A4%E7%A7%8D%E5%88%9B%E5%BB%BA-bean-%E5%AF%B9%E8%B1%A1%E6%96%B9%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">4.2.1.</span> <span class="nav-text">两种创建 bean
+对象方式的区别：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.3.</span> <span class="nav-text">单例模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#spring-%E5%AE%9E%E7%8E%B0%E5%8D%95%E4%BE%8B%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="nav-number">4.3.1.</span> <span class="nav-text">Spring 实现单例的方式：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.4.</span> <span class="nav-text">代理模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F%E5%9C%A8-aop-%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8"><span class="nav-number">4.4.1.</span> <span class="nav-text">代理模式在 AOP 中的应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#spring-aop-%E5%92%8C-aspectj-aop-%E7%9A%84%E5%8C%BA%E5%88%AB%E5%92%8C%E8%81%94%E7%B3%BB"><span class="nav-number">4.4.2.</span> <span class="nav-text">Spring AOP 和 AspectJ
+AOP 的区别和联系：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95"><span class="nav-number">4.5.</span> <span class="nav-text">模板方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.6.</span> <span class="nav-text">观察者模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#spring-%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9E%8B%E4%B8%AD%E7%9A%84%E4%B8%89%E7%A7%8D%E8%A7%92%E8%89%B2"><span class="nav-number">4.6.1.</span> <span class="nav-text">Spring
+事件驱动模型中的三种角色</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6"><span class="nav-number">4.6.1.1.</span> <span class="nav-text">事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E8%80%85"><span class="nav-number">4.6.1.2.</span> <span class="nav-text">事件监听者</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E5%8F%91%E5%B8%83%E8%80%85"><span class="nav-number">4.6.1.3.</span> <span class="nav-text">事件发布者</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BE%E4%BE%8B"><span class="nav-number">4.6.1.4.</span> <span class="nav-text">举例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.7.</span> <span class="nav-text">适配器模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#spring-aop-%E4%B8%AD%E7%9A%84%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.7.1.</span> <span class="nav-text">spring AOP 中的适配器模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#spring-mvc-%E4%B8%AD%E7%9A%84%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.7.2.</span> <span class="nav-text">spring MVC 中的适配器模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.8.</span> <span class="nav-text">装饰者模式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E8%A3%85%E9%A5%B0%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.</span> <span class="nav-text">什么是装饰器模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%90%86%E8%A7%A3"><span class="nav-number">6.</span> <span class="nav-text">简述面向对象的理解</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -656,7 +801,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-count">53</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

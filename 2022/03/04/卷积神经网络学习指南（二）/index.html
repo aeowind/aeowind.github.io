@@ -27,22 +27,12 @@
 <meta property="og:site_name" content="Aeo&#39;s Blog">
 <meta property="og:description" content="而青史岂能不真，魏书洛阳城">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/Imezsf.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/ImmZQ0.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/ImmBYd.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/ImueVU.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/ImuboF.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/ImKCdO.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/ImKVSA.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/ImKylR.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/ImKopd.png">
 <meta property="article:published_time" content="2022-03-04T12:46:25.455Z">
 <meta property="article:modified_time" content="2021-11-04T12:53:58.810Z">
 <meta property="article:author" content="aeowind">
 <meta property="article:tag" content="学习">
 <meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://z3.ax1x.com/2021/11/04/Imezsf.png">
 
 <link rel="canonical" href="https://aeowind.github.io/2022/03/04/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97%EF%BC%88%E4%BA%8C%EF%BC%89/">
 
@@ -264,52 +254,80 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="CNN"><a href="#CNN" class="headerlink" title="CNN"></a>CNN</h1><h2 id="全连接层"><a href="#全连接层" class="headerlink" title="全连接层"></a>全连接层</h2><p>上一篇文章我们说到卷积神经网络的前三层，现在开始讲解它的最后一层全连接层。</p>
-<p>全连接层的形式和前馈神经网络（feedforward neural network）的形式一样，或者称为多层感知机（multilayer perceptron，MLP），纠结了很久要不要再具体介绍前馈神经网络，最终决定还是先假设读者朋友都已经有了这方面相关的知识，如果有需要的话我再单独写一篇文章介绍FNN。</p>
+        <h1 id="cnn">CNN</h1>
+<h2 id="全连接层">全连接层</h2>
+<p>上一篇文章我们说到卷积神经网络的前三层，现在开始讲解它的最后一层全连接层。</p>
+<p>全连接层的形式和前馈神经网络（feedforward neural
+network）的形式一样，或者称为多层感知机（multilayer
+perceptron，MLP），纠结了很久要不要再具体介绍前馈神经网络，最终决定还是先假设读者朋友都已经有了这方面相关的知识，如果有需要的话我再单独写一篇文章介绍FNN。</p>
 <p>还是回到上一篇中识别图片X的栗子。</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/Imezsf"><img src="https://z3.ax1x.com/2021/11/04/Imezsf.png" alt="Imezsf.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/Imezsf"><img
+src="https://z3.ax1x.com/2021/11/04/Imezsf.png"
+alt="Imezsf.png" /></a></p>
 <p>原图片尺寸为9X9，在一系列的卷积、relu、池化操作后，得到尺寸被压缩为2X2的三张特征图。</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/ImmZQ0"><img src="https://z3.ax1x.com/2021/11/04/ImmZQ0.png" alt="ImmZQ0.png"></a></p>
-<p>从9X9，到2X2，看起来我们已经做了很多事情了哎！似乎胜利就在前方啦(ง •_•)ง</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/ImmZQ0"><img
+src="https://z3.ax1x.com/2021/11/04/ImmZQ0.png"
+alt="ImmZQ0.png" /></a></p>
+<p>从9X9，到2X2，看起来我们已经做了很多事情了哎！似乎胜利就在前方啦(ง
+•_•)ง</p>
 <p>等一下，想想我们最初和最终的目的到底是什么？是对这张照片进行识别，识别它到底是X还是O呢（其实也算是对它进行一个二分类）。那我们现在得到的是什么？是一个2X2的矩阵，好像和分类并没有什么毛线关系啊。</p>
 <p>全连接层要做的，就是对之前的所有操作进行一个总结，给我们一个最终的结果。</p>
 <p>它最大的目的是对特征图进行维度上的改变，来得到每个分类类别对应的概率值。</p>
 <p>全连接层，顾名思义就是全部都连接起来，让我们把它与卷积层对比起来看。</p>
 <p>这么说来的话前面的卷积层肯定就不是全连接了，没错，卷积层采用的是“<strong>局部连接</strong>”的思想，回忆一下卷积层的操作，是用一个3X3的图与原图进行连接操作，很明显原图中只有一个3X3的窗口能够与它连接起来。</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/ImmBYd"><img src="https://z3.ax1x.com/2021/11/04/ImmBYd.png" alt="ImmBYd.png"></a></p>
-<p>那除窗口之外的、未连接的部分怎么办呢？ 我们都知道，采用的是将窗口滑动起来的方法后续进行连接。这个方法的思想就是“<strong>参数共享</strong>” ，参数指的就是filter，用滑动窗口的方式，将这个filter值共享给原图中的每一块区域连接进行卷积运算。</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/ImmBYd"><img
+src="https://z3.ax1x.com/2021/11/04/ImmBYd.png"
+alt="ImmBYd.png" /></a></p>
+<p>那除窗口之外的、未连接的部分怎么办呢？
+我们都知道，采用的是将窗口滑动起来的方法后续进行连接。这个方法的思想就是“<strong>参数共享</strong>”
+，参数指的就是filter，用滑动窗口的方式，将这个filter值共享给原图中的每一块区域连接进行卷积运算。</p>
 <p>敲一下黑板：局部连接与参数共享是卷积神经网络最重要的两个性质！</p>
 <p>那么接下来再来看全连接神经网络。</p>
 <p>还是拿9X9的输入原图做栗子，要进行全连接的话，那权值参数矩阵应该也是9x9才对，保证每一个值都有对应的权值参数来运算。（二者坐标直接一一对应）</p>
-<p>还是回来看接下来的操作，得到了2X2的特征图后，对其应用全连接网络，再全连接层中有一个非常重要的函数—-Softmax，它是一个分类函数，输出的是每个对应类别的概率值。比如：</p>
+<p>还是回来看接下来的操作，得到了2X2的特征图后，对其应用全连接网络，再全连接层中有一个非常重要的函数----Softmax，它是一个分类函数，输出的是每个对应类别的概率值。比如：</p>
 <p>【0.5，0.03，0.89，0.97，0.42，0.15】就表示有6个类别，并且属于第四个类别的概率值0.97最大，因此判定属于第四个类别。</p>
 <p>注意:本例中因为只有两个类别X和O，而且数据量到此已经非常少了，因此直接将三个特征图改变维度直接变成一维的数据。（相当于全连接层的每个参数均为1）</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/ImueVU"><img src="https://z3.ax1x.com/2021/11/04/ImueVU.png" alt="ImueVU.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/ImueVU"><img
+src="https://z3.ax1x.com/2021/11/04/ImueVU.png"
+alt="ImueVU.png" /></a></p>
 <p>展开的数据即为属于类别X的概率值，值大小也在对应X的线条粗细中表现出来了。</p>
 <p>以上所有的操作都是对标准的原图X来进行的，因此最终分类显示即为X毋庸置疑。</p>
 <p>假设对一张看起来并不标准的图进行分类。如下</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/ImuboF"><img src="https://z3.ax1x.com/2021/11/04/ImuboF.png" alt="ImuboF.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/ImuboF"><img
+src="https://z3.ax1x.com/2021/11/04/ImuboF.png"
+alt="ImuboF.png" /></a></p>
 <p>对于进行一系列操作后，假设得到的概率值如下所示：</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/ImKCdO"><img src="https://z3.ax1x.com/2021/11/04/ImKCdO.png" alt="ImKCdO.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/ImKCdO"><img
+src="https://z3.ax1x.com/2021/11/04/ImKCdO.png"
+alt="ImKCdO.png" /></a></p>
 <p>0.9表示极其大可能是X，因此对应到X的黄色线条比对应到O的绿色线条要粗很多很多。</p>
 <p>我们对结果进行统计分析后可判断这张图片里的字母为X。</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/ImKVSA"><img src="https://z3.ax1x.com/2021/11/04/ImKVSA.png" alt="ImKVSA.png"></a></p>
-<h2 id="神经网络的训练与优化"><a href="#神经网络的训练与优化" class="headerlink" title="神经网络的训练与优化"></a>神经网络的训练与优化</h2><p>前面说了那么多，其实只是一个大致的框架的设计而已，里面的参数具体是多少则是需要训练的。</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/ImKVSA"><img
+src="https://z3.ax1x.com/2021/11/04/ImKVSA.png"
+alt="ImKVSA.png" /></a></p>
+<h2 id="神经网络的训练与优化">神经网络的训练与优化</h2>
+<p>前面说了那么多，其实只是一个大致的框架的设计而已，里面的参数具体是多少则是需要训练的。</p>
 <p>那么神经网络到底需要训练什么呢？</p>
 <p>训练的就是那些<strong>卷积核（filter）</strong> 。</p>
 <p>针对这个识别X的例子，我们可以人为定义三个3X3的卷积核，便可实现对X的特征提取。但是在实际运用中，比如识别手写字母，几乎不可能存在标准的写法，每个人的字迹都完全不同，因此原来的那三个标准的卷积核就变得不再适用了，为了提高CNN模型的通用性（机器学习中的“泛化能力”），就需要对卷积核进行改写。经过成千上万的训练集来训练，每一次加入新的数据，都有可能对卷积核里的值造成影响。</p>
 <p>那么具体的训练方法是什么呢？</p>
-<p>就是赫赫有名的BP算法—BackProp反向传播算法。</p>
-<p>在训练时，我们采用的训练数据一般都是带有标签label的图片。如果图片中的字母是X，则label&#x3D;x，如果图片中的字母是A，则label&#x3D;A。 标签能直观地反映图片。</p>
+<p>就是赫赫有名的BP算法---BackProp反向传播算法。</p>
+<p>在训练时，我们采用的训练数据一般都是带有标签label的图片。如果图片中的字母是X，则label=x，如果图片中的字母是A，则label=A。
+标签能直观地反映图片。</p>
 <p>在最开始，训练前，我们定义一个大小为3X3的卷积核，那么里面具体的值是多少，我们都不知道，但又不能为0吧，所以就用随机初始化法来进行赋值，卷积核获取到了一个随机值，便可以开始工作。</p>
 <p>卷积神经网络便可以开始工作了，输入一张带有标签的图片（假设图片内容是字母X）。经网络识别后判断是X的概率为0.3。本来应该是1.0的概率，现在只有0.3，问题就很明显了，存在了很大的误差。</p>
-<p>一种简单定义误差error的计算公式为 </p>
-<p>error &#x3D; (result - label) &#x2F; 2</p>
-<p>训练的终极目的就是使得这个误差最小，常用的方法是 <strong>梯度下降法</strong> 。</p>
+<p>一种简单定义误差error的计算公式为</p>
+<p>error = (result - label) / 2</p>
+<p>训练的终极目的就是使得这个误差最小，常用的方法是
+<strong>梯度下降法</strong> 。</p>
 <p>内部设计的具体复杂公式在此不多做叙述。</p>
 <p>简单的说可以参照下图，要使得误差error最小，就是让卷积核里的参数w往梯度下降最小的反向改变。</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/ImKylR"><img src="https://z3.ax1x.com/2021/11/04/ImKylR.png" alt="ImKylR.png"></a></p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/ImKopd"><img src="https://z3.ax1x.com/2021/11/04/ImKopd.png" alt="ImKopd.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/ImKylR"><img
+src="https://z3.ax1x.com/2021/11/04/ImKylR.png"
+alt="ImKylR.png" /></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/ImKopd"><img
+src="https://z3.ax1x.com/2021/11/04/ImKopd.png"
+alt="ImKopd.png" /></a></p>
 <p>用这种方法来改变卷积核里的参数W使得误差最小。</p>
 <p>在现有的各大深度学习框架中，CNN的优化可直接通过定义优化器解决，因此这里只是简单叙述原理以供了解。</p>
 
@@ -397,7 +415,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CNN"><span class="nav-number">1.</span> <span class="nav-text">CNN</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%A8%E8%BF%9E%E6%8E%A5%E5%B1%82"><span class="nav-number">1.1.</span> <span class="nav-text">全连接层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E8%AE%AD%E7%BB%83%E4%B8%8E%E4%BC%98%E5%8C%96"><span class="nav-number">1.2.</span> <span class="nav-text">神经网络的训练与优化</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#cnn"><span class="nav-number">1.</span> <span class="nav-text">CNN</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%A8%E8%BF%9E%E6%8E%A5%E5%B1%82"><span class="nav-number">1.1.</span> <span class="nav-text">全连接层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E8%AE%AD%E7%BB%83%E4%B8%8E%E4%BC%98%E5%8C%96"><span class="nav-number">1.2.</span> <span class="nav-text">神经网络的训练与优化</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -413,7 +431,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-count">53</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

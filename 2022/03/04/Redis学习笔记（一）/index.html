@@ -27,12 +27,6 @@
 <meta property="og:site_name" content="Aeo&#39;s Blog">
 <meta property="og:description" content="She&#39;s always been hopeless at hoping, always coped badly with coping.">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://z3.ax1x.com/2021/08/24/hFTrjA.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/08/24/hAZTot.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/08/23/hPjLff.jpg">
-<meta property="og:image" content="https://z3.ax1x.com/2021/08/23/hPvPkq.jpg">
-<meta property="og:image" content="https://z3.ax1x.com/2021/09/01/hB4o0f.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/09/01/hB56uq.png">
 <meta property="article:published_time" content="2022-03-04T12:46:25.436Z">
 <meta property="article:modified_time" content="2021-09-02T02:24:29.648Z">
 <meta property="article:author" content="aeowind">
@@ -41,7 +35,6 @@
 <meta property="article:tag" content="工具">
 <meta property="article:tag" content="Redis">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://z3.ax1x.com/2021/08/24/hFTrjA.png">
 
 <link rel="canonical" href="https://aeowind.github.io/2022/03/04/Redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/">
 
@@ -271,29 +264,48 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="NoSQL"><a href="#NoSQL" class="headerlink" title="NoSQL"></a>NoSQL</h2><h3 id="NoSQL入门概述"><a href="#NoSQL入门概述" class="headerlink" title="NoSQL入门概述"></a>NoSQL入门概述</h3><h4 id="单机MySQL的美好年代"><a href="#单机MySQL的美好年代" class="headerlink" title="单机MySQL的美好年代"></a>单机MySQL的美好年代</h4><p>在90年代，一个网站的访问量一般都不大，用单个数据库完全可以轻松应付。<br>在那个时候，更多的都是静态网页，动态交互类型的网站不多。</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/hFTrjA"><img src="https://z3.ax1x.com/2021/08/24/hFTrjA.png" alt="hFTrjA.png"></a></p>
+        <h2 id="nosql">NoSQL</h2>
+<h3 id="nosql入门概述">NoSQL入门概述</h3>
+<h4 id="单机mysql的美好年代">单机MySQL的美好年代</h4>
+<p>在90年代，一个网站的访问量一般都不大，用单个数据库完全可以轻松应付。
+在那个时候，更多的都是静态网页，动态交互类型的网站不多。</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/hFTrjA"><img
+src="https://z3.ax1x.com/2021/08/24/hFTrjA.png"
+alt="hFTrjA.png" /></a></p>
 <blockquote>
-<p><strong>DAL dal</strong>是数据访问层的英文缩写，即为<code>数据访问层</code>（Data Access Layer）</p>
+<p><strong>DAL
+dal</strong>是数据访问层的英文缩写，即为<code>数据访问层</code>（Data
+Access Layer）</p>
 </blockquote>
 <p>上述架构下，我们来看看<strong>数据存储的瓶颈</strong>是什么?</p>
-<ol>
-<li><p><strong>数据量的总大小</strong>一个机器放不下时</p>
-</li>
-<li><p>数据的<strong>索引</strong>(B+ Tree)一个机器的内存放不下时</p>
-</li>
-<li><p><strong>访问量(读写混合)</strong> 一个实例不能承受</p>
-</li>
+<ol type="1">
+<li><p><strong>数据量的总大小</strong>一个机器放不下时</p></li>
+<li><p>数据的<strong>索引</strong>(B+
+Tree)一个机器的内存放不下时</p></li>
+<li><p><strong>访问量(读写混合)</strong> 一个实例不能承受</p></li>
 </ol>
-<h4 id="Memcached-缓存-MySQL-垂直拆分"><a href="#Memcached-缓存-MySQL-垂直拆分" class="headerlink" title="Memcached(缓存)+MySQL+垂直拆分"></a>Memcached(缓存)+MySQL+垂直拆分</h4><p>后来，随着访问量的上升，几乎大部分使用MySQL架构的网站在数据库上都开始出现了性能问题，web程序不再仅仅专注在功能上，同时也在追求性能。程序员们开始大量的<strong>使用缓存技术来缓解数据库的压力，优化数据库的结构和索引</strong>。开始比较流行的是通过文件缓存来缓解数据库压力，但是当访问量继续增大的时候，多台web机器通过文件缓存不能共享，大量的小文件缓存也带了了比较高的IO压力。在这个时候，<code>Memcached</code>就自然的成为一个非常时尚的技术产品。</p>
-<h4 id="Mysql主从读写分离"><a href="#Mysql主从读写分离" class="headerlink" title="Mysql主从读写分离"></a>Mysql主从读写分离</h4><p>由于数据库的写入压力增加，<code>Memcached</code>只能缓解数据库的读取压力。读写集中在一个数据库上让数据库不堪重负，大部分网站开始使用主从复制技术来达到读写分离，以提高读写性能和读库的可扩展性。<strong>Mysql的master-slave模式</strong>成为这个时候的网站标配了。</p>
-<h4 id="分表分库-水平拆分-mysql集群"><a href="#分表分库-水平拆分-mysql集群" class="headerlink" title="分表分库+水平拆分+mysql集群"></a>分表分库+水平拆分+mysql集群</h4><p>在<code>Memcached</code>的高速缓存，<code>MySQL</code>的主从复制，读写分离的基础之上，这时<code>MySQL</code>主库的写压力开始出现瓶颈，而数据量的持续猛增，由于<code>MyISAM</code>使用表锁，在高并发下会出现严重的锁问题，大量的高并发MySQL应用开始使用<code>InnoDB</code>引擎代替<code>MyISAM</code>。</p>
+<h4 id="memcached缓存mysql垂直拆分">Memcached(缓存)+MySQL+垂直拆分</h4>
+<p>后来，随着访问量的上升，几乎大部分使用MySQL架构的网站在数据库上都开始出现了性能问题，web程序不再仅仅专注在功能上，同时也在追求性能。程序员们开始大量的<strong>使用缓存技术来缓解数据库的压力，优化数据库的结构和索引</strong>。开始比较流行的是通过文件缓存来缓解数据库压力，但是当访问量继续增大的时候，多台web机器通过文件缓存不能共享，大量的小文件缓存也带了了比较高的IO压力。在这个时候，<code>Memcached</code>就自然的成为一个非常时尚的技术产品。</p>
+<h4 id="mysql主从读写分离">Mysql主从读写分离</h4>
+<p>由于数据库的写入压力增加，<code>Memcached</code>只能缓解数据库的读取压力。读写集中在一个数据库上让数据库不堪重负，大部分网站开始使用主从复制技术来达到读写分离，以提高读写性能和读库的可扩展性。<strong>Mysql的master-slave模式</strong>成为这个时候的网站标配了。</p>
+<h4 id="分表分库水平拆分mysql集群">分表分库+水平拆分+mysql集群</h4>
+<p>在<code>Memcached</code>的高速缓存，<code>MySQL</code>的主从复制，读写分离的基础之上，这时<code>MySQL</code>主库的写压力开始出现瓶颈，而数据量的持续猛增，由于<code>MyISAM</code>使用表锁，在高并发下会出现严重的锁问题，大量的高并发MySQL应用开始使用<code>InnoDB</code>引擎代替<code>MyISAM</code>。</p>
 <p>同时，开始流行<strong>使用分表分库来缓解写压力和数据增长的扩展问题</strong>。这个时候，分表分库成了一个热门技术，是面试的热门问题也是业界讨论的热门技术问题。也就在这个时候，MySQL推出了还不太稳定的表分区，这也给技术实力一般的公司带来了希望。虽然<code>MySQL</code>推出了<code>MySQL Cluster集群</code>，但性能也不能很好满足互联网的要求，只是在<strong>高可靠性</strong>上提供了非常大的保证。</p>
-<h4 id="MySQL的扩展性瓶颈"><a href="#MySQL的扩展性瓶颈" class="headerlink" title="MySQL的扩展性瓶颈"></a>MySQL的扩展性瓶颈</h4><p><code>MySQL数据库</code>也经常存储一些大文本字段，导致数据库表非常的大，在做数据库恢复的时候就导致非常的慢，不容易快速恢复数据库。比如1000万4KB大小的文本就接近40GB的大小， 如果能把这些数据从MySQL省去，MySQL将变得非常的小。关系数据库很强大，但是它并不能很好的应付所有的应用场景。<strong>MySQL的扩展性差(需要复杂的技术来实现)，大数据下IO压力大，表结构更改困难</strong>，正是当前使用MySQL的开发人员面临的问题。</p>
-<h4 id="为什么用NoSQL"><a href="#为什么用NoSQL" class="headerlink" title="为什么用NoSQL"></a>为什么用NoSQL</h4><p>今天我们可以通过第三方平台(如: Google，Facebook等) 可以很容易的访问和抓取数据。用户的个人信息，社交网络，地理位置，用户生成的数据和用户操作日志已经成倍的增加。我们如果要对这些用户数据进行挖掘，那SQL数据库已经不适合这些应用了，<strong>NoSQL数据库</strong>的发展也却能很好的处理这些大的数据。</p>
-<h3 id="NoSQL简介"><a href="#NoSQL简介" class="headerlink" title="NoSQL简介"></a>NoSQL简介</h3><h4 id="NoSQL是什么"><a href="#NoSQL是什么" class="headerlink" title="NoSQL是什么"></a>NoSQL是什么</h4><p><strong>NoSQL(NoSQL &#x3D; Not Only SQL)</strong> ，意即“不仅仅是SQL”，泛指<code>非关系型的数据库</code>。随着互联网web2.0网站的兴起，传统的关系数据库在应付web2.0网站，特别是超大规模和高并发的SNS类型的web2.0纯动态网站已经显得力不从心，暴露了很多难以克服的问题，而非关系型的数据库则由于其本身的特点得到了非常迅速的发展。 <strong>NoSQL数据库</strong> 的产生就是为了 <strong>解决大规模数据集合多重数据种类带来的挑战，尤其是大数据应用难题，包括超大规模数据的存储。</strong></p>
+<h4 id="mysql的扩展性瓶颈">MySQL的扩展性瓶颈</h4>
+<p><code>MySQL数据库</code>也经常存储一些大文本字段，导致数据库表非常的大，在做数据库恢复的时候就导致非常的慢，不容易快速恢复数据库。比如1000万4KB大小的文本就接近40GB的大小，
+如果能把这些数据从MySQL省去，MySQL将变得非常的小。关系数据库很强大，但是它并不能很好的应付所有的应用场景。<strong>MySQL的扩展性差(需要复杂的技术来实现)，大数据下IO压力大，表结构更改困难</strong>，正是当前使用MySQL的开发人员面临的问题。</p>
+<h4 id="为什么用nosql">为什么用NoSQL</h4>
+<p>今天我们可以通过第三方平台(如: Google，Facebook等)
+可以很容易的访问和抓取数据。用户的个人信息，社交网络，地理位置，用户生成的数据和用户操作日志已经成倍的增加。我们如果要对这些用户数据进行挖掘，那SQL数据库已经不适合这些应用了，<strong>NoSQL数据库</strong>的发展也却能很好的处理这些大的数据。</p>
+<h3 id="nosql简介">NoSQL简介</h3>
+<h4 id="nosql是什么">NoSQL是什么</h4>
+<p><strong>NoSQL(NoSQL = Not Only SQL)</strong>
+，意即“不仅仅是SQL”，泛指<code>非关系型的数据库</code>。随着互联网web2.0网站的兴起，传统的关系数据库在应付web2.0网站，特别是超大规模和高并发的SNS类型的web2.0纯动态网站已经显得力不从心，暴露了很多难以克服的问题，而非关系型的数据库则由于其本身的特点得到了非常迅速的发展。
+<strong>NoSQL数据库</strong> 的产生就是为了
+<strong>解决大规模数据集合多重数据种类带来的挑战，尤其是大数据应用难题，包括超大规模数据的存储。</strong></p>
 <p>(例如谷歌或Facebook每天为他们的用户收集万亿比特的数据)。这些类型的数据存储不需要固定的模式，<strong>无需多余操作就可以横向扩展。</strong></p>
-<h4 id="NoSQL能干嘛"><a href="#NoSQL能干嘛" class="headerlink" title="NoSQL能干嘛"></a>NoSQL能干嘛</h4><ul>
+<h4 id="nosql能干嘛">NoSQL能干嘛</h4>
+<ul>
 <li>易扩展</li>
 </ul>
 <p>NoSQL数据库种类繁多，但是一个<code>共同的特点</code>都是<strong>去掉关系数据库的关系型特性</strong>。数据之间无关系，这样就非常容易扩展。也无形之间，在架构的层面上带来了可扩展的能力。</p>
@@ -302,7 +314,8 @@
 </ul>
 <p>NoSQL数据库都具有非常高的读写性能，尤其在大数据量下，同样表现优秀。</p>
 <p>这得益于它的<strong>无关系性</strong>，数据库的结构简单。</p>
-<p>一般MySQL使用Query Cache，每次表的更新Cache就失效，是一种大粒度的Cache，在针对web2.0的交互频繁的应用，Cache性能不高。</p>
+<p>一般MySQL使用Query
+Cache，每次表的更新Cache就失效，是一种大粒度的Cache，在针对web2.0的交互频繁的应用，Cache性能不高。</p>
 <p>而<strong>NoSQL的Cache是记录级的</strong>，是一种<strong>细粒度</strong>的Cache，所以NoSQL在这个层面上来说就要性能高很多了。</p>
 <ul>
 <li>多样灵活的数据模型</li>
@@ -315,7 +328,7 @@
 <blockquote>
 <p>RDBMS</p>
 </blockquote>
-<ol>
+<ol type="1">
 <li>高度组织化结构化数据</li>
 <li>结构化查询语言(SQL)</li>
 <li>数据和关系都存储在单独的表中</li>
@@ -326,7 +339,7 @@
 <blockquote>
 <p>NoSQL</p>
 </blockquote>
-<ol>
+<ol type="1">
 <li>代表着不仅仅是SQL</li>
 <li>没有声明性查询语言</li>
 <li>没有预定义的模式</li>
@@ -336,105 +349,99 @@
 <li>CAP定理</li>
 <li>高性能，高可用性和可伸缩性</li>
 </ol>
-<h4 id="有哪些NoSQL"><a href="#有哪些NoSQL" class="headerlink" title="有哪些NoSQL"></a>有哪些NoSQL</h4><ol>
+<h4 id="有哪些nosql">有哪些NoSQL</h4>
+<ol type="1">
 <li>Redis</li>
 <li>Memcached</li>
 <li>MongDB</li>
 </ol>
-<h4 id="怎么用"><a href="#怎么用" class="headerlink" title="怎么用"></a>怎么用</h4><ol>
+<h4 id="怎么用">怎么用</h4>
+<ol type="1">
 <li>KV</li>
 <li>Cache</li>
 <li>Persistence</li>
 </ol>
-<h3 id="NoSQL数据模型简介"><a href="#NoSQL数据模型简介" class="headerlink" title="NoSQL数据模型简介"></a>NoSQL数据模型简介</h3><blockquote>
+<h3 id="nosql数据模型简介">NoSQL数据模型简介</h3>
+<blockquote>
 <p>以一个电商客户、订单、订购、地址模型来对比关系型数据库和非关系型数据库</p>
 </blockquote>
 <ul>
 <li><p><strong>传统关系型数据库</strong>如何设计</p>
 <ul>
 <li>ER图（1：1、1：N、N：1）主外键等</li>
-</ul>
-</li>
+</ul></li>
 <li><p><strong>NOSQL</strong>如何设计</p>
 <ul>
-<li><strong>BSON ()</strong> 是一种类json的一种二进制形式的存储格式，简称<code>Binary JSON</code>，它和JSON一样，支持内嵌的文档对象和数组对象</li>
-</ul>
-</li>
+<li><strong>BSON ()</strong>
+是一种类json的一种二进制形式的存储格式，简称<code>Binary JSON</code>，它和JSON一样，支持内嵌的文档对象和数组对象</li>
+</ul></li>
 <li><p>两者对比，问题和难点</p>
 <ul>
 <li><p>为什么用聚合模型来处理?</p>
 <ul>
-<li><p>高并发的操作是不太建议用关联查询的，互联网公司用冗余数据来避免关联查询   </p>
-</li>
-<li><p>分布式事务是支持不了太多的并发的</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
+<li><p>高并发的操作是不太建议用关联查询的，互联网公司用冗余数据来避免关联查询</p></li>
+<li><p>分布式事务是支持不了太多的并发的</p></li>
+</ul></li>
+</ul></li>
 </ul>
 <blockquote>
-<p>聚合模型</p>
+<p>聚合模型 - KV - BSON - 列族<br />
+-
+顾名思义，是<strong>按列存储数据</strong>的。<code>最大的特点</code>是方便存储结构化和半结构化数据，方便做数据压缩，对针对某一列或者某几列的查询有非常大的IO优势。</p>
 </blockquote>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/hAZTot"><img
+src="https://z3.ax1x.com/2021/08/24/hAZTot.png"
+alt="hAZTot.png" /></a></p>
+<h3 id="nosql数据库的四大分类">NoSQL数据库的四大分类</h3>
 <ul>
-<li>KV</li>
-<li>BSON</li>
-<li>列族  <ul>
-<li>顾名思义，是<strong>按列存储数据</strong>的。<code>最大的特点</code>是方便存储结构化和半结构化数据，方便做数据压缩，对针对某一列或者某几列的查询有非常大的IO优势。</li>
-</ul>
-</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/hAZTot"><img src="https://z3.ax1x.com/2021/08/24/hAZTot.png" alt="hAZTot.png"></a></p>
-<h3 id="NoSQL数据库的四大分类"><a href="#NoSQL数据库的四大分类" class="headerlink" title="NoSQL数据库的四大分类"></a>NoSQL数据库的四大分类</h3><ul>
-<li><p><strong>KV</strong></p>
+<li><strong>KV</strong>
 <ul>
 <li>新浪：BerkeleyDB + Redis</li>
 <li>美团：Redis + tair</li>
 <li>阿里、百度：memcache + Redis</li>
-</ul>
-</li>
-<li><p><strong>文档型数据库（bson格式比较多）</strong></p>
+</ul></li>
+<li><strong>文档型数据库（bson格式比较多）</strong>
 <ul>
 <li>CouchDB</li>
-<li>MongoDB<ul>
+<li>MongoDB
+<ul>
 <li><strong>MongoDB</strong>是一个<strong>基于分布式文件存储</strong>的数据库。由C++语言编写。旨在为WEB应用提供可扩展的高性能数据存储解决方案。</li>
 <li><strong>MongoDB</strong>是一个<strong>介于关系数据库和非关系数据库</strong>之间的产品，是非关系数据库当中功能最丰富，最像关系数据库的。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><strong>列存储数据库</strong></p>
+</ul></li>
+</ul></li>
+<li><strong>列存储数据库</strong>
 <ul>
 <li>Cassandra、HBase</li>
 <li>分布式文件系统</li>
-</ul>
-</li>
-<li><p><strong>图关系数据库</strong></p>
+</ul></li>
+<li><strong>图关系数据库</strong>
 <ul>
 <li>它不是放图形的、放的是关系比如：朋友圈社交网络、广告推荐系统</li>
 <li>社交网络、推荐系统。专注于构建关系图谱</li>
 <li>Neo4j、InfoGrid</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<h3 id="分布式数据库CAP原理"><a href="#分布式数据库CAP原理" class="headerlink" title="分布式数据库CAP原理"></a>分布式数据库CAP原理</h3><h4 id="传统的ACID"><a href="#传统的ACID" class="headerlink" title="传统的ACID"></a>传统的ACID</h4><ul>
+<h3 id="分布式数据库cap原理">分布式数据库CAP原理</h3>
+<h4 id="传统的acid">传统的ACID</h4>
+<ul>
 <li>A (Atomicity) 原子性</li>
 <li>C (Consistency) 一致性</li>
 <li>I (Isolation) 独立性</li>
 <li>D (Durability) 持久性</li>
 </ul>
 <p><strong>关系型数据库遵循ACID规则</strong>，事务在英文中是transaction，和现实世界中的交易很类似，它有如下<code>四个特性</code>：</p>
-<ol>
-<li><p><code>A (Atomicity) 原子性</code> 原子性很容易理解，也就是说事务里的所有操作要么全部做完，要么都不做，事务成功的条件是事务里的所有操作都成功，只要有一个操作失败，整个事务就失败，需要回滚。比如银行转账，从A账户转100元至B账户，分为两个步骤：1）从A账户取100元；2）存入100元至B账户。这两步要么一起完成，要么一起不完成，如果只完成第一步，第二步失败，钱会莫名其妙少了100元。</p>
-</li>
-<li><p><code>C (Consistency) 一致性</code> 一致性也比较容易理解，也就是说数据库要一直处于一致的状态，事务的运行不会改变数据库原本的一致性约束。</p>
-</li>
-<li><p><code>I (Isolation) 独立性</code> 所谓的独立性是指并发的事务之间不会互相影响，如果一个事务要访问的数据正在被另外一个事务修改，只要另外一个事务未提交，它所访问的数据就不受未提交事务的影响。比如现有有个交易是从A账户转100元至B账户，在这个交易还未完成的情况下，如果此时B查询自己的账户，是看不到新增加的100元的</p>
-</li>
-<li><p><code>D (Durability) 持久性</code> 持久性是指一旦事务提交后，它所做的修改将会永久的保存在数据库上，即使出现宕机也不会丢失。</p>
-</li>
+<ol type="1">
+<li><p><code>A (Atomicity) 原子性</code>
+原子性很容易理解，也就是说事务里的所有操作要么全部做完，要么都不做，事务成功的条件是事务里的所有操作都成功，只要有一个操作失败，整个事务就失败，需要回滚。比如银行转账，从A账户转100元至B账户，分为两个步骤：1）从A账户取100元；2）存入100元至B账户。这两步要么一起完成，要么一起不完成，如果只完成第一步，第二步失败，钱会莫名其妙少了100元。</p></li>
+<li><p><code>C (Consistency) 一致性</code>
+一致性也比较容易理解，也就是说数据库要一直处于一致的状态，事务的运行不会改变数据库原本的一致性约束。</p></li>
+<li><p><code>I (Isolation) 独立性</code>
+所谓的独立性是指并发的事务之间不会互相影响，如果一个事务要访问的数据正在被另外一个事务修改，只要另外一个事务未提交，它所访问的数据就不受未提交事务的影响。比如现有有个交易是从A账户转100元至B账户，在这个交易还未完成的情况下，如果此时B查询自己的账户，是看不到新增加的100元的</p></li>
+<li><p><code>D (Durability) 持久性</code>
+持久性是指一旦事务提交后，它所做的修改将会永久的保存在数据库上，即使出现宕机也不会丢失。</p></li>
 </ol>
-<h4 id="CAP"><a href="#CAP" class="headerlink" title="CAP"></a>CAP</h4><ul>
+<h4 id="cap">CAP</h4>
+<ul>
 <li>C:Consistency（强一致性）</li>
 <li>A:Availability（可用性）</li>
 <li>P:Partition tolerance（分区容错性）</li>
@@ -446,7 +453,7 @@
 <li><code>AP</code> 大多数网站架构的选择</li>
 <li><code>CP</code> Redis、Mongodb</li>
 </ul>
-<p><em><strong>注意</strong></em>：分布式架构的时候必须做出取舍。</p>
+<p><strong><em>注意</em></strong>：分布式架构的时候必须做出取舍。</p>
 <p>一致性和可用性之间取一个平衡。多余大多数web应用，其实并不需要强一致性。因此<strong>牺牲C换取P，这是目前分布式数据库产品的方向</strong>。</p>
 <blockquote>
 <p>一致性与可用性的决择</p>
@@ -455,7 +462,8 @@
 <blockquote>
 <p>数据库事务一致性需求</p>
 </blockquote>
-<p>很多web实时系统并不要求严格的数据库事务，对读一致性的要求很低， 有些场合对写一致性要求并不高。允许实现最终一致性。</p>
+<p>很多web实时系统并不要求严格的数据库事务，对读一致性的要求很低，
+有些场合对写一致性要求并不高。允许实现最终一致性。</p>
 <blockquote>
 <p>数据库的写实时性和读实时性需求</p>
 </blockquote>
@@ -463,47 +471,60 @@
 <blockquote>
 <p>对复杂的SQL查询，特别是多表关联查询的需求</p>
 </blockquote>
-<p>任何大数据量的web系统，都非常忌讳多个大表的关联查询，以及复杂的数据分析类型的报表查询，特别是SNS类型的网站，从需求以及产品设计角 度，就避免了这种情况的产生。往往更多的只是单表的主键查询，以及单表的简单条件分页查询，SQL的功能被极大的弱化了。</p>
-<h4 id="经典CAP图"><a href="#经典CAP图" class="headerlink" title="经典CAP图"></a>经典CAP图</h4><p><code>CAP理论的核心</code>是：一个分布式系统不可能同时很好的满足一致性，可用性和分区容错性这三个需求，最多只能同时较好的满足两个。</p>
-<p>因此，根据 CAP 原理将 NoSQL 数据库分成了满足 CA 原则、满足 CP 原则和满足 AP 原则三 大类：</p>
-<p><strong>CA</strong> - 单点集群，满足一致性，可用性的系统，通常在可扩展性上不太强大。<br><strong>CP</strong> - 满足一致性，分区容忍性的系统，通常性能不是特别高。<br><strong>AP</strong> - 满足可用性，分区容忍性的系统，通常可能对一致性要求低一些。</p>
-<h4 id="BASE"><a href="#BASE" class="headerlink" title="BASE"></a>BASE</h4><p><strong>BASE</strong>就是为了<strong>解决关系数据库强一致性引起的问题而引起的可用性降低</strong>而提出的解决方案。</p>
-<p>BASE其实是下面三个术语的缩写：</p>
-<ul>
-<li>基本可用（Basically Available）</li>
-<li>软状态（Soft state）</li>
-<li>最终一致（Eventually consistent）</li>
-</ul>
+<p>任何大数据量的web系统，都非常忌讳多个大表的关联查询，以及复杂的数据分析类型的报表查询，特别是SNS类型的网站，从需求以及产品设计角
+度，就避免了这种情况的产生。往往更多的只是单表的主键查询，以及单表的简单条件分页查询，SQL的功能被极大的弱化了。</p>
+<h4 id="经典cap图">经典CAP图</h4>
+<p><code>CAP理论的核心</code>是：一个分布式系统不可能同时很好的满足一致性，可用性和分区容错性这三个需求，最多只能同时较好的满足两个。</p>
+<p>因此，根据 CAP 原理将 NoSQL 数据库分成了满足 CA 原则、满足 CP
+原则和满足 AP 原则三 大类：</p>
+<p><strong>CA</strong> -
+单点集群，满足一致性，可用性的系统，通常在可扩展性上不太强大。<br />
+<strong>CP</strong> -
+满足一致性，分区容忍性的系统，通常性能不是特别高。<br />
+<strong>AP</strong> -
+满足可用性，分区容忍性的系统，通常可能对一致性要求低一些。</p>
+<h4 id="base">BASE</h4>
+<p><strong>BASE</strong>就是为了<strong>解决关系数据库强一致性引起的问题而引起的可用性降低</strong>而提出的解决方案。</p>
+<p>BASE其实是下面三个术语的缩写： - 基本可用（Basically Available） -
+软状态（Soft state） - 最终一致（Eventually consistent）</p>
 <p>它的思想是通过<strong>让系统放松对某一时刻数据一致性的要求来换取系统整体伸缩性和性能上改观</strong>。为什么这么说呢，缘由就在于大型系统往往由于地域分布和极高性能的要求，不可能采用分布式事务来完成这些指标，要想获得这些指标，我们必须采用另外一种方式来完成，这里BASE就是解决这个问题的办法。</p>
-<h4 id="分布式-集群简介"><a href="#分布式-集群简介" class="headerlink" title="分布式+集群简介"></a>分布式+集群简介</h4><ul>
+<h4 id="分布式集群简介">分布式+集群简介</h4>
+<ul>
 <li>分布式系统（distributed system）</li>
 </ul>
 <p>由多台计算机和通信的软件组件通过计算机网络连接（本地网络或广域网）组成。分布式系统是建立在网络之上的软件系统。正是因为软件的特性，所以分布式系统具有高度的内聚性和透明性。因此，网络和分布式系统之间的区别更多的在于高层软件（特别是操作系统），而不是硬件。分布式系统可以应用在不同的平台上如：PC、工作站、局域网和广域网上等。</p>
 <p>简单来讲：</p>
-<p><strong>分布式</strong>：不同的多台服务器上面部署不同的服务模块（工程），他们之间通过Rpc&#x2F;Rmi之间通信和调用，对外提供服务和组内协作。  </p>
+<p><strong>分布式</strong>：不同的多台服务器上面部署不同的服务模块（工程），他们之间通过Rpc/Rmi之间通信和调用，对外提供服务和组内协作。</p>
 <p><strong>集群</strong>：不同的多台服务器上面部署相同的服务模块，通过分布式调度软件进行统一的调度，对外提供服务和访问。</p>
-<h2 id="Redis简介"><a href="#Redis简介" class="headerlink" title="Redis简介"></a>Redis简介</h2><p><strong>Redis</strong> 是完全开源免费的，遵守 BSD 协议，是一个高性能的 <code>key - value 数据库</code>，基于内存运行并支持持久化的NoSQL数据库，是当前最热门的NoSql数据库之一，也被人们称为<code>数据结构服务器</code>。</p>
-<p><strong>Redis</strong> 与 其他 key - value 缓存产品有以下<strong>三个特点</strong>：</p>
-<ol>
-<li><p><code>Redis</code> 支持<strong>数据持久化</strong>，可以将内存中的数据保存在磁盘中，重启的时候可以再次加载进行使用。</p>
-</li>
-<li><p><code>Redis</code> 不仅仅支持简单的 <code>key-value</code> 类型的数据，同时还提供 list，set，zset，hash 等数据结构的存储</p>
-</li>
-<li><p><code>Redis</code> 支持<strong>数据备份</strong>，即 <code>master - slave</code> 模式的数据备份</p>
-</li>
+<h2 id="redis简介">Redis简介</h2>
+<p><strong>Redis</strong> 是完全开源免费的，遵守 BSD
+协议，是一个高性能的
+<code>key - value 数据库</code>，基于内存运行并支持持久化的NoSQL数据库，是当前最热门的NoSql数据库之一，也被人们称为<code>数据结构服务器</code>。</p>
+<p><strong>Redis</strong> 与 其他 key - value
+缓存产品有以下<strong>三个特点</strong>：</p>
+<ol type="1">
+<li><p><code>Redis</code>
+支持<strong>数据持久化</strong>，可以将内存中的数据保存在磁盘中，重启的时候可以再次加载进行使用。</p></li>
+<li><p><code>Redis</code> 不仅仅支持简单的 <code>key-value</code>
+类型的数据，同时还提供 list，set，zset，hash 等数据结构的存储</p></li>
+<li><p><code>Redis</code> 支持<strong>数据备份</strong>，即
+<code>master - slave</code> 模式的数据备份</p></li>
 </ol>
-<h3 id="Redis优势"><a href="#Redis优势" class="headerlink" title="Redis优势"></a>Redis优势</h3><ul>
-<li><p><strong>性能极高：</strong> Redis 读的速度是 110000 次 &#x2F;s, 写的速度是 81000 次 &#x2F;s 。</p>
-</li>
-<li><p><strong>丰富的数据类型：</strong> Redis 支持二进制案例的 Strings, Lists, Hashes, Sets 及 Ordered Sets 数据类型操作。</p>
-</li>
-<li><p><strong>原子性：</strong> Redis的所有操作都是原子性的，意思就是要么成功执行要么失败完全不执行。单个操作是原子性的。多个操作也支持事务，即原子性，通过 MULTI 和 EXEC 指令包起来。</p>
-</li>
-<li><p><strong>其他特性：</strong> Redis 还支持 <code>publish/subscribe 通知</code>，key 过期等特性。</p>
-</li>
+<h3 id="redis优势">Redis优势</h3>
+<ul>
+<li><p><strong>性能极高：</strong> Redis 读的速度是 110000 次 /s,
+写的速度是 81000 次 /s 。</p></li>
+<li><p><strong>丰富的数据类型：</strong> Redis 支持二进制案例的 Strings,
+Lists, Hashes, Sets 及 Ordered Sets 数据类型操作。</p></li>
+<li><p><strong>原子性：</strong>
+Redis的所有操作都是原子性的，意思就是要么成功执行要么失败完全不执行。单个操作是原子性的。多个操作也支持事务，即原子性，通过
+MULTI 和 EXEC 指令包起来。</p></li>
+<li><p><strong>其他特性：</strong> Redis 还支持
+<code>publish/subscribe 通知</code>，key 过期等特性。</p></li>
 </ul>
 <blockquote>
-<p><strong>Redis</strong> 与其他 <strong>key-value</strong> 存储有什么不同？  </p>
+<p><strong>Redis</strong> 与其他 <strong>key-value</strong>
+存储有什么不同？</p>
 </blockquote>
 <p><strong>Redis</strong>有着更为复杂的数据结构并且提供对它们的原子性操作，这是一个不同于其他数据库的进化路径。<code>Redis的数据类型</code>都是基于基本数据结构的同时对程序员透明，无需进行额外的抽象。</p>
 <p><strong>Redis</strong>运行在内存中但是可以持久化到磁盘，所以在对不同数据集进行高速读写时需要权衡内存，因为数据量不能大于硬件内存。在内存数据库方面的另一个优点是，相比在磁盘上相同的复杂的数据结构，在内存中操作起来非常简单，这样Redis可以做很多内部复杂性很强的事情。同时，在磁盘格式方面他们是紧凑的以追加的方式产生的，因为他们并不需要进行随机访问。</p>
@@ -514,770 +535,995 @@
 <blockquote>
 <p><strong>Redis</strong>为什么这么快?</p>
 </blockquote>
-<ol>
-<li><p>完全基于内存，绝大部分请求是纯粹的内存操作，非常快速。数据存在内存中，类似于HashMap，HashMap的优势就是查找和操作的时间复杂度都是O(1)；</p>
-</li>
-<li><p>数据结构简单，对数据操作也简单，Redis中的数据结构是专门进行设计的；</p>
-</li>
-<li><p>采用单线程，避免了不必要的上下文切换和竞争条件，也不存在多进程或者多线程导致的切换而消耗 CPU，不用去考虑各种锁的问题，不存在加锁释放锁操作，没有因为可能出现死锁而导致的性能消耗；</p>
-</li>
-<li><p>使用<strong>多路I&#x2F;O复用模型</strong>，非阻塞IO；</p>
-</li>
-<li><p>使用底层模型不同，它们之间底层实现方式以及与客户端之间通信的应用协议不一样，Redis直接自己构建了VM机制，因为一般的系统调用系统函数的话，会浪费一定的时间去移动和请求。</p>
-</li>
+<ol type="1">
+<li><p>完全基于内存，绝大部分请求是纯粹的内存操作，非常快速。数据存在内存中，类似于HashMap，HashMap的优势就是查找和操作的时间复杂度都是O(1)；</p></li>
+<li><p>数据结构简单，对数据操作也简单，Redis中的数据结构是专门进行设计的；</p></li>
+<li><p>采用单线程，避免了不必要的上下文切换和竞争条件，也不存在多进程或者多线程导致的切换而消耗
+CPU，不用去考虑各种锁的问题，不存在加锁释放锁操作，没有因为可能出现死锁而导致的性能消耗；</p></li>
+<li><p>使用<strong>多路I/O复用模型</strong>，非阻塞IO；</p></li>
+<li><p>使用底层模型不同，它们之间底层实现方式以及与客户端之间通信的应用协议不一样，Redis直接自己构建了VM机制，因为一般的系统调用系统函数的话，会浪费一定的时间去移动和请求。</p></li>
 </ol>
 <blockquote>
-<p><em><strong>补充</strong></em>：<code>多路 I/O 复用模型</code>：</p>
+<p><strong><em>补充</em></strong>：<code>多路 I/O 复用模型</code>：</p>
 </blockquote>
-<ol>
-<li><p>在《Unix网络编程》一书中提到了<code>五种IO模型</code>，分别是：<strong>阻塞IO、非阻塞IO、多路复用IO、信号驱动IO以及异步IO</strong>，前四种都是同步模型，最后一种是异步模型。</p>
-</li>
-<li><p>多路I&#x2F;O复用模型是利用 <code>select</code>、<code>poll</code>、<code>epoll</code> 可以同时监察多个流的 I&#x2F;O 事件的能力，在空闲的时候，会把当前线程阻塞掉，当有一个或多个流有 I&#x2F;O 事件时，就从阻塞态中唤醒，于是程序就会轮询一遍所有的流（epoll 是只轮询那些真正发出了事件的流），并且只依次顺序的处理就绪的流，这种做法就避免了大量的无用操作。</p>
-</li>
-<li><p>这里“多路”指的是多个网络连接，“复用”指的是复用同一个线程。采用多路 I&#x2F;O 复用技术可以让单个线程高效的处理多个连接请求（尽量减少网络 IO 的时间消耗），且 Redis 在内存中操作数据的速度非常快，也就是说内存内的操作不会成为影响Redis性能的瓶颈，主要由以上几点造就了 Redis 具有很高的吞吐量。</p>
-</li>
+<ol type="1">
+<li><p>在《Unix网络编程》一书中提到了<code>五种IO模型</code>，分别是：<strong>阻塞IO、非阻塞IO、多路复用IO、信号驱动IO以及异步IO</strong>，前四种都是同步模型，最后一种是异步模型。</p></li>
+<li><p>多路I/O复用模型是利用
+<code>select</code>、<code>poll</code>、<code>epoll</code>
+可以同时监察多个流的 I/O
+事件的能力，在空闲的时候，会把当前线程阻塞掉，当有一个或多个流有 I/O
+事件时，就从阻塞态中唤醒，于是程序就会轮询一遍所有的流（epoll
+是只轮询那些真正发出了事件的流），并且只依次顺序的处理就绪的流，这种做法就避免了大量的无用操作。</p></li>
+<li><p>这里“多路”指的是多个网络连接，“复用”指的是复用同一个线程。采用多路
+I/O 复用技术可以让单个线程高效的处理多个连接请求（尽量减少网络 IO
+的时间消耗），且 Redis
+在内存中操作数据的速度非常快，也就是说内存内的操作不会成为影响Redis性能的瓶颈，主要由以上几点造就了
+Redis 具有很高的吞吐量。</p></li>
 </ol>
-<h3 id="Redis启动"><a href="#Redis启动" class="headerlink" title="Redis启动"></a>Redis启动</h3><ol>
+<h3 id="redis启动">Redis启动</h3>
+<ol type="1">
 <li>打开cmd,进入Redis的主目录</li>
-<li>输入  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-server.exe redis.windows.conf</span><br></pre></td></tr></table></figure></li>
+<li>输入 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-server.exe redis.windows.conf</span><br></pre></td></tr></table></figure></li>
 <li>打开Redis服务端</li>
 <li>另外打开cmd,进入Redis的主目录</li>
 <li>打开Redis客户端</li>
 <li>在Redis客户端输入exit回车、退出客户端。</li>
 </ol>
-<h4 id="启动后杂项基础知识"><a href="#启动后杂项基础知识" class="headerlink" title="启动后杂项基础知识"></a>启动后杂项基础知识</h4><ul>
-<li><p><code>redis-benchmark.exe</code> 测试redis在机器运行的效能</p>
-</li>
+<h4 id="启动后杂项基础知识">启动后杂项基础知识</h4>
+<ul>
+<li><p><code>redis-benchmark.exe</code>
+测试redis在机器运行的效能</p></li>
 <li><p><code>单进程</code></p>
 <ul>
-<li><strong>单进程模型</strong>来处理客户端的请求。对读写等事件的响应 是通过对<code>epoll函数</code>的包装来做到的。Redis的实际处理速度完全依靠主进程的执行效率</li>
-<li><code>Epoll</code>是Linux内核为处理大批量文件描述符而作了改进的epoll，是Linux下多路复用IO接口select&#x2F;poll的增强版本， 它能显著提高程序在大量并发连接中只有少量活跃的情况下的系统CPU利用率。</li>
-</ul>
-</li>
-<li><p>默认<code>16个数据库</code>，类似数组下表从零开始，初始默认使用零号库，可在配置文件配置</p>
-</li>
-<li><p><code>select</code> 切换数据库</p>
-</li>
-<li><p><code>dbsize</code> 查看当前数据库的key的数量</p>
-</li>
-<li><p><code>flushdb</code> 清空当前库</p>
-</li>
-<li><p><code>flushall</code> 通杀全部库</p>
-</li>
-<li><p><code>统一密码管理</code>，16个库都是同样密码，要么都OK要么一个也连接不上</p>
-</li>
-<li><p><code>Redis索引</code>都是从零开始</p>
-</li>
+<li><strong>单进程模型</strong>来处理客户端的请求。对读写等事件的响应
+是通过对<code>epoll函数</code>的包装来做到的。Redis的实际处理速度完全依靠主进程的执行效率</li>
+<li><code>Epoll</code>是Linux内核为处理大批量文件描述符而作了改进的epoll，是Linux下多路复用IO接口select/poll的增强版本，
+它能显著提高程序在大量并发连接中只有少量活跃的情况下的系统CPU利用率。</li>
+</ul></li>
+<li><p>默认<code>16个数据库</code>，类似数组下表从零开始，初始默认使用零号库，可在配置文件配置</p></li>
+<li><p><code>select</code> 切换数据库</p></li>
+<li><p><code>dbsize</code> 查看当前数据库的key的数量</p></li>
+<li><p><code>flushdb</code> 清空当前库</p></li>
+<li><p><code>flushall</code> 通杀全部库</p></li>
+<li><p><code>统一密码管理</code>，16个库都是同样密码，要么都OK要么一个也连接不上</p></li>
+<li><p><code>Redis索引</code>都是从零开始</p></li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; select 4  #切换数据库</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379[4]&gt; dbsize  #查看当前数据库大小</span><br><span class="line">(integer) 0</span><br><span class="line">127.0.0.1:6379[4]&gt; set name wanli</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379[4]&gt; dbsize</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1:6379[4]&gt; get name</span><br><span class="line">&quot;wanli&quot;</span><br></pre></td></tr></table></figure>
-
 <p>清除数据库</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379[4]&gt; keys *  #查看当前数据库下所有key</span><br><span class="line">1) &quot;name&quot;</span><br><span class="line">127.0.0.1:6379[4]&gt; flushdb  #清除数据库</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379[4]&gt; keys *</span><br><span class="line">(empty array)</span><br><span class="line">127.0.0.1:6379[4]&gt; </span><br><span class="line"></span><br><span class="line">flushall  #清除所有数据库</span><br></pre></td></tr></table></figure>
-
-<h2 id="Key关键字"><a href="#Key关键字" class="headerlink" title="Key关键字"></a>Key关键字</h2><blockquote>
-<p> 常用</p>
+<h2 id="key关键字">Key关键字</h2>
+<blockquote>
+<p>常用</p>
 </blockquote>
 <table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
 <thead>
-<tr>
-<th align="center">命令</th>
-<th align="center">描述</th>
+<tr class="header">
+<th style="text-align: center;">命令</th>
+<th style="text-align: center;">描述</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">DEL key</td>
-<td align="center">该命令用于在 key 存在时删除 key</td>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">DEL key</td>
+<td style="text-align: center;">该命令用于在 key 存在时删除 key</td>
 </tr>
-<tr>
-<td align="center">DUMP key</td>
-<td align="center">序列化给定 key ，并返回被序列化的值</td>
+<tr class="even">
+<td style="text-align: center;">DUMP key</td>
+<td style="text-align: center;">序列化给定 key ，并返回被序列化的值</td>
 </tr>
-<tr>
-<td align="center">EXISTS key</td>
-<td align="center">检查给定 key 是否存在</td>
+<tr class="odd">
+<td style="text-align: center;">EXISTS key</td>
+<td style="text-align: center;">检查给定 key 是否存在</td>
 </tr>
-<tr>
-<td align="center">EXPIRE key seconds</td>
-<td align="center">为给定 key 设置过期时间，以秒计</td>
+<tr class="even">
+<td style="text-align: center;">EXPIRE key seconds</td>
+<td style="text-align: center;">为给定 key 设置过期时间，以秒计</td>
 </tr>
-<tr>
-<td align="center">EXPIREAT key timestamp</td>
-<td align="center">EXPIREAT 的作用和 EXPIRE 类似，都用于为 key 设置过期时间。 不同在于 EXPIREAT 命令接受的时间参数是 UNIX 时间戳(unix timestamp)</td>
+<tr class="odd">
+<td style="text-align: center;">EXPIREAT key timestamp</td>
+<td style="text-align: center;">EXPIREAT 的作用和 EXPIRE 类似，都用于为
+key 设置过期时间。 不同在于 EXPIREAT 命令接受的时间参数是 UNIX
+时间戳(unix timestamp)</td>
 </tr>
-<tr>
-<td align="center">PEXPIRE key milliseconds</td>
-<td align="center">设置 key 的过期时间以毫秒计</td>
+<tr class="even">
+<td style="text-align: center;">PEXPIRE key milliseconds</td>
+<td style="text-align: center;">设置 key 的过期时间以毫秒计</td>
 </tr>
-<tr>
-<td align="center">PEXPIREAT key milliseconds-timestamp</td>
-<td align="center">设置 key 过期时间的时间戳(unix timestamp) 以毫秒计</td>
+<tr class="odd">
+<td style="text-align: center;">PEXPIREAT key
+milliseconds-timestamp</td>
+<td style="text-align: center;">设置 key 过期时间的时间戳(unix
+timestamp) 以毫秒计</td>
 </tr>
-<tr>
-<td align="center">KEYS pattern</td>
-<td align="center">查找所有符合给定模式( pattern)的 key</td>
+<tr class="even">
+<td style="text-align: center;">KEYS pattern</td>
+<td style="text-align: center;">查找所有符合给定模式( pattern)的
+key</td>
 </tr>
-<tr>
-<td align="center">MOVE key db</td>
-<td align="center">将当前数据库的 key 移动到给定的数据库 db 当中</td>
+<tr class="odd">
+<td style="text-align: center;">MOVE key db</td>
+<td style="text-align: center;">将当前数据库的 key 移动到给定的数据库 db
+当中</td>
 </tr>
-<tr>
-<td align="center">PERSIST key</td>
-<td align="center">移除 key 的过期时间，key 将持久保持</td>
+<tr class="even">
+<td style="text-align: center;">PERSIST key</td>
+<td style="text-align: center;">移除 key 的过期时间，key 将持久保持</td>
 </tr>
-<tr>
-<td align="center">PTTL key</td>
-<td align="center">以毫秒为单位返回 key 的剩余的过期时间</td>
+<tr class="odd">
+<td style="text-align: center;">PTTL key</td>
+<td style="text-align: center;">以毫秒为单位返回 key
+的剩余的过期时间</td>
 </tr>
-<tr>
-<td align="center">TTL key</td>
-<td align="center">以秒为单位，返回给定 key 的剩余生存时间(TTL, time to live)。</td>
+<tr class="even">
+<td style="text-align: center;">TTL key</td>
+<td style="text-align: center;">以秒为单位，返回给定 key
+的剩余生存时间(TTL, time to live)。</td>
 </tr>
-<tr>
-<td align="center">RANDOMKEY</td>
-<td align="center">从当前数据库中随机返回一个 key</td>
+<tr class="odd">
+<td style="text-align: center;">RANDOMKEY</td>
+<td style="text-align: center;">从当前数据库中随机返回一个 key</td>
 </tr>
-<tr>
-<td align="center">RENAME key newkey</td>
-<td align="center">修改 key 的名称</td>
+<tr class="even">
+<td style="text-align: center;">RENAME key newkey</td>
+<td style="text-align: center;">修改 key 的名称</td>
 </tr>
-<tr>
-<td align="center">RENAMENX key newkey</td>
-<td align="center">仅当 newkey 不存在时，将 key 改名为 newkey</td>
+<tr class="odd">
+<td style="text-align: center;">RENAMENX key newkey</td>
+<td style="text-align: center;">仅当 newkey 不存在时，将 key 改名为
+newkey</td>
 </tr>
-<tr>
-<td align="center">SCAN cursor [MATCH pattern] [COUNT count]</td>
-<td align="center">迭代数据库中的数据库键</td>
+<tr class="even">
+<td style="text-align: center;">SCAN cursor [MATCH pattern] [COUNT
+count]</td>
+<td style="text-align: center;">迭代数据库中的数据库键</td>
 </tr>
-<tr>
-<td align="center">TYPE key</td>
-<td align="center">返回 key 所储存的值的类型</td>
+<tr class="odd">
+<td style="text-align: center;">TYPE key</td>
+<td style="text-align: center;">返回 key 所储存的值的类型</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <ul>
 <li>keys *</li>
 <li><code>exists key的名字</code>，判断某个key是否存在</li>
 <li><code>move key db</code> —&gt;当前库就没有了，被移除了</li>
 <li><code>expire key 秒钟</code>：为给定的key设置过期时间</li>
-<li><code>ttl key</code> 查看还有多少秒过期，-1表示永不过期，-2表示已过期</li>
+<li><code>ttl key</code>
+查看还有多少秒过期，-1表示永不过期，-2表示已过期</li>
 <li><code>type key</code> 查看key是什么类型</li>
 </ul>
-<h2 id="Redis数据类型"><a href="#Redis数据类型" class="headerlink" title="Redis数据类型"></a>Redis数据类型</h2><p><strong>Redis</strong> 支持<code>5种数据类型</code>：string（字符串），hash（哈希），list（列表），set（集合），zset（sorted set：有序集合）</p>
-<h3 id="string"><a href="#string" class="headerlink" title="string"></a>string</h3><p><strong>string</strong> 是 redis <code>最基本的数据类型</code>。一个 key 对应一个 value。</p>
-<p><strong>string</strong> 是<code>二进制安全的</code>。也就是说 redis 的 string 可以包含任何数据。比如 jpg 图片或者序列化的对象。</p>
-<p>string 类型是 redis 最基本的数据类型，string 类型的值最大能存储 512 MB。</p>
-<p><em><strong>理解</strong></em>：string 就像是 java 中的 map 一样，一个 key 对应一个 value</p>
+<h2 id="redis数据类型">Redis数据类型</h2>
+<p><strong>Redis</strong>
+支持<code>5种数据类型</code>：string（字符串），hash（哈希），list（列表），set（集合），zset（sorted
+set：有序集合）</p>
+<h3 id="string">string</h3>
+<p><strong>string</strong> 是 redis <code>最基本的数据类型</code>。一个
+key 对应一个 value。</p>
+<p><strong>string</strong> 是<code>二进制安全的</code>。也就是说 redis
+的 string 可以包含任何数据。比如 jpg 图片或者序列化的对象。</p>
+<p>string 类型是 redis 最基本的数据类型，string 类型的值最大能存储 512
+MB。</p>
+<p><strong><em>理解</em></strong>：string 就像是 java 中的 map
+一样，一个 key 对应一个 value</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; set hello world</span><br><span class="line">OK</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; get hello</span><br><span class="line"><span class="string">&quot;world&quot;</span></span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>常用</li>
 </ul>
 <table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
 <thead>
-<tr>
-<th align="center">命令</th>
-<th align="center">描述</th>
+<tr class="header">
+<th style="text-align: center;">命令</th>
+<th style="text-align: center;">描述</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">SET key value</td>
-<td align="center">设置指定 key 的值</td>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">SET key value</td>
+<td style="text-align: center;">设置指定 key 的值</td>
 </tr>
-<tr>
-<td align="center">GET key</td>
-<td align="center">获取指定 key 的值</td>
+<tr class="even">
+<td style="text-align: center;">GET key</td>
+<td style="text-align: center;">获取指定 key 的值</td>
 </tr>
-<tr>
-<td align="center">GETRANGE key start end</td>
-<td align="center">返回 key 中字符串值的子字符</td>
+<tr class="odd">
+<td style="text-align: center;">GETRANGE key start end</td>
+<td style="text-align: center;">返回 key 中字符串值的子字符</td>
 </tr>
-<tr>
-<td align="center">GETSET key value</td>
-<td align="center">将给定 key 的值设为 value，并返回 key 的旧值(old value)</td>
+<tr class="even">
+<td style="text-align: center;">GETSET key value</td>
+<td style="text-align: center;">将给定 key 的值设为 value，并返回 key
+的旧值(old value)</td>
 </tr>
-<tr>
-<td align="center">GETBIT key offset</td>
-<td align="center">对 key 所储存的字符串值，获取指定偏移量上的位(bit)</td>
+<tr class="odd">
+<td style="text-align: center;">GETBIT key offset</td>
+<td style="text-align: center;">对 key
+所储存的字符串值，获取指定偏移量上的位(bit)</td>
 </tr>
-<tr>
-<td align="center">MGET key1 [key2…]</td>
-<td align="center">获取所有(一个或多个)给定 key 的值</td>
+<tr class="even">
+<td style="text-align: center;">MGET key1 [key2…]</td>
+<td style="text-align: center;">获取所有(一个或多个)给定 key 的值</td>
 </tr>
-<tr>
-<td align="center">SETBIT key offset value</td>
-<td align="center">对 key 所储存的字符串值，设置或清除指定偏移量上的位(bit)</td>
+<tr class="odd">
+<td style="text-align: center;">SETBIT key offset value</td>
+<td style="text-align: center;">对 key
+所储存的字符串值，设置或清除指定偏移量上的位(bit)</td>
 </tr>
-<tr>
-<td align="center">SETEX key seconds value</td>
-<td align="center">将值 value 关联到 key，并将 key 的过期时间设为 seconds (以秒为单位)</td>
+<tr class="even">
+<td style="text-align: center;">SETEX key seconds value</td>
+<td style="text-align: center;">将值 value 关联到 key，并将 key
+的过期时间设为 seconds (以秒为单位)</td>
 </tr>
-<tr>
-<td align="center">SETNX key value</td>
-<td align="center">只有在 key 不存在时设置 key 的值</td>
+<tr class="odd">
+<td style="text-align: center;">SETNX key value</td>
+<td style="text-align: center;">只有在 key 不存在时设置 key 的值</td>
 </tr>
-<tr>
-<td align="center">SETRANGE key offset value</td>
-<td align="center">用 value 参数覆写给定 key 所储存的字符串值，从偏移量 offset 开始。</td>
+<tr class="even">
+<td style="text-align: center;">SETRANGE key offset value</td>
+<td style="text-align: center;">用 value 参数覆写给定 key
+所储存的字符串值，从偏移量 offset 开始。</td>
 </tr>
-<tr>
-<td align="center">STRLEN key</td>
-<td align="center">返回 key 所储存的字符串值的长度</td>
+<tr class="odd">
+<td style="text-align: center;">STRLEN key</td>
+<td style="text-align: center;">返回 key 所储存的字符串值的长度</td>
 </tr>
-<tr>
-<td align="center">MSET key value [key value …]</td>
-<td align="center">同时设置一个或多个 key-value 对</td>
+<tr class="even">
+<td style="text-align: center;">MSET key value [key value …]</td>
+<td style="text-align: center;">同时设置一个或多个 key-value 对</td>
 </tr>
-<tr>
-<td align="center">MSETNX key value [key value …]</td>
-<td align="center">同时设置一个或多个 key-value 对，当且仅当所有给定 key 都不存在</td>
+<tr class="odd">
+<td style="text-align: center;">MSETNX key value [key value …]</td>
+<td style="text-align: center;">同时设置一个或多个 key-value
+对，当且仅当所有给定 key 都不存在</td>
 </tr>
-<tr>
-<td align="center">PSETEX key milliseconds value</td>
-<td align="center">这个命令和 SETEX 命令相似，但它以毫秒为单位设置 key 的生存时间，而不是像 SETEX 命令那样，以秒为单位</td>
+<tr class="even">
+<td style="text-align: center;">PSETEX key milliseconds value</td>
+<td style="text-align: center;">这个命令和 SETEX
+命令相似，但它以毫秒为单位设置 key 的生存时间，而不是像 SETEX
+命令那样，以秒为单位</td>
 </tr>
-<tr>
-<td align="center">INCR key</td>
-<td align="center">将 key 中储存的数字值增一</td>
+<tr class="odd">
+<td style="text-align: center;">INCR key</td>
+<td style="text-align: center;">将 key 中储存的数字值增一</td>
 </tr>
-<tr>
-<td align="center">INCRBY key increment</td>
-<td align="center">将 key 所储存的值加上给定的增量值（increment）</td>
+<tr class="even">
+<td style="text-align: center;">INCRBY key increment</td>
+<td style="text-align: center;">将 key
+所储存的值加上给定的增量值（increment）</td>
 </tr>
-<tr>
-<td align="center">INCRBYFLOAT key increment</td>
-<td align="center">将 key 所储存的值加上给定的浮点增量值（increment）</td>
+<tr class="odd">
+<td style="text-align: center;">INCRBYFLOAT key increment</td>
+<td style="text-align: center;">将 key
+所储存的值加上给定的浮点增量值（increment）</td>
 </tr>
-<tr>
-<td align="center">DECR key</td>
-<td align="center">将 key 中储存的数字值减一</td>
+<tr class="even">
+<td style="text-align: center;">DECR key</td>
+<td style="text-align: center;">将 key 中储存的数字值减一</td>
 </tr>
-<tr>
-<td align="center">DECRBY key decrement</td>
-<td align="center">key 所储存的值减去给定的减量值（decrement）</td>
+<tr class="odd">
+<td style="text-align: center;">DECRBY key decrement</td>
+<td style="text-align: center;">key
+所储存的值减去给定的减量值（decrement）</td>
 </tr>
-<tr>
-<td align="center">APPEND key value</td>
-<td align="center">如果 key 已经存在并且是一个字符串， APPEND 命令将指定的 value 追加到该 key 原来值（value）的末尾</td>
+<tr class="even">
+<td style="text-align: center;">APPEND key value</td>
+<td style="text-align: center;">如果 key 已经存在并且是一个字符串，
+APPEND 命令将指定的 value 追加到该 key 原来值（value）的末尾</td>
 </tr>
-</tbody></table>
-<h3 id="hash"><a href="#hash" class="headerlink" title="hash"></a>hash</h3><p><strong>Redis hash</strong> 是一个键值对（key - value）集合。</p>
-<p>Redis hash 是一个 string 类型的 key 和 value 的映射表，hash 特别适合用于存储对象。</p>
-<p><em><strong>理解：</strong></em> 可以将 hash 看成一个 key - value 的集合。也可以将其想成一个 hash 对应着多个 string。</p>
-<p><em><strong>与 string 区别</strong></em>：string 是 一个 key - value 键值对，而 hash 是多个 key - value 键值对。</p>
+</tbody>
+</table>
+<h3 id="hash">hash</h3>
+<p><strong>Redis hash</strong> 是一个键值对（key - value）集合。</p>
+<p>Redis hash 是一个 string 类型的 key 和 value 的映射表，hash
+特别适合用于存储对象。</p>
+<p><strong><em>理解：</em></strong> 可以将 hash 看成一个 key - value
+的集合。也可以将其想成一个 hash 对应着多个 string。</p>
+<p><strong><em>与 string 区别</em></strong>：string 是 一个 key - value
+键值对，而 hash 是多个 key - value 键值对。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// hash-key 可以看成是一个键值对集合的名字,在这里分别为其添加了 sub-key1 : value1、</span></span><br><span class="line">sub-key2 : value2、sub-key3 : value3 这三个键值对</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; hset hash-key sub-key1 <span class="title function_">value1</span></span><br><span class="line"><span class="params">(integer)</span> <span class="number">1</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; hset hash-key sub-key2 <span class="title function_">value2</span></span><br><span class="line"><span class="params">(integer)</span> <span class="number">1</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; hset hash-key sub-key3 <span class="title function_">value3</span></span><br><span class="line"><span class="params">(integer)</span> <span class="number">1</span></span><br><span class="line"><span class="comment">// 获取 hash-key 这个 hash 里面的所有键值对</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; hgetall hash-key</span><br><span class="line"><span class="number">1</span>) <span class="string">&quot;sub-key1&quot;</span></span><br><span class="line"><span class="number">2</span>) <span class="string">&quot;value1&quot;</span></span><br><span class="line"><span class="number">3</span>) <span class="string">&quot;sub-key2&quot;</span></span><br><span class="line"><span class="number">4</span>) <span class="string">&quot;value2&quot;</span></span><br><span class="line"><span class="number">5</span>) <span class="string">&quot;sub-key3&quot;</span></span><br><span class="line"><span class="number">6</span>) <span class="string">&quot;value3&quot;</span></span><br><span class="line"><span class="comment">// 删除 hash-key 这个 hash 里面的 sub-key2 键值对</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; hdel hash-key sub-key2</span><br><span class="line">(integer) <span class="number">1</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; hget hash-key sub-key2</span><br><span class="line">(nil)</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; hget hash-key sub-key1</span><br><span class="line"><span class="string">&quot;value1&quot;</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; hgetall hash-key</span><br><span class="line"><span class="number">1</span>) <span class="string">&quot;sub-key1&quot;</span></span><br><span class="line"><span class="number">2</span>) <span class="string">&quot;value1&quot;</span></span><br><span class="line"><span class="number">3</span>) <span class="string">&quot;sub-key3&quot;</span></span><br><span class="line"><span class="number">4</span>) <span class="string">&quot;value3&quot;</span></span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>常用</li>
 </ul>
 <table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
 <thead>
-<tr>
-<th align="center">命令</th>
-<th align="center">描述</th>
+<tr class="header">
+<th style="text-align: center;">命令</th>
+<th style="text-align: center;">描述</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">HDEL key field1 [field2]</td>
-<td align="center">删除一个或多个哈希表字段</td>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">HDEL key field1 [field2]</td>
+<td style="text-align: center;">删除一个或多个哈希表字段</td>
 </tr>
-<tr>
-<td align="center">HEXISTS key field</td>
-<td align="center">查看哈希表 key 中，指定的字段是否存在</td>
+<tr class="even">
+<td style="text-align: center;">HEXISTS key field</td>
+<td style="text-align: center;">查看哈希表 key
+中，指定的字段是否存在</td>
 </tr>
-<tr>
-<td align="center">HGET key field</td>
-<td align="center">获取存储在哈希表中指定字段的值</td>
+<tr class="odd">
+<td style="text-align: center;">HGET key field</td>
+<td style="text-align: center;">获取存储在哈希表中指定字段的值</td>
 </tr>
-<tr>
-<td align="center">HGETALL key</td>
-<td align="center">获取在哈希表中指定 key 的所有字段和值</td>
+<tr class="even">
+<td style="text-align: center;">HGETALL key</td>
+<td style="text-align: center;">获取在哈希表中指定 key
+的所有字段和值</td>
 </tr>
-<tr>
-<td align="center">HINCRBY key field increment</td>
-<td align="center">为哈希表 key 中的指定字段的整数值加上增量 increment</td>
+<tr class="odd">
+<td style="text-align: center;">HINCRBY key field increment</td>
+<td style="text-align: center;">为哈希表 key
+中的指定字段的整数值加上增量 increment</td>
 </tr>
-<tr>
-<td align="center">HINCRBYFLOAT key field increment</td>
-<td align="center">为哈希表 key 中的指定字段的浮点数值加上增量 increment</td>
+<tr class="even">
+<td style="text-align: center;">HINCRBYFLOAT key field increment</td>
+<td style="text-align: center;">为哈希表 key
+中的指定字段的浮点数值加上增量 increment</td>
 </tr>
-<tr>
-<td align="center">HKEYS key</td>
-<td align="center">获取所有哈希表中的字段</td>
+<tr class="odd">
+<td style="text-align: center;">HKEYS key</td>
+<td style="text-align: center;">获取所有哈希表中的字段</td>
 </tr>
-<tr>
-<td align="center">HLEN key</td>
-<td align="center">获取哈希表中字段的数量</td>
+<tr class="even">
+<td style="text-align: center;">HLEN key</td>
+<td style="text-align: center;">获取哈希表中字段的数量</td>
 </tr>
-<tr>
-<td align="center">HMGET key field1 [field2]</td>
-<td align="center">获取所有给定字段的值</td>
+<tr class="odd">
+<td style="text-align: center;">HMGET key field1 [field2]</td>
+<td style="text-align: center;">获取所有给定字段的值</td>
 </tr>
-<tr>
-<td align="center">HMSET key field1 value1 [field2 value2 ]</td>
-<td align="center">同时将多个 field-value</td>
+<tr class="even">
+<td style="text-align: center;">HMSET key field1 value1 [field2 value2
+]</td>
+<td style="text-align: center;">同时将多个 field-value</td>
 </tr>
-<tr>
-<td align="center">HSET key field value</td>
-<td align="center">将哈希表 key 中的字段 field 的值设为 value</td>
+<tr class="odd">
+<td style="text-align: center;">HSET key field value</td>
+<td style="text-align: center;">将哈希表 key 中的字段 field 的值设为
+value</td>
 </tr>
-<tr>
-<td align="center">HSETNX key field value</td>
-<td align="center">只有在字段 field 不存在时，设置哈希表字段的值</td>
+<tr class="even">
+<td style="text-align: center;">HSETNX key field value</td>
+<td style="text-align: center;">只有在字段 field
+不存在时，设置哈希表字段的值</td>
 </tr>
-<tr>
-<td align="center">HVALS key</td>
-<td align="center">获取哈希表中所有值</td>
+<tr class="odd">
+<td style="text-align: center;">HVALS key</td>
+<td style="text-align: center;">获取哈希表中所有值</td>
 </tr>
-<tr>
-<td align="center">HSCAN key cursor [MATCH pattern] [COUNT count]</td>
-<td align="center">迭代哈希表中的键值对</td>
+<tr class="even">
+<td style="text-align: center;">HSCAN key cursor [MATCH pattern] [COUNT
+count]</td>
+<td style="text-align: center;">迭代哈希表中的键值对</td>
 </tr>
-</tbody></table>
-<h3 id="list"><a href="#list" class="headerlink" title="list"></a>list</h3><p><strong>Redis 列表</strong>是简单的字符串列表，按照插入顺序排序。我们可以网列表的左边或者右边添加元素。</p>
+</tbody>
+</table>
+<h3 id="list">list</h3>
+<p><strong>Redis
+列表</strong>是简单的字符串列表，按照插入顺序排序。我们可以网列表的左边或者右边添加元素。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; rpush list-key <span class="title function_">v1</span></span><br><span class="line"><span class="params">(integer)</span> <span class="number">1</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; rpush list-key <span class="title function_">v2</span></span><br><span class="line"><span class="params">(integer)</span> <span class="number">2</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; rpush list-key <span class="title function_">v1</span></span><br><span class="line"><span class="params">(integer)</span> <span class="number">3</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; lrange list-key <span class="number">0</span> -<span class="number">1</span></span><br><span class="line"><span class="number">1</span>) <span class="string">&quot;v1&quot;</span></span><br><span class="line"><span class="number">2</span>) <span class="string">&quot;v2&quot;</span></span><br><span class="line"><span class="number">3</span>) <span class="string">&quot;v1&quot;</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; lindex list-key <span class="number">1</span></span><br><span class="line"><span class="string">&quot;v2&quot;</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; lpop <span class="title function_">list</span></span><br><span class="line"><span class="params">(nil)</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; lpop list-key</span><br><span class="line"><span class="string">&quot;v1&quot;</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; lrange list-key <span class="number">0</span> -<span class="number">1</span></span><br><span class="line"><span class="number">1</span>) <span class="string">&quot;v2&quot;</span></span><br><span class="line"><span class="number">2</span>) <span class="string">&quot;v1&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>我们可以看出 <strong>list</strong> 就是一个简单的<code>字符串集合</code>，和 Java 中的 list 相差不大，<strong>区别</strong>就是这里的 list 存放的是字符串。list 内的元素是可重复的。</p>
+<p>我们可以看出 <strong>list</strong>
+就是一个简单的<code>字符串集合</code>，和 Java 中的 list
+相差不大，<strong>区别</strong>就是这里的 list 存放的是字符串。list
+内的元素是可重复的。</p>
 <ul>
 <li>常用</li>
 </ul>
 <table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
 <thead>
-<tr>
-<th align="center">命令</th>
-<th align="center">描述</th>
+<tr class="header">
+<th style="text-align: center;">命令</th>
+<th style="text-align: center;">描述</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">BLPOP key1 [key2 ] timeout</td>
-<td align="center">移出并获取列表的第一个元素， 如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止。</td>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">BLPOP key1 [key2 ] timeout</td>
+<td style="text-align: center;">移出并获取列表的第一个元素，
+如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止。</td>
 </tr>
-<tr>
-<td align="center">BRPOP key1 [key2 ] timeout</td>
-<td align="center">移出并获取列表的最后一个元素， 如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止。</td>
+<tr class="even">
+<td style="text-align: center;">BRPOP key1 [key2 ] timeout</td>
+<td style="text-align: center;">移出并获取列表的最后一个元素，
+如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止。</td>
 </tr>
-<tr>
-<td align="center">BRPOPLPUSH source destination timeout</td>
-<td align="center">从列表中弹出一个值，将弹出的元素插入到另外一个列表中并返回它； 如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止。</td>
+<tr class="odd">
+<td style="text-align: center;">BRPOPLPUSH source destination
+timeout</td>
+<td
+style="text-align: center;">从列表中弹出一个值，将弹出的元素插入到另外一个列表中并返回它；
+如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止。</td>
 </tr>
-<tr>
-<td align="center">LINDEX key index</td>
-<td align="center">通过索引获取列表中的元素</td>
+<tr class="even">
+<td style="text-align: center;">LINDEX key index</td>
+<td style="text-align: center;">通过索引获取列表中的元素</td>
 </tr>
-<tr>
-<td align="center">LINSERT key BEFORE&#x2F;AFTER pivot value</td>
-<td align="center">在列表的元素前或者后插入元素</td>
+<tr class="odd">
+<td style="text-align: center;">LINSERT key BEFORE/AFTER pivot
+value</td>
+<td style="text-align: center;">在列表的元素前或者后插入元素</td>
 </tr>
-<tr>
-<td align="center">LLEN key</td>
-<td align="center">获取列表长度</td>
+<tr class="even">
+<td style="text-align: center;">LLEN key</td>
+<td style="text-align: center;">获取列表长度</td>
 </tr>
-<tr>
-<td align="center">LPOP key</td>
-<td align="center">移出并获取列表的第一个元素</td>
+<tr class="odd">
+<td style="text-align: center;">LPOP key</td>
+<td style="text-align: center;">移出并获取列表的第一个元素</td>
 </tr>
-<tr>
-<td align="center">LPUSH key value1 [value2]</td>
-<td align="center">将一个或多个值插入到列表头部</td>
+<tr class="even">
+<td style="text-align: center;">LPUSH key value1 [value2]</td>
+<td style="text-align: center;">将一个或多个值插入到列表头部</td>
 </tr>
-<tr>
-<td align="center">LPUSHX key value</td>
-<td align="center">将一个值插入到已存在的列表头部</td>
+<tr class="odd">
+<td style="text-align: center;">LPUSHX key value</td>
+<td style="text-align: center;">将一个值插入到已存在的列表头部</td>
 </tr>
-<tr>
-<td align="center">LRANGE key start stop</td>
-<td align="center">获取列表指定范围内的元素</td>
+<tr class="even">
+<td style="text-align: center;">LRANGE key start stop</td>
+<td style="text-align: center;">获取列表指定范围内的元素</td>
 </tr>
-<tr>
-<td align="center">LREM key count value</td>
-<td align="center">移除列表元素</td>
+<tr class="odd">
+<td style="text-align: center;">LREM key count value</td>
+<td style="text-align: center;">移除列表元素</td>
 </tr>
-<tr>
-<td align="center">LSET key index value</td>
-<td align="center">通过索引设置列表元素的值</td>
+<tr class="even">
+<td style="text-align: center;">LSET key index value</td>
+<td style="text-align: center;">通过索引设置列表元素的值</td>
 </tr>
-<tr>
-<td align="center">LTRIM key start stop</td>
-<td align="center">对一个列表进行修剪(trim)，就是说，让列表只保留指定区间内的元素，不在指定区间之内的元素都将被删除。</td>
+<tr class="odd">
+<td style="text-align: center;">LTRIM key start stop</td>
+<td
+style="text-align: center;">对一个列表进行修剪(trim)，就是说，让列表只保留指定区间内的元素，不在指定区间之内的元素都将被删除。</td>
 </tr>
-<tr>
-<td align="center">RPOP key</td>
-<td align="center">移除列表的最后一个元素，返回值为移除的元素。</td>
+<tr class="even">
+<td style="text-align: center;">RPOP key</td>
+<td
+style="text-align: center;">移除列表的最后一个元素，返回值为移除的元素。</td>
 </tr>
-<tr>
-<td align="center">RPOPLPUSH source destination</td>
-<td align="center">移除列表的最后一个元素，并将该元素添加到另一个列表并返回</td>
+<tr class="odd">
+<td style="text-align: center;">RPOPLPUSH source destination</td>
+<td
+style="text-align: center;">移除列表的最后一个元素，并将该元素添加到另一个列表并返回</td>
 </tr>
-<tr>
-<td align="center">RPUSH key value1 [value2]</td>
-<td align="center">在列表中添加一个或多个值</td>
+<tr class="even">
+<td style="text-align: center;">RPUSH key value1 [value2]</td>
+<td style="text-align: center;">在列表中添加一个或多个值</td>
 </tr>
-<tr>
-<td align="center">RPUSHX key value</td>
-<td align="center">为已存在的列表添加值</td>
+<tr class="odd">
+<td style="text-align: center;">RPUSHX key value</td>
+<td style="text-align: center;">为已存在的列表添加值</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <blockquote>
-<p>性能总结</p>
+<p>性能总结 -
+它是一个<strong>字符串链表</strong>，left、right都可以插入添加； -
+如果<strong>键不存在</strong>，创建新的链表； -
+如果<strong>键已存在</strong>，新增内容； -
+如果<strong>值全移除</strong>，对应的键也就消失了。 -
+<strong>链表</strong>的操作无论是<strong>头和尾效率都极高</strong>，但假如是对中间元素进行操作，效率就很惨淡了。</p>
 </blockquote>
-<ul>
-<li>它是一个<strong>字符串链表</strong>，left、right都可以插入添加；</li>
-<li>如果<strong>键不存在</strong>，创建新的链表；</li>
-<li>如果<strong>键已存在</strong>，新增内容；</li>
-<li>如果<strong>值全移除</strong>，对应的键也就消失了。</li>
-<li><strong>链表</strong>的操作无论是<strong>头和尾效率都极高</strong>，但假如是对中间元素进行操作，效率就很惨淡了。</li>
-</ul>
-<h3 id="set"><a href="#set" class="headerlink" title="set"></a>set</h3><p><strong>redis 的 set</strong> 是<code>字符串类型的无序集合</code>。集合是通过哈希表实现的，因此添加、删除、查找的复杂度都是 O（1）。</p>
+<h3 id="set">set</h3>
+<p><strong>redis 的 set</strong>
+是<code>字符串类型的无序集合</code>。集合是通过哈希表实现的，因此添加、删除、查找的复杂度都是
+O（1）。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; sadd k1 <span class="title function_">v1</span></span><br><span class="line"><span class="params">(integer)</span> <span class="number">1</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; sadd k1 <span class="title function_">v2</span></span><br><span class="line"><span class="params">(integer)</span> <span class="number">1</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; sadd k1 <span class="title function_">v3</span></span><br><span class="line"><span class="params">(integer)</span> <span class="number">1</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; sadd k1 <span class="title function_">v1</span></span><br><span class="line"><span class="params">(integer)</span> <span class="number">0</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; smembers k1</span><br><span class="line"><span class="number">1</span>) <span class="string">&quot;v3&quot;</span></span><br><span class="line"><span class="number">2</span>) <span class="string">&quot;v2&quot;</span></span><br><span class="line"><span class="number">3</span>) <span class="string">&quot;v1&quot;</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt;</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; sismember k1 <span class="title function_">k4</span></span><br><span class="line"><span class="params">(integer)</span> <span class="number">0</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; sismember k1 <span class="title function_">v1</span></span><br><span class="line"><span class="params">(integer)</span> <span class="number">1</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; srem k1 <span class="title function_">v2</span></span><br><span class="line"><span class="params">(integer)</span> <span class="number">1</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; srem k1 <span class="title function_">v2</span></span><br><span class="line"><span class="params">(integer)</span> <span class="number">0</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; smembers k1</span><br><span class="line"><span class="number">1</span>) <span class="string">&quot;v3&quot;</span></span><br><span class="line"><span class="number">2</span>) <span class="string">&quot;v1&quot;</span></span><br></pre></td></tr></table></figure>
-
 <p>redis 的 set 与 java 中的 set 还是有点区别的。</p>
-<p>redis 的 set 是一个 key 对应着 多个字符串类型的 value，也是一个字符串类型的集合</p>
-<p>但是和 redis 的 list 不同的是 <strong>set</strong> 中的<code>字符串集合元素不能重复，但是 list 可以。</code></p>
+<p>redis 的 set 是一个 key 对应着 多个字符串类型的
+value，也是一个字符串类型的集合</p>
+<p>但是和 redis 的 list 不同的是 <strong>set</strong>
+中的<code>字符串集合元素不能重复，但是 list 可以。</code></p>
 <ul>
 <li>常用</li>
 </ul>
 <table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
 <thead>
-<tr>
-<th align="center">命令</th>
-<th align="center">描述</th>
+<tr class="header">
+<th style="text-align: center;">命令</th>
+<th style="text-align: center;">描述</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">SADD key member1 [member2]</td>
-<td align="center">向集合添加一个或多个成员</td>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">SADD key member1 [member2]</td>
+<td style="text-align: center;">向集合添加一个或多个成员</td>
 </tr>
-<tr>
-<td align="center">SCARD key</td>
-<td align="center">获取集合的成员数</td>
+<tr class="even">
+<td style="text-align: center;">SCARD key</td>
+<td style="text-align: center;">获取集合的成员数</td>
 </tr>
-<tr>
-<td align="center">SDIFF key1 [key2]</td>
-<td align="center">返回给定所有集合的差集</td>
+<tr class="odd">
+<td style="text-align: center;">SDIFF key1 [key2]</td>
+<td style="text-align: center;">返回给定所有集合的差集</td>
 </tr>
-<tr>
-<td align="center">SDIFFSTORE destination key1 [key2]</td>
-<td align="center">返回给定所有集合的差集并存储在 destination 中</td>
+<tr class="even">
+<td style="text-align: center;">SDIFFSTORE destination key1 [key2]</td>
+<td style="text-align: center;">返回给定所有集合的差集并存储在
+destination 中</td>
 </tr>
-<tr>
-<td align="center">SINTER key1 [key2]</td>
-<td align="center">返回给定所有集合的交集</td>
+<tr class="odd">
+<td style="text-align: center;">SINTER key1 [key2]</td>
+<td style="text-align: center;">返回给定所有集合的交集</td>
 </tr>
-<tr>
-<td align="center">SINTERSTORE destination key1 [key2]</td>
-<td align="center">返回给定所有集合的交集并存储在 destination 中</td>
+<tr class="even">
+<td style="text-align: center;">SINTERSTORE destination key1 [key2]</td>
+<td style="text-align: center;">返回给定所有集合的交集并存储在
+destination 中</td>
 </tr>
-<tr>
-<td align="center">SISMEMBER key member</td>
-<td align="center">判断 member 元素是否是集合 key 的成员</td>
+<tr class="odd">
+<td style="text-align: center;">SISMEMBER key member</td>
+<td style="text-align: center;">判断 member 元素是否是集合 key
+的成员</td>
 </tr>
-<tr>
-<td align="center">SMEMBERS key</td>
-<td align="center">返回集合中的所有成员</td>
+<tr class="even">
+<td style="text-align: center;">SMEMBERS key</td>
+<td style="text-align: center;">返回集合中的所有成员</td>
 </tr>
-<tr>
-<td align="center">SMOVE source destination member</td>
-<td align="center">将 member 元素从 source 集合移动到 destination 集合</td>
+<tr class="odd">
+<td style="text-align: center;">SMOVE source destination member</td>
+<td style="text-align: center;">将 member 元素从 source 集合移动到
+destination 集合</td>
 </tr>
-<tr>
-<td align="center">SPOP key</td>
-<td align="center">移除并返回集合中的一个随机元素</td>
+<tr class="even">
+<td style="text-align: center;">SPOP key</td>
+<td style="text-align: center;">移除并返回集合中的一个随机元素</td>
 </tr>
-<tr>
-<td align="center">SRANDMEMBER key [count]</td>
-<td align="center">返回集合中一个或多个随机数</td>
+<tr class="odd">
+<td style="text-align: center;">SRANDMEMBER key [count]</td>
+<td style="text-align: center;">返回集合中一个或多个随机数</td>
 </tr>
-<tr>
-<td align="center">SREM key member1 [member2]</td>
-<td align="center">移除集合中一个或多个成员</td>
+<tr class="even">
+<td style="text-align: center;">SREM key member1 [member2]</td>
+<td style="text-align: center;">移除集合中一个或多个成员</td>
 </tr>
-<tr>
-<td align="center">SUNION key1 [key2]</td>
-<td align="center">返回所有给定集合的并集</td>
+<tr class="odd">
+<td style="text-align: center;">SUNION key1 [key2]</td>
+<td style="text-align: center;">返回所有给定集合的并集</td>
 </tr>
-<tr>
-<td align="center">SUNIONSTORE destination key1 [key2]</td>
-<td align="center">所有给定集合的并集存储在 destination 集合中</td>
+<tr class="even">
+<td style="text-align: center;">SUNIONSTORE destination key1 [key2]</td>
+<td style="text-align: center;">所有给定集合的并集存储在 destination
+集合中</td>
 </tr>
-<tr>
-<td align="center">SSCAN key cursor [MATCH pattern] [COUNT count]</td>
-<td align="center">迭代集合中的元素</td>
+<tr class="odd">
+<td style="text-align: center;">SSCAN key cursor [MATCH pattern] [COUNT
+count]</td>
+<td style="text-align: center;">迭代集合中的元素</td>
 </tr>
-</tbody></table>
-<h3 id="Zset"><a href="#Zset" class="headerlink" title="Zset"></a>Zset</h3><p><strong>redis zset</strong> 和 set 一样都是 <code>字符串类型元素的集合，并且集合内的元素不能重复。</code></p>
-<p>不同的是，<strong>zset</strong> 每个元素都会关联一个 double 类型的分数。redis 通过分数来为集合中的成员进行从小到大的排序。</p>
-<p><strong>zset</strong> 的元素是唯一的，但是分数（score）却可以重复。</p>
+</tbody>
+</table>
+<h3 id="zset">Zset</h3>
+<p><strong>redis zset</strong> 和 set 一样都是
+<code>字符串类型元素的集合，并且集合内的元素不能重复。</code></p>
+<p>不同的是，<strong>zset</strong> 每个元素都会关联一个 double
+类型的分数。redis 通过分数来为集合中的成员进行从小到大的排序。</p>
+<p><strong>zset</strong>
+的元素是唯一的，但是分数（score）却可以重复。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; zadd zset-key <span class="number">728</span> member1</span><br><span class="line">(integer) <span class="number">1</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; zadd zset-key <span class="number">982</span> member0</span><br><span class="line">(integer) <span class="number">1</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; zadd zset-key <span class="number">982</span> member0</span><br><span class="line">(integer) <span class="number">0</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; zrange zset-key <span class="number">0</span> -<span class="number">1</span> withscores</span><br><span class="line"><span class="number">1</span>) <span class="string">&quot;member1&quot;</span></span><br><span class="line"><span class="number">2</span>) <span class="string">&quot;728&quot;</span></span><br><span class="line"><span class="number">3</span>) <span class="string">&quot;member0&quot;</span></span><br><span class="line"><span class="number">4</span>) <span class="string">&quot;982&quot;</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; zrangebyscore zset-key <span class="number">0</span> <span class="number">800</span> withscores</span><br><span class="line"><span class="number">1</span>) <span class="string">&quot;member1&quot;</span></span><br><span class="line"><span class="number">2</span>) <span class="string">&quot;728&quot;</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; zrem zset-key <span class="title function_">member1</span></span><br><span class="line"><span class="params">(integer)</span> <span class="number">1</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; zrem zset-key <span class="title function_">member1</span></span><br><span class="line"><span class="params">(integer)</span> <span class="number">0</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; zrange zset-key <span class="number">0</span> -<span class="number">1</span> withscores</span><br><span class="line"><span class="number">1</span>) <span class="string">&quot;member0&quot;</span></span><br><span class="line"><span class="number">2</span>) <span class="string">&quot;982&quot;</span></span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>常用</li>
 </ul>
 <table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
 <thead>
-<tr>
-<th align="center">命令</th>
-<th align="center">描述</th>
+<tr class="header">
+<th style="text-align: center;">命令</th>
+<th style="text-align: center;">描述</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">ZADD key score1 member1 [score2 member2]</td>
-<td align="center">向有序集合添加一个或多个成员，或者更新已存在成员的分数</td>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">ZADD key score1 member1 [score2
+member2]</td>
+<td
+style="text-align: center;">向有序集合添加一个或多个成员，或者更新已存在成员的分数</td>
 </tr>
-<tr>
-<td align="center">ZCARD key</td>
-<td align="center">获取有序集合的成员数</td>
+<tr class="even">
+<td style="text-align: center;">ZCARD key</td>
+<td style="text-align: center;">获取有序集合的成员数</td>
 </tr>
-<tr>
-<td align="center">ZCOUNT key min max</td>
-<td align="center">计算在有序集合中指定区间分数的成员数</td>
+<tr class="odd">
+<td style="text-align: center;">ZCOUNT key min max</td>
+<td
+style="text-align: center;">计算在有序集合中指定区间分数的成员数</td>
 </tr>
-<tr>
-<td align="center">ZINCRBY key increment member</td>
-<td align="center">有序集合中对指定成员的分数加上增量 increment</td>
+<tr class="even">
+<td style="text-align: center;">ZINCRBY key increment member</td>
+<td style="text-align: center;">有序集合中对指定成员的分数加上增量
+increment</td>
 </tr>
-<tr>
-<td align="center">ZINTERSTORE destination numkeys key [key …]</td>
-<td align="center">计算给定的一个或多个有序集的交集并将结果集存储在新的有序集合 key 中</td>
+<tr class="odd">
+<td style="text-align: center;">ZINTERSTORE destination numkeys key [key
+…]</td>
+<td
+style="text-align: center;">计算给定的一个或多个有序集的交集并将结果集存储在新的有序集合
+key 中</td>
 </tr>
-<tr>
-<td align="center">ZLEXCOUNT key min max</td>
-<td align="center">在有序集合中计算指定字典区间内成员数量</td>
+<tr class="even">
+<td style="text-align: center;">ZLEXCOUNT key min max</td>
+<td
+style="text-align: center;">在有序集合中计算指定字典区间内成员数量</td>
 </tr>
-<tr>
-<td align="center">ZRANGE key start stop [WITHSCORES]</td>
-<td align="center">通过索引区间返回有序集合指定区间内的成员</td>
+<tr class="odd">
+<td style="text-align: center;">ZRANGE key start stop [WITHSCORES]</td>
+<td
+style="text-align: center;">通过索引区间返回有序集合指定区间内的成员</td>
 </tr>
-<tr>
-<td align="center">ZRANGEBYLEX key min max [LIMIT offset count]</td>
-<td align="center">通过字典区间返回有序集合的成员</td>
+<tr class="even">
+<td style="text-align: center;">ZRANGEBYLEX key min max [LIMIT offset
+count]</td>
+<td style="text-align: center;">通过字典区间返回有序集合的成员</td>
 </tr>
-<tr>
-<td align="center">ZRANGEBYSCORE key min max [WITHSCORES] [LIMIT]</td>
-<td align="center">通过分数返回有序集合指定区间内的成员</td>
+<tr class="odd">
+<td style="text-align: center;">ZRANGEBYSCORE key min max [WITHSCORES]
+[LIMIT]</td>
+<td
+style="text-align: center;">通过分数返回有序集合指定区间内的成员</td>
 </tr>
-<tr>
-<td align="center">ZRANK key member</td>
-<td align="center">返回有序集合中指定成员的索引</td>
+<tr class="even">
+<td style="text-align: center;">ZRANK key member</td>
+<td style="text-align: center;">返回有序集合中指定成员的索引</td>
 </tr>
-<tr>
-<td align="center">ZREM key member [member …]</td>
-<td align="center">移除有序集合中的一个或多个成员</td>
+<tr class="odd">
+<td style="text-align: center;">ZREM key member [member …]</td>
+<td style="text-align: center;">移除有序集合中的一个或多个成员</td>
 </tr>
-<tr>
-<td align="center">ZREMRANGEBYLEX key min max</td>
-<td align="center">移除有序集合中给定的字典区间的所有成员</td>
+<tr class="even">
+<td style="text-align: center;">ZREMRANGEBYLEX key min max</td>
+<td
+style="text-align: center;">移除有序集合中给定的字典区间的所有成员</td>
 </tr>
-<tr>
-<td align="center">ZREMRANGEBYRANK key start stop</td>
-<td align="center">移除有序集合中给定的排名区间的所有成员</td>
+<tr class="odd">
+<td style="text-align: center;">ZREMRANGEBYRANK key start stop</td>
+<td
+style="text-align: center;">移除有序集合中给定的排名区间的所有成员</td>
 </tr>
-<tr>
-<td align="center">ZREMRANGEBYSCORE key min max</td>
-<td align="center">移除有序集合中给定的分数区间的所有成员</td>
+<tr class="even">
+<td style="text-align: center;">ZREMRANGEBYSCORE key min max</td>
+<td
+style="text-align: center;">移除有序集合中给定的分数区间的所有成员</td>
 </tr>
-<tr>
-<td align="center">ZREVRANGE key start stop [WITHSCORES]</td>
-<td align="center">返回有序集中指定区间内的成员，通过索引，分数从高到低</td>
+<tr class="odd">
+<td style="text-align: center;">ZREVRANGE key start stop
+[WITHSCORES]</td>
+<td
+style="text-align: center;">返回有序集中指定区间内的成员，通过索引，分数从高到低</td>
 </tr>
-<tr>
-<td align="center">ZREVRANGEBYSCORE key max min [WITHSCORES]</td>
-<td align="center">返回有序集中指定分数区间内的成员，分数从高到低排序</td>
+<tr class="even">
+<td style="text-align: center;">ZREVRANGEBYSCORE key max min
+[WITHSCORES]</td>
+<td
+style="text-align: center;">返回有序集中指定分数区间内的成员，分数从高到低排序</td>
 </tr>
-<tr>
-<td align="center">ZREVRANK key member</td>
-<td align="center">返回有序集合中指定成员的排名，有序集成员按分数值递减(从大到小)排序</td>
+<tr class="odd">
+<td style="text-align: center;">ZREVRANK key member</td>
+<td
+style="text-align: center;">返回有序集合中指定成员的排名，有序集成员按分数值递减(从大到小)排序</td>
 </tr>
-<tr>
-<td align="center">ZSCORE key member</td>
-<td align="center">返回有序集中，成员的分数值</td>
+<tr class="even">
+<td style="text-align: center;">ZSCORE key member</td>
+<td style="text-align: center;">返回有序集中，成员的分数值</td>
 </tr>
-<tr>
-<td align="center">ZUNIONSTORE destination numkeys key [key …]</td>
-<td align="center">计算给定的一个或多个有序集的并集，并存储在新的 key 中</td>
+<tr class="odd">
+<td style="text-align: center;">ZUNIONSTORE destination numkeys key [key
+…]</td>
+<td
+style="text-align: center;">计算给定的一个或多个有序集的并集，并存储在新的
+key 中</td>
 </tr>
-<tr>
-<td align="center">ZSCAN key cursor [MATCH pattern] [COUNT count]</td>
-<td align="center">迭代有序集合中的元素（包括元素成员和元素分值）</td>
+<tr class="even">
+<td style="text-align: center;">ZSCAN key cursor [MATCH pattern] [COUNT
+count]</td>
+<td
+style="text-align: center;">迭代有序集合中的元素（包括元素成员和元素分值）</td>
 </tr>
-</tbody></table>
-<h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><p><strong>Redis 的配置文件</strong>位于 Redis 安装目录下，文件名为 <code>redis.conf</code>(Windows 名为 redis.windows.conf)。</p>
+</tbody>
+</table>
+<h2 id="配置文件">配置文件</h2>
+<p><strong>Redis 的配置文件</strong>位于 Redis 安装目录下，文件名为
+<code>redis.conf</code>(Windows 名为 redis.windows.conf)。</p>
 <p>你可以通过 <code>CONFIG</code> 命令查看或设置配置项。</p>
-<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><p><code>Redis CONFIG</code> 命令格式如下：</p>
+<h3 id="语法">语法</h3>
+<p><code>Redis CONFIG</code> 命令格式如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis 127.0.0.1:6379&gt; CONFIG GET CONFIG_SETTING_NAME</span><br></pre></td></tr></table></figure>
-
-<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">redis 127.0.0.1:6379&gt; CONFIG GET loglevel</span><br><span class="line"></span><br><span class="line">1) &quot;loglevel&quot;</span><br><span class="line">2) &quot;notice&quot;</span><br></pre></td></tr></table></figure>
-
-<h3 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h3><p><code>redis.conf</code> 配置项说明如下：</p>
+<h3 id="实例">实例</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">redis 127.0.0.1:6379&gt; CONFIG GET loglevel</span><br><span class="line"></span><br><span class="line">1) &quot;loglevel&quot;</span><br><span class="line">2) &quot;notice&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="参数说明">参数说明</h3>
+<p><code>redis.conf</code> 配置项说明如下：</p>
 <p>注意，下面配置项说明并不全，了解更多请检阅<code>redis.conf</code>。</p>
 <table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
 <thead>
-<tr>
-<th align="center">配置项</th>
-<th align="center">说明</th>
+<tr class="header">
+<th style="text-align: center;">配置项</th>
+<th style="text-align: center;">说明</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center"><code>daemonize no</code></td>
-<td align="center">Redis 默认不是以守护进程的方式运行，可以通过该配置项修改，使用 yes 启用守护进程（Windows 不支持守护线程的配置为 no）</td>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><code>daemonize no</code></td>
+<td style="text-align: center;">Redis
+默认不是以守护进程的方式运行，可以通过该配置项修改，使用 yes
+启用守护进程（Windows 不支持守护线程的配置为 no）</td>
 </tr>
-<tr>
-<td align="center"><code>pidfile /var/run/redis.pid</code></td>
-<td align="center">当 Redis 以守护进程方式运行时，Redis 默认会把 pid 写入 &#x2F;var&#x2F;run&#x2F;redis.pid 文件，可以通过 pidfile 指定</td>
+<tr class="even">
+<td
+style="text-align: center;"><code>pidfile /var/run/redis.pid</code></td>
+<td style="text-align: center;">当 Redis 以守护进程方式运行时，Redis
+默认会把 pid 写入 /var/run/redis.pid 文件，可以通过 pidfile 指定</td>
 </tr>
-<tr>
-<td align="center"><code>port 6379</code></td>
-<td align="center">指定 Redis 监听端口，默认端口为 6379，作者在自己的一篇博文中解释了为什么选用 6379 作为默认端口，因为 6379 在手机按键上 MERZ 对应的号码，而 MERZ 取自意大利歌女 Alessia Merz 的名字</td>
+<tr class="odd">
+<td style="text-align: center;"><code>port 6379</code></td>
+<td style="text-align: center;">指定 Redis 监听端口，默认端口为
+6379，作者在自己的一篇博文中解释了为什么选用 6379 作为默认端口，因为
+6379 在手机按键上 MERZ 对应的号码，而 MERZ 取自意大利歌女 Alessia Merz
+的名字</td>
 </tr>
-<tr>
-<td align="center"><code>bind 127.0.0.1</code></td>
-<td align="center">绑定的主机地址</td>
+<tr class="even">
+<td style="text-align: center;"><code>bind 127.0.0.1</code></td>
+<td style="text-align: center;">绑定的主机地址</td>
 </tr>
-<tr>
-<td align="center"><code>timeout 300</code></td>
-<td align="center">当客户端闲置多长秒后关闭连接，如果指定为 0 ，表示关闭该功能</td>
+<tr class="odd">
+<td style="text-align: center;"><code>timeout 300</code></td>
+<td style="text-align: center;">当客户端闲置多长秒后关闭连接，如果指定为
+0 ，表示关闭该功能</td>
 </tr>
-<tr>
-<td align="center"><code>loglevel notice</code></td>
-<td align="center">指定日志记录级别，Redis 总共支持四个级别：debug、verbose、notice、warning，默认为 notice</td>
+<tr class="even">
+<td style="text-align: center;"><code>loglevel notice</code></td>
+<td style="text-align: center;">指定日志记录级别，Redis
+总共支持四个级别：debug、verbose、notice、warning，默认为 notice</td>
 </tr>
-<tr>
-<td align="center"><code>logfile stdout</code></td>
-<td align="center">日志记录方式，默认为标准输出，如果配置 Redis 为守护进程方式运行，而这里又配置为日志记录方式为标准输出，则日志将会发送给 &#x2F;dev&#x2F;null</td>
+<tr class="odd">
+<td style="text-align: center;"><code>logfile stdout</code></td>
+<td style="text-align: center;">日志记录方式，默认为标准输出，如果配置
+Redis
+为守护进程方式运行，而这里又配置为日志记录方式为标准输出，则日志将会发送给
+/dev/null</td>
 </tr>
-<tr>
-<td align="center"><code>databases 16</code></td>
-<td align="center">设置数据库的数量，默认数据库为0，可以使用SELECT 命令在连接上指定数据库id</td>
+<tr class="even">
+<td style="text-align: center;"><code>databases 16</code></td>
+<td
+style="text-align: center;">设置数据库的数量，默认数据库为0，可以使用SELECT
+命令在连接上指定数据库id</td>
 </tr>
-<tr>
-<td align="center"><code>save &lt;seconds&gt; &lt;changes&gt;</code> Redis 默认配置文件中提供了三个条件：<code>save 900 1</code>  <code>save 300 10</code>  <code>save 60 10000</code></td>
-<td align="center">分别表示 900 秒（15 分钟）内有 1 个更改，300 秒（5 分钟）内有 10 个更改以及 60 秒内有 10000 个更改。指定在多长时间内，有多少次更新操作，就将数据同步到数据文件，可以多个条件配合</td>
+<tr class="odd">
+<td
+style="text-align: center;"><code>save &lt;seconds&gt; &lt;changes&gt;</code>
+Redis 默认配置文件中提供了三个条件：<code>save 900 1</code>
+<code>save 300 10</code> <code>save 60 10000</code></td>
+<td style="text-align: center;">分别表示 900 秒（15 分钟）内有 1
+个更改，300 秒（5 分钟）内有 10 个更改以及 60 秒内有 10000
+个更改。指定在多长时间内，有多少次更新操作，就将数据同步到数据文件，可以多个条件配合</td>
 </tr>
-<tr>
-<td align="center"><code>rdbcompression yes</code></td>
-<td align="center">指定存储至本地数据库时是否压缩数据，默认为 yes，Redis 采用 LZF 压缩，如果为了节省 CPU 时间，可以关闭该选项，但会导致数据库文件变的巨大</td>
+<tr class="even">
+<td style="text-align: center;"><code>rdbcompression yes</code></td>
+<td
+style="text-align: center;">指定存储至本地数据库时是否压缩数据，默认为
+yes，Redis 采用 LZF 压缩，如果为了节省 CPU
+时间，可以关闭该选项，但会导致数据库文件变的巨大</td>
 </tr>
-<tr>
-<td align="center"><code>dbfilename dump.rdb</code></td>
-<td align="center">指定本地数据库文件名，默认值为 dump.rdb</td>
+<tr class="odd">
+<td style="text-align: center;"><code>dbfilename dump.rdb</code></td>
+<td style="text-align: center;">指定本地数据库文件名，默认值为
+dump.rdb</td>
 </tr>
-<tr>
-<td align="center"><code>dir ./</code></td>
-<td align="center">指定本地数据库存放目录</td>
+<tr class="even">
+<td style="text-align: center;"><code>dir ./</code></td>
+<td style="text-align: center;">指定本地数据库存放目录</td>
 </tr>
-<tr>
-<td align="center"><code>slaveof &lt;masterip&gt; &lt;masterport&gt;</code></td>
-<td align="center">设置当本机为 slave 服务时，设置 master 服务的 IP 地址及端口，在 Redis 启动时，它会自动从 master 进行数据同步</td>
+<tr class="odd">
+<td
+style="text-align: center;"><code>slaveof &lt;masterip&gt; &lt;masterport&gt;</code></td>
+<td style="text-align: center;">设置当本机为 slave 服务时，设置 master
+服务的 IP 地址及端口，在 Redis 启动时，它会自动从 master
+进行数据同步</td>
 </tr>
-<tr>
-<td align="center"><code>masterauth &lt;master-password&gt;</code></td>
-<td align="center">当 master 服务设置了密码保护时，slav 服务连接 master 的密码</td>
+<tr class="even">
+<td
+style="text-align: center;"><code>masterauth &lt;master-password&gt;</code></td>
+<td style="text-align: center;">当 master 服务设置了密码保护时，slav
+服务连接 master 的密码</td>
 </tr>
-<tr>
-<td align="center"><code>requirepass foobared</code></td>
-<td align="center">设置 Redis 连接密码，如果配置了连接密码，客户端在连接 Redis 时需要通过 AUTH 命令提供密码，默认关闭</td>
+<tr class="odd">
+<td style="text-align: center;"><code>requirepass foobared</code></td>
+<td style="text-align: center;">设置 Redis
+连接密码，如果配置了连接密码，客户端在连接 Redis 时需要通过 AUTH
+命令提供密码，默认关闭</td>
 </tr>
-<tr>
-<td align="center"><code>maxclients 128</code></td>
-<td align="center">设置同一时间最大客户端连接数，默认无限制，Redis 可以同时打开的客户端连接数为 Redis 进程可以打开的最大文件描述符数，如果设置 maxclients 0，表示不作限制。当客户端连接数到达限制时，Redis 会关闭新的连接并向客户端返回 max number of clients reached 错误信息</td>
+<tr class="even">
+<td style="text-align: center;"><code>maxclients 128</code></td>
+<td
+style="text-align: center;">设置同一时间最大客户端连接数，默认无限制，Redis
+可以同时打开的客户端连接数为 Redis
+进程可以打开的最大文件描述符数，如果设置 maxclients
+0，表示不作限制。当客户端连接数到达限制时，Redis
+会关闭新的连接并向客户端返回 max number of clients reached 错误信息</td>
 </tr>
-<tr>
-<td align="center"><code>maxmemory &lt;bytes&gt;</code></td>
-<td align="center">指定 Redis 最大内存限制，Redis 在启动时会把数据加载到内存中，达到最大内存后，Redis 会先尝试清除已到期或即将到期的 Key，当此方法处理后，仍然到达最大内存设置，将无法再进行写入操作，但仍然可以进行读取操作。Redis 新的 vm 机制，会把 Key 存放内存，Value 会存放在 swap 区</td>
+<tr class="odd">
+<td
+style="text-align: center;"><code>maxmemory &lt;bytes&gt;</code></td>
+<td style="text-align: center;">指定 Redis 最大内存限制，Redis
+在启动时会把数据加载到内存中，达到最大内存后，Redis
+会先尝试清除已到期或即将到期的
+Key，当此方法处理后，仍然到达最大内存设置，将无法再进行写入操作，但仍然可以进行读取操作。Redis
+新的 vm 机制，会把 Key 存放内存，Value 会存放在 swap 区</td>
 </tr>
-<tr>
-<td align="center"><code>appendonly no</code></td>
-<td align="center">指定是否在每次更新操作后进行日志记录，Redis 在默认情况下是异步的把数据写入磁盘，如果不开启，可能会在断电时导致一段时间内的数据丢失。因为 redis 本身同步数据文件是按上面 save 条件来同步的，所以有的数据会在一段时间内只存在于内存中。默认为 no</td>
+<tr class="even">
+<td style="text-align: center;"><code>appendonly no</code></td>
+<td
+style="text-align: center;">指定是否在每次更新操作后进行日志记录，Redis
+在默认情况下是异步的把数据写入磁盘，如果不开启，可能会在断电时导致一段时间内的数据丢失。因为
+redis 本身同步数据文件是按上面 save
+条件来同步的，所以有的数据会在一段时间内只存在于内存中。默认为 no</td>
 </tr>
-<tr>
-<td align="center"><code>appendfilename appendonly.aof</code></td>
-<td align="center">指定更新日志文件名，默认为 appendonly.aof</td>
+<tr class="odd">
+<td
+style="text-align: center;"><code>appendfilename appendonly.aof</code></td>
+<td style="text-align: center;">指定更新日志文件名，默认为
+appendonly.aof</td>
 </tr>
-<tr>
-<td align="center"><code>appendfsync everysec</code></td>
-<td align="center">指定更新日志条件，共有 3 个可选值：<strong>no</strong>：表示等操作系统进行数据缓存同步到磁盘（快） <strong>always</strong>：表示每次更新操作后手动调用 fsync() 将数据写到磁盘（慢，安全） <strong>everysec</strong>：表示每秒同步一次（折中，默认值）</td>
+<tr class="even">
+<td style="text-align: center;"><code>appendfsync everysec</code></td>
+<td style="text-align: center;">指定更新日志条件，共有 3
+个可选值：<strong>no</strong>：表示等操作系统进行数据缓存同步到磁盘（快）
+<strong>always</strong>：表示每次更新操作后手动调用 fsync()
+将数据写到磁盘（慢，安全）
+<strong>everysec</strong>：表示每秒同步一次（折中，默认值）</td>
 </tr>
-<tr>
-<td align="center"><code>vm-enabled no</code></td>
-<td align="center">指定是否启用虚拟内存机制，默认值为 no，简单的介绍一下，VM 机制将数据分页存放，由 Redis 将访问量较少的页即冷数据 swap 到磁盘上，访问多的页面由磁盘自动换出到内存中（在后面的文章我会仔细分析 Redis 的 VM 机制）</td>
+<tr class="odd">
+<td style="text-align: center;"><code>vm-enabled no</code></td>
+<td style="text-align: center;">指定是否启用虚拟内存机制，默认值为
+no，简单的介绍一下，VM 机制将数据分页存放，由 Redis
+将访问量较少的页即冷数据 swap
+到磁盘上，访问多的页面由磁盘自动换出到内存中（在后面的文章我会仔细分析
+Redis 的 VM 机制）</td>
 </tr>
-<tr>
-<td align="center"><code>vm-swap-file /tmp/redis.swap</code></td>
-<td align="center">虚拟内存文件路径，默认值为 &#x2F;tmp&#x2F;redis.swap，不可多个 Redis 实例共享</td>
+<tr class="even">
+<td
+style="text-align: center;"><code>vm-swap-file /tmp/redis.swap</code></td>
+<td style="text-align: center;">虚拟内存文件路径，默认值为
+/tmp/redis.swap，不可多个 Redis 实例共享</td>
 </tr>
-<tr>
-<td align="center"><code>vm-max-memory 0</code></td>
-<td align="center">将所有大于 vm-max-memory 的数据存入虚拟内存，无论 vm-max-memory 设置多小，所有索引数据都是内存存储的(Redis 的索引数据 就是 keys)，也就是说，当 <code>vm-max-memory</code></td>
+<tr class="odd">
+<td style="text-align: center;"><code>vm-max-memory 0</code></td>
+<td style="text-align: center;">将所有大于 vm-max-memory
+的数据存入虚拟内存，无论 vm-max-memory
+设置多小，所有索引数据都是内存存储的(Redis 的索引数据 就是
+keys)，也就是说，当 <code>vm-max-memory</code></td>
 </tr>
-<tr>
-<td align="center"><code>vm-page-size 32    Redis swap</code></td>
-<td align="center">文件分成了很多的 page，一个对象可以保存在多个 page 上面，但一个 page 上不能被多个对象共享，vm-page-size 是要根据存储的 数据大小来设定的，作者建议如果存储很多小对象，page 大小最好设置为 32 或者 64bytes；如果存储很大大对象，则可以使用更大的 page，如果不确定，就使用默认值</td>
+<tr class="even">
+<td
+style="text-align: center;"><code>vm-page-size 32    Redis swap</code></td>
+<td style="text-align: center;">文件分成了很多的
+page，一个对象可以保存在多个 page 上面，但一个 page
+上不能被多个对象共享，vm-page-size 是要根据存储的
+数据大小来设定的，作者建议如果存储很多小对象，page 大小最好设置为 32
+或者 64bytes；如果存储很大大对象，则可以使用更大的
+page，如果不确定，就使用默认值</td>
 </tr>
-<tr>
-<td align="center"><code>vm-pages 134217728</code></td>
-<td align="center">设置 swap 文件中的 page 数量，由于页表（一种表示页面空闲或使用的 bitmap）是在放在内存中的，，在磁盘上每 8 个 pages 将消耗 1byte 的内存。</td>
+<tr class="odd">
+<td style="text-align: center;"><code>vm-pages 134217728</code></td>
+<td style="text-align: center;">设置 swap 文件中的 page
+数量，由于页表（一种表示页面空闲或使用的
+bitmap）是在放在内存中的，，在磁盘上每 8 个 pages 将消耗 1byte
+的内存。</td>
 </tr>
-<tr>
-<td align="center"><code>vm-max-threads 4</code></td>
-<td align="center">设置访问swap文件的线程数,最好不要超过机器的核数,如果设置为0,那么所有对swap文件的操作都是串行的，可能会造成比较长时间的延迟。默认值为4</td>
+<tr class="even">
+<td style="text-align: center;"><code>vm-max-threads 4</code></td>
+<td
+style="text-align: center;">设置访问swap文件的线程数,最好不要超过机器的核数,如果设置为0,那么所有对swap文件的操作都是串行的，可能会造成比较长时间的延迟。默认值为4</td>
 </tr>
-<tr>
-<td align="center"><code>glueoutputbuf yes</code></td>
-<td align="center">设置在向客户端应答时，是否把较小的包合并为一个包发送，默认为开启</td>
+<tr class="odd">
+<td style="text-align: center;"><code>glueoutputbuf yes</code></td>
+<td
+style="text-align: center;">设置在向客户端应答时，是否把较小的包合并为一个包发送，默认为开启</td>
 </tr>
-<tr>
-<td align="center"><code>hash-max-zipmap-entries 64</code> <code>hash-max-zipmap-value 512</code></td>
-<td align="center">指定在超过一定的数量或者最大的元素超过某一临界值时，采用一种特殊的哈希算法</td>
+<tr class="even">
+<td style="text-align: center;"><code>hash-max-zipmap-entries 64</code>
+<code>hash-max-zipmap-value 512</code></td>
+<td
+style="text-align: center;">指定在超过一定的数量或者最大的元素超过某一临界值时，采用一种特殊的哈希算法</td>
 </tr>
-<tr>
-<td align="center"><code>activerehashing yes</code></td>
-<td align="center">指定是否激活重置哈希，默认为开启（后面在介绍 Redis 的哈希算法时具体介绍）</td>
+<tr class="odd">
+<td style="text-align: center;"><code>activerehashing yes</code></td>
+<td
+style="text-align: center;">指定是否激活重置哈希，默认为开启（后面在介绍
+Redis 的哈希算法时具体介绍）</td>
 </tr>
-<tr>
-<td align="center"><code>include /path/to/local.conf</code></td>
-<td align="center">指定包含其它的配置文件，可以在同一主机上多个Redis实例之间使用同一份配置文件，而同时各个实例又拥有自己的特定配置文件</td>
+<tr class="even">
+<td
+style="text-align: center;"><code>include /path/to/local.conf</code></td>
+<td
+style="text-align: center;">指定包含其它的配置文件，可以在同一主机上多个Redis实例之间使用同一份配置文件，而同时各个实例又拥有自己的特定配置文件</td>
 </tr>
-</tbody></table>
-<h2 id="发布订阅"><a href="#发布订阅" class="headerlink" title="发布订阅"></a>发布订阅</h2><p>一般<strong>不用 Redis</strong> 做<code>消息发布订阅</code>。</p>
-<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p><strong>Redis 发布订阅 (pub&#x2F;sub)</strong> 是一种消息通信模式：发送者 (pub) 发送消息，订阅者 (sub) 接收消息。</p>
+</tbody>
+</table>
+<h2 id="发布订阅">发布订阅</h2>
+<p>一般<strong>不用 Redis</strong> 做<code>消息发布订阅</code>。</p>
+<h3 id="简介">简介</h3>
+<p><strong>Redis 发布订阅 (pub/sub)</strong> 是一种消息通信模式：发送者
+(pub) 发送消息，订阅者 (sub) 接收消息。</p>
 <p><strong>Redis 客户端</strong>可以订阅任意数量的频道。</p>
-<p>下图展示了频道 channel1 ， 以及订阅这个频道的三个客户端 —— client2 、 client5 和 client1 之间的关系：</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/hPjLff"><img src="https://z3.ax1x.com/2021/08/23/hPjLff.jpg" alt="hPjLff.jpg"></a></p>
-<p>当有新消息通过 PUBLISH 命令发送给频道 channel1 时， 这个消息就会被发送给订阅它的三个客户端：</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/hPvPkq"><img src="https://z3.ax1x.com/2021/08/23/hPvPkq.jpg" alt="hPvPkq.jpg"></a></p>
-<h3 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h3><p>以下实例演示了发布订阅是如何工作的。在我们实例中我们创建了订阅频道名为 <strong>redisChat</strong>:</p>
+<p>下图展示了频道 channel1 ， 以及订阅这个频道的三个客户端 —— client2 、
+client5 和 client1 之间的关系：</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/hPjLff"><img
+src="https://z3.ax1x.com/2021/08/23/hPjLff.jpg"
+alt="hPjLff.jpg" /></a></p>
+<p>当有新消息通过 PUBLISH 命令发送给频道 channel1 时，
+这个消息就会被发送给订阅它的三个客户端：</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/hPvPkq"><img
+src="https://z3.ax1x.com/2021/08/23/hPvPkq.jpg"
+alt="hPvPkq.jpg" /></a></p>
+<h3 id="实例-1">实例</h3>
+<p>以下实例演示了发布订阅是如何工作的。在我们实例中我们创建了订阅频道名为
+<strong>redisChat</strong>:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; SUBsCRIBE redisChat</span><br><span class="line">Reading messages... (press Ctrl-C to quit)</span><br><span class="line"><span class="number">1</span>) <span class="string">&quot;subscribe&quot;</span></span><br><span class="line"><span class="number">2</span>) <span class="string">&quot;redisChat&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p> 现在，我们先重新开启个 <strong>redis 客户端</strong>，然后在同一个频道 redisChat 发布两次消息，订阅者就能接收到消息。</p>
+<p>现在，我们先重新开启个 <strong>redis
+客户端</strong>，然后在同一个频道 redisChat
+发布两次消息，订阅者就能接收到消息。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; PUBLISH redisChat <span class="string">&quot;send message&quot;</span></span><br><span class="line">(integer) <span class="number">1</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; PUBLISH redisChat <span class="string">&quot;hello world&quot;</span></span><br><span class="line">(integer) <span class="number">1</span></span><br><span class="line"># 订阅者的客户端显示如下</span><br><span class="line"><span class="number">1</span>) <span class="string">&quot;message&quot;</span></span><br><span class="line"><span class="number">2</span>) <span class="string">&quot;redisChat&quot;</span></span><br><span class="line"><span class="number">3</span>) <span class="string">&quot;send message&quot;</span></span><br><span class="line"><span class="number">1</span>) <span class="string">&quot;message&quot;</span></span><br><span class="line"><span class="number">2</span>) <span class="string">&quot;redisChat&quot;</span></span><br><span class="line"><span class="number">3</span>) <span class="string">&quot;hello world&quot;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="发布订阅原理"><a href="#发布订阅原理" class="headerlink" title="发布订阅原理"></a>发布订阅原理</h3><blockquote>
+<h3 id="发布订阅原理">发布订阅原理</h3>
+<blockquote>
 <p>SUBSCRIBE频道订阅原理</p>
 </blockquote>
 <p>当一个客户端执行<code>SUBSCRIBE</code>命令订阅某个或某些频道的时候，这个客户端与被订阅频道之间就建立了一种订阅关系。</p>
-<p><strong>Redis</strong> 将所有频道的订阅关系都保存在服务器状态的<code>pubsub_channels</code>字典里面，这个字典的键(key)是某个被订阅的频道，值(value)是一个链表，链表里面记录了所有订阅这个频道的客户端。</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/hB4o0f"><img src="https://z3.ax1x.com/2021/09/01/hB4o0f.png" alt="hB4o0f.png"></a></p>
+<p><strong>Redis</strong>
+将所有频道的订阅关系都保存在服务器状态的<code>pubsub_channels</code>字典里面，这个字典的键(key)是某个被订阅的频道，值(value)是一个链表，链表里面记录了所有订阅这个频道的客户端。</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/hB4o0f"><img
+src="https://z3.ax1x.com/2021/09/01/hB4o0f.png"
+alt="hB4o0f.png" /></a></p>
 <blockquote>
 <p>PSUBSCRIBE订阅模式原理</p>
 </blockquote>
-<p>服务器将所有的订阅关系都保存在服务器状态的 <code>pubsub_channe</code> 属性里面，在模式订阅里服务器也将所有模式的订阅关系都保存在服务器状态的<code>pubsub_patterns</code>属性里面。</p>
+<p>服务器将所有的订阅关系都保存在服务器状态的 <code>pubsub_channe</code>
+属性里面，在模式订阅里服务器也将所有模式的订阅关系都保存在服务器状态的<code>pubsub_patterns</code>属性里面。</p>
 <p><code>pubsub_patterns</code>属性是一个链表，链表中的每个节点都包含着一个<code>pubsubPattern</code>结构，这个结构的<strong>pattern属性</strong>记录了被订阅的模式，而<strong>client属性</strong>则记录了订阅模式的客户端。</p>
 <p><code>pubsub_patterns</code> 属性示例：</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/hB56uq"><img src="https://z3.ax1x.com/2021/09/01/hB56uq.png" alt="hB56uq.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/hB56uq"><img
+src="https://z3.ax1x.com/2021/09/01/hB56uq.png"
+alt="hB56uq.png" /></a></p>
 <p>这个链表记录了以下信息：</p>
 <ul>
 <li>客户端client-7正在订阅模式 cctv.*</li>
 <li>客户端client-8正在订阅模式 test_x.*</li>
-<li>客户端client-9正在订阅模式 test.y*”</li>
+<li>客户端client-9正在订阅模式 test.y*"</li>
 </ul>
 <p>当客户端执行<code>PSUBSCRIBE</code>命令订阅某个或某些模式的时候，服务器会对每个被订阅的模式执行以下两个操作：</p>
-<ol>
-<li><p>新建一个<code>pubsubPattern</code>结构，将结构的<code>pattern</code>属性设置为被订阅的模式（如： cctv.*），<code>client</code>属性值设置为订阅模式的客户端。</p>
-</li>
-<li><p>将<code>pubsubPattern</code>结构添加到<code>pubsub_patterns</code>链表的表尾。</p>
-</li>
+<ol type="1">
+<li><p>新建一个<code>pubsubPattern</code>结构，将结构的<code>pattern</code>属性设置为被订阅的模式（如：
+cctv.*），<code>client</code>属性值设置为订阅模式的客户端。</p></li>
+<li><p>将<code>pubsubPattern</code>结构添加到<code>pubsub_patterns</code>链表的表尾。</p></li>
 </ol>
 <blockquote>
 <p>PUBLISH 消息发布原理</p>
 </blockquote>
-<p>当客户端通过<code>PUBLISH</code>命令向某个频道发送消息时，Redis首先在结构体<code>redisServer</code>中的<code>pubsub_channels</code>字典中找出键(key)为该频道的结点，遍历该结点的值，找出所有的客户端，将消息发送给这些客户端。  </p>
+<p>当客户端通过<code>PUBLISH</code>命令向某个频道发送消息时，Redis首先在结构体<code>redisServer</code>中的<code>pubsub_channels</code>字典中找出键(key)为该频道的结点，遍历该结点的值，找出所有的客户端，将消息发送给这些客户端。</p>
 <p>然后，遍历结构体<code>redisServer</code>中的<code>pubsub_patterns</code>，找出包含该频道的模式的结点，将消息发送给订阅了该模式的客户端。</p>
 
     </div>
@@ -1366,7 +1612,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#NoSQL"><span class="nav-number">1.</span> <span class="nav-text">NoSQL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NoSQL%E5%85%A5%E9%97%A8%E6%A6%82%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">NoSQL入门概述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E6%9C%BAMySQL%E7%9A%84%E7%BE%8E%E5%A5%BD%E5%B9%B4%E4%BB%A3"><span class="nav-number">1.1.1.</span> <span class="nav-text">单机MySQL的美好年代</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Memcached-%E7%BC%93%E5%AD%98-MySQL-%E5%9E%82%E7%9B%B4%E6%8B%86%E5%88%86"><span class="nav-number">1.1.2.</span> <span class="nav-text">Memcached(缓存)+MySQL+垂直拆分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Mysql%E4%B8%BB%E4%BB%8E%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB"><span class="nav-number">1.1.3.</span> <span class="nav-text">Mysql主从读写分离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E8%A1%A8%E5%88%86%E5%BA%93-%E6%B0%B4%E5%B9%B3%E6%8B%86%E5%88%86-mysql%E9%9B%86%E7%BE%A4"><span class="nav-number">1.1.4.</span> <span class="nav-text">分表分库+水平拆分+mysql集群</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MySQL%E7%9A%84%E6%89%A9%E5%B1%95%E6%80%A7%E7%93%B6%E9%A2%88"><span class="nav-number">1.1.5.</span> <span class="nav-text">MySQL的扩展性瓶颈</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8NoSQL"><span class="nav-number">1.1.6.</span> <span class="nav-text">为什么用NoSQL</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NoSQL%E7%AE%80%E4%BB%8B"><span class="nav-number">1.2.</span> <span class="nav-text">NoSQL简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#NoSQL%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">1.2.1.</span> <span class="nav-text">NoSQL是什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NoSQL%E8%83%BD%E5%B9%B2%E5%98%9B"><span class="nav-number">1.2.2.</span> <span class="nav-text">NoSQL能干嘛</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%89%E5%93%AA%E4%BA%9BNoSQL"><span class="nav-number">1.2.3.</span> <span class="nav-text">有哪些NoSQL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%8E%E4%B9%88%E7%94%A8"><span class="nav-number">1.2.4.</span> <span class="nav-text">怎么用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NoSQL%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E7%AE%80%E4%BB%8B"><span class="nav-number">1.3.</span> <span class="nav-text">NoSQL数据模型简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NoSQL%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%9B%9B%E5%A4%A7%E5%88%86%E7%B1%BB"><span class="nav-number">1.4.</span> <span class="nav-text">NoSQL数据库的四大分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%BA%93CAP%E5%8E%9F%E7%90%86"><span class="nav-number">1.5.</span> <span class="nav-text">分布式数据库CAP原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%A0%E7%BB%9F%E7%9A%84ACID"><span class="nav-number">1.5.1.</span> <span class="nav-text">传统的ACID</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CAP"><span class="nav-number">1.5.2.</span> <span class="nav-text">CAP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%8F%E5%85%B8CAP%E5%9B%BE"><span class="nav-number">1.5.3.</span> <span class="nav-text">经典CAP图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BASE"><span class="nav-number">1.5.4.</span> <span class="nav-text">BASE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F-%E9%9B%86%E7%BE%A4%E7%AE%80%E4%BB%8B"><span class="nav-number">1.5.5.</span> <span class="nav-text">分布式+集群简介</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis%E7%AE%80%E4%BB%8B"><span class="nav-number">2.</span> <span class="nav-text">Redis简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis%E4%BC%98%E5%8A%BF"><span class="nav-number">2.1.</span> <span class="nav-text">Redis优势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis%E5%90%AF%E5%8A%A8"><span class="nav-number">2.2.</span> <span class="nav-text">Redis启动</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E5%90%8E%E6%9D%82%E9%A1%B9%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-number">2.2.1.</span> <span class="nav-text">启动后杂项基础知识</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Key%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-number">3.</span> <span class="nav-text">Key关键字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">4.</span> <span class="nav-text">Redis数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#string"><span class="nav-number">4.1.</span> <span class="nav-text">string</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hash"><span class="nav-number">4.2.</span> <span class="nav-text">hash</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#list"><span class="nav-number">4.3.</span> <span class="nav-text">list</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#set"><span class="nav-number">4.4.</span> <span class="nav-text">set</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Zset"><span class="nav-number">4.5.</span> <span class="nav-text">Zset</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">5.</span> <span class="nav-text">配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95"><span class="nav-number">5.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B"><span class="nav-number">5.2.</span> <span class="nav-text">实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E8%AF%B4%E6%98%8E"><span class="nav-number">5.3.</span> <span class="nav-text">参数说明</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85"><span class="nav-number">6.</span> <span class="nav-text">发布订阅</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">6.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B-1"><span class="nav-number">6.2.</span> <span class="nav-text">实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E5%8E%9F%E7%90%86"><span class="nav-number">6.3.</span> <span class="nav-text">发布订阅原理</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#nosql"><span class="nav-number">1.</span> <span class="nav-text">NoSQL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#nosql%E5%85%A5%E9%97%A8%E6%A6%82%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">NoSQL入门概述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E6%9C%BAmysql%E7%9A%84%E7%BE%8E%E5%A5%BD%E5%B9%B4%E4%BB%A3"><span class="nav-number">1.1.1.</span> <span class="nav-text">单机MySQL的美好年代</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#memcached%E7%BC%93%E5%AD%98mysql%E5%9E%82%E7%9B%B4%E6%8B%86%E5%88%86"><span class="nav-number">1.1.2.</span> <span class="nav-text">Memcached(缓存)+MySQL+垂直拆分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mysql%E4%B8%BB%E4%BB%8E%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB"><span class="nav-number">1.1.3.</span> <span class="nav-text">Mysql主从读写分离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E8%A1%A8%E5%88%86%E5%BA%93%E6%B0%B4%E5%B9%B3%E6%8B%86%E5%88%86mysql%E9%9B%86%E7%BE%A4"><span class="nav-number">1.1.4.</span> <span class="nav-text">分表分库+水平拆分+mysql集群</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mysql%E7%9A%84%E6%89%A9%E5%B1%95%E6%80%A7%E7%93%B6%E9%A2%88"><span class="nav-number">1.1.5.</span> <span class="nav-text">MySQL的扩展性瓶颈</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8nosql"><span class="nav-number">1.1.6.</span> <span class="nav-text">为什么用NoSQL</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nosql%E7%AE%80%E4%BB%8B"><span class="nav-number">1.2.</span> <span class="nav-text">NoSQL简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#nosql%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">1.2.1.</span> <span class="nav-text">NoSQL是什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#nosql%E8%83%BD%E5%B9%B2%E5%98%9B"><span class="nav-number">1.2.2.</span> <span class="nav-text">NoSQL能干嘛</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%89%E5%93%AA%E4%BA%9Bnosql"><span class="nav-number">1.2.3.</span> <span class="nav-text">有哪些NoSQL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%8E%E4%B9%88%E7%94%A8"><span class="nav-number">1.2.4.</span> <span class="nav-text">怎么用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nosql%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E7%AE%80%E4%BB%8B"><span class="nav-number">1.3.</span> <span class="nav-text">NoSQL数据模型简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nosql%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%9B%9B%E5%A4%A7%E5%88%86%E7%B1%BB"><span class="nav-number">1.4.</span> <span class="nav-text">NoSQL数据库的四大分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%BA%93cap%E5%8E%9F%E7%90%86"><span class="nav-number">1.5.</span> <span class="nav-text">分布式数据库CAP原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%A0%E7%BB%9F%E7%9A%84acid"><span class="nav-number">1.5.1.</span> <span class="nav-text">传统的ACID</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cap"><span class="nav-number">1.5.2.</span> <span class="nav-text">CAP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%8F%E5%85%B8cap%E5%9B%BE"><span class="nav-number">1.5.3.</span> <span class="nav-text">经典CAP图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#base"><span class="nav-number">1.5.4.</span> <span class="nav-text">BASE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E7%BE%A4%E7%AE%80%E4%BB%8B"><span class="nav-number">1.5.5.</span> <span class="nav-text">分布式+集群简介</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#redis%E7%AE%80%E4%BB%8B"><span class="nav-number">2.</span> <span class="nav-text">Redis简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#redis%E4%BC%98%E5%8A%BF"><span class="nav-number">2.1.</span> <span class="nav-text">Redis优势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redis%E5%90%AF%E5%8A%A8"><span class="nav-number">2.2.</span> <span class="nav-text">Redis启动</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E5%90%8E%E6%9D%82%E9%A1%B9%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-number">2.2.1.</span> <span class="nav-text">启动后杂项基础知识</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#key%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-number">3.</span> <span class="nav-text">Key关键字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">4.</span> <span class="nav-text">Redis数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#string"><span class="nav-number">4.1.</span> <span class="nav-text">string</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hash"><span class="nav-number">4.2.</span> <span class="nav-text">hash</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#list"><span class="nav-number">4.3.</span> <span class="nav-text">list</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#set"><span class="nav-number">4.4.</span> <span class="nav-text">set</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zset"><span class="nav-number">4.5.</span> <span class="nav-text">Zset</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">5.</span> <span class="nav-text">配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95"><span class="nav-number">5.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B"><span class="nav-number">5.2.</span> <span class="nav-text">实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E8%AF%B4%E6%98%8E"><span class="nav-number">5.3.</span> <span class="nav-text">参数说明</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85"><span class="nav-number">6.</span> <span class="nav-text">发布订阅</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">6.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B-1"><span class="nav-number">6.2.</span> <span class="nav-text">实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E5%8E%9F%E7%90%86"><span class="nav-number">6.3.</span> <span class="nav-text">发布订阅原理</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -1382,7 +1628,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-count">53</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

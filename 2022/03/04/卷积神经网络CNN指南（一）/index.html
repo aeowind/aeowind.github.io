@@ -27,40 +27,12 @@
 <meta property="og:site_name" content="Aeo&#39;s Blog">
 <meta property="og:description" content="Will you still love me when I got nothing but my aching soul?">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://z3.ax1x.com/2021/10/27/5HB4e0.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/10/27/5HrtKA.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/10/27/5HsKMj.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/10/27/5HsYJU.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/IeTV7d.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/Ie7xRx.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/IeHCLD.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/IeHuy8.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/IeHh0e.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/IebRCn.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/IebIDU.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/IeqSbD.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/IeqExP.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/IeqYrT.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/Ieq5RI.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/IeLCLT.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/IeLwm8.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/IeOVHS.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/IeOwg1.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/IeXEx1.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/IeXLdO.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/Iejuyq.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/IezVYD.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/ImCeEt.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/ImFSNq.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/ImFjxO.png">
-<meta property="og:image" content="https://z3.ax1x.com/2021/11/04/ImAB7j.png">
 <meta property="article:published_time" content="2022-03-04T12:46:25.453Z">
 <meta property="article:modified_time" content="2021-11-04T12:21:18.925Z">
 <meta property="article:author" content="aeowind">
 <meta property="article:tag" content="学习">
 <meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://z3.ax1x.com/2021/10/27/5HB4e0.png">
 
 <link rel="canonical" href="https://aeowind.github.io/2022/03/04/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CCNN%E6%8C%87%E5%8D%97%EF%BC%88%E4%B8%80%EF%BC%89/">
 
@@ -282,89 +254,161 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="CNN"><a href="#CNN" class="headerlink" title="CNN"></a>CNN</h1><p><a target="_blank" rel="noopener" href="https://imgtu.com/i/5HB4e0"><img src="https://z3.ax1x.com/2021/10/27/5HB4e0.png" alt="5HB4e0.png"></a></p>
-<h2 id="导论"><a href="#导论" class="headerlink" title="导论"></a>导论</h2><p>首先最需要明确的一点就是，<strong>卷积神经网络</strong> ，也就是convolutional neural networks （简称CNN），现在已经被用来应用于各个领域，物体分割啦，风格转换啦，自动上色啦blahblah，但是CNN真正能做的，只是起到一个特征提取器的作用！所以这些应用，都是建立在CNN对图像进行特征提取的基础上进行的。</p>
+        <h1 id="cnn">CNN</h1>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/5HB4e0"><img
+src="https://z3.ax1x.com/2021/10/27/5HB4e0.png"
+alt="5HB4e0.png" /></a></p>
+<h2 id="导论">导论</h2>
+<p>首先最需要明确的一点就是，<strong>卷积神经网络</strong>
+，也就是convolutional neural networks
+（简称CNN），现在已经被用来应用于各个领域，物体分割啦，风格转换啦，自动上色啦blahblah，但是CNN真正能做的，只是起到一个特征提取器的作用！所以这些应用，都是建立在CNN对图像进行特征提取的基础上进行的。</p>
 <p>拿到一张图片，要对它进行识别，最简单的栗子是，这张图是什么？</p>
 <p>比如，我现在要训练一个最简单的CNN，用来识别一张图片里的字母是X还是O。</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/5HrtKA"><img src="https://z3.ax1x.com/2021/10/27/5HrtKA.png" alt="5HrtKA.png"></a></p>
-<p>我们人眼一看，很简单嘛，明显就是X啊，但是计算机不知道，它不明白什么是X。所以我们给这张图片加一个标签，也就是俗称的Label，Label&#x3D;X，就告诉了计算机这张图代表的是X。它就记住了X的长相。</p>
-<p>但是并不是所有的X都长这样呀。比如说…</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/5HsKMj"><img src="https://z3.ax1x.com/2021/10/27/5HsKMj.png" alt="5HsKMj.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/5HrtKA"><img
+src="https://z3.ax1x.com/2021/10/27/5HrtKA.png"
+alt="5HrtKA.png" /></a></p>
+<p>我们人眼一看，很简单嘛，明显就是X啊，但是计算机不知道，它不明白什么是X。所以我们给这张图片加一个标签，也就是俗称的Label，Label=X，就告诉了计算机这张图代表的是X。它就记住了X的长相。</p>
+<p>但是并不是所有的X都长这样呀。比如说...</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/5HsKMj"><img
+src="https://z3.ax1x.com/2021/10/27/5HsKMj.png"
+alt="5HsKMj.png" /></a></p>
 <p>这四个都是X，但它们和之前那张X明显不一样，计算机没见过它们，又都不认识了。</p>
-<p>不认识了怎么办，当然是回忆看看是不是见过差不多的呀。这时候CNN要做的，就是<strong>如何提取内容为X的图片的特征</strong> 。我们都知道，图片在计算机内部以像素值的方式被存储，也就是说两张X在计算机看来，其实是这样子的。</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/5HsYJU"><img src="https://z3.ax1x.com/2021/10/27/5HsYJU.png" alt="5HsYJU.png"></a></p>
+<p>不认识了怎么办，当然是回忆看看是不是见过差不多的呀。这时候CNN要做的，就是<strong>如何提取内容为X的图片的特征</strong>
+。我们都知道，图片在计算机内部以像素值的方式被存储，也就是说两张X在计算机看来，其实是这样子的。</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/5HsYJU"><img
+src="https://z3.ax1x.com/2021/10/27/5HsYJU.png"
+alt="5HsYJU.png" /></a></p>
 <p>其中1代表白色，-1代表黑色。</p>
 <p>如果按照每像素逐个比较肯定是不科学的，结果不对而且效率低下，因此提出其他匹配方法。</p>
 <p>我们称之为<strong>patch匹配</strong> 。</p>
 <p>观察这两张X图，可以发现尽管像素值无法一一对应，但也存在着某些共同点。</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IeTV7d"><img src="https://z3.ax1x.com/2021/11/04/IeTV7d.png" alt="IeTV7d.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IeTV7d"><img
+src="https://z3.ax1x.com/2021/11/04/IeTV7d.png"
+alt="IeTV7d.png" /></a></p>
 <p>如上图所示，两张图中三个同色区域的结构完全一致！</p>
 <p>因此，我们就考虑，要将这两张图联系起来，无法进行全体像素对应，但是否能进行局部地匹配？</p>
 <p>答案当然是肯定的。</p>
 <p>相当于如果我要在一张照片中进行人脸定位，但是CNN不知道什么是人脸，我就告诉它：人脸上有三个特征，眼睛鼻子嘴巴是什么样，再告诉它这三个长啥样，只要CNN去搜索整张图，找到了这三个特征在的地方就定位到了人脸。</p>
 <p>同理，从标准的X图中我们提取出<strong>三个特征</strong>（feature）</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/Ie7xRx"><img src="https://z3.ax1x.com/2021/11/04/Ie7xRx.png" alt="Ie7xRx.png"></a></p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IeHCLD"><img src="https://z3.ax1x.com/2021/11/04/IeHCLD.png" alt="IeHCLD.png"></a></p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IeHuy8"><img src="https://z3.ax1x.com/2021/11/04/IeHuy8.png" alt="IeHuy8.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/Ie7xRx"><img
+src="https://z3.ax1x.com/2021/11/04/Ie7xRx.png"
+alt="Ie7xRx.png" /></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IeHCLD"><img
+src="https://z3.ax1x.com/2021/11/04/IeHCLD.png"
+alt="IeHCLD.png" /></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IeHuy8"><img
+src="https://z3.ax1x.com/2021/11/04/IeHuy8.png"
+alt="IeHuy8.png" /></a></p>
 <p>我们发现只要用这三个feature便可定位到X的某个局部。</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IeHh0e"><img src="https://z3.ax1x.com/2021/11/04/IeHh0e.png" alt="IeHh0e.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IeHh0e"><img
+src="https://z3.ax1x.com/2021/11/04/IeHh0e.png"
+alt="IeHh0e.png" /></a></p>
 <p>feature在CNN中也被称为<strong>卷积核</strong>（filter），一般是3X3，或者5X5的大小。</p>
-<h2 id="卷积运算"><a href="#卷积运算" class="headerlink" title="卷积运算"></a>卷积运算</h2><p>好了，下面继续讲怎么计算。四个字：<strong>对应相乘</strong> 。</p>
-<p>取 feature里的（1，1）元素值，再取图像上蓝色框内的（1，1）元素值，二者相乘等于1。把这个结果1填入新的图中。</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IebRCn"><img src="https://z3.ax1x.com/2021/11/04/IebRCn.png" alt="IebRCn.png"></a></p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IebIDU"><img src="https://z3.ax1x.com/2021/11/04/IebIDU.png" alt="IebIDU.png"></a></p>
+<h2 id="卷积运算">卷积运算</h2>
+<p>好了，下面继续讲怎么计算。四个字：<strong>对应相乘</strong> 。</p>
+<p>取
+feature里的（1，1）元素值，再取图像上蓝色框内的（1，1）元素值，二者相乘等于1。把这个结果1填入新的图中。</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IebRCn"><img
+src="https://z3.ax1x.com/2021/11/04/IebRCn.png"
+alt="IebRCn.png" /></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IebIDU"><img
+src="https://z3.ax1x.com/2021/11/04/IebIDU.png"
+alt="IebIDU.png" /></a></p>
 <p>同理再继续计算其他8个坐标处的值</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IeqSbD"><img src="https://z3.ax1x.com/2021/11/04/IeqSbD.png" alt="IeqSbD.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IeqSbD"><img
+src="https://z3.ax1x.com/2021/11/04/IeqSbD.png"
+alt="IeqSbD.png" /></a></p>
 <p>9个都计算完了就会变成这样。</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IeqExP"><img src="https://z3.ax1x.com/2021/11/04/IeqExP.png" alt="IeqExP.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IeqExP"><img
+src="https://z3.ax1x.com/2021/11/04/IeqExP.png"
+alt="IeqExP.png" /></a></p>
 <p>接下来的工作是对右图九个值求平均，得到一个均值，将均值填入一张新的图中。</p>
 <p>这张新的图我们称之为 <strong>feature map （特征图）</strong></p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IeqYrT"><img src="https://z3.ax1x.com/2021/11/04/IeqYrT.png" alt="IeqYrT.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IeqYrT"><img
+src="https://z3.ax1x.com/2021/11/04/IeqYrT.png"
+alt="IeqYrT.png" /></a></p>
 <p>为什么蓝色框要放在图中这个位置呢？</p>
-<p>这只是个栗子嘛。 这个蓝色框我们称之为 “窗口”，窗口的特性呢，就是要会滑动。</p>
+<p>这只是个栗子嘛。 这个蓝色框我们称之为
+“窗口”，窗口的特性呢，就是要会滑动。</p>
 <p>其实最开始，它应该在起始位置。</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/Ieq5RI"><img src="https://z3.ax1x.com/2021/11/04/Ieq5RI.png" alt="Ieq5RI.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/Ieq5RI"><img
+src="https://z3.ax1x.com/2021/11/04/Ieq5RI.png"
+alt="Ieq5RI.png" /></a></p>
 <p>进行卷积对应相乘运算并求得均值后，滑动窗便开始向右边滑动。根据步长的不同选择滑动幅度。</p>
-<p>比如，若 步长 stride&#x3D;1，就往右平移一个像素。</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IeLCLT"><img src="https://z3.ax1x.com/2021/11/04/IeLCLT.png" alt="IeLCLT.png"></a></p>
-<p>若 步长 stride&#x3D;2，就往右平移两个像素。</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IeLwm8"><img src="https://z3.ax1x.com/2021/11/04/IeLwm8.png" alt="IeLwm8.png"></a></p>
-<p>就这么移动到最右边后，返回左边，开始第二排。同样，若步长stride&#x3D;1，向下平移一个像素；stride&#x3D;2则向下平移2个像素。</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IeOVHS"><img src="https://z3.ax1x.com/2021/11/04/IeOVHS.png" alt="IeOVHS.png"></a></p>
-<p>好了,经过一系列卷积对应相乘，求均值运算后，我们终于把一张完整的feature map填满了。</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IeOwg1"><img src="https://z3.ax1x.com/2021/11/04/IeOwg1.png" alt="IeOwg1.png"></a></p>
-<p>feature map是每一个feature从原始图像中提取出来的“特征”。其中的值，<strong>越接近为1</strong>表示对应位置和feature的<strong>匹配越完整</strong>，越是接近-1，表示对应位置和feature的反面匹配越完整，而<strong>值接近0</strong>的表示对应位置<strong>没有任何匹配</strong>或者说没有什么关联。</p>
-<p>一个feature作用于图片产生一张feature map，对这张X图来说，我们用的是3个feature，因此最终产生3个 feature map。</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IeXEx1"><img src="https://z3.ax1x.com/2021/11/04/IeXEx1.png" alt="IeXEx1.png"></a></p>
+<p>比如，若 步长 stride=1，就往右平移一个像素。</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IeLCLT"><img
+src="https://z3.ax1x.com/2021/11/04/IeLCLT.png"
+alt="IeLCLT.png" /></a></p>
+<p>若 步长 stride=2，就往右平移两个像素。</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IeLwm8"><img
+src="https://z3.ax1x.com/2021/11/04/IeLwm8.png"
+alt="IeLwm8.png" /></a></p>
+<p>就这么移动到最右边后，返回左边，开始第二排。同样，若步长stride=1，向下平移一个像素；stride=2则向下平移2个像素。</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IeOVHS"><img
+src="https://z3.ax1x.com/2021/11/04/IeOVHS.png"
+alt="IeOVHS.png" /></a></p>
+<p>好了,经过一系列卷积对应相乘，求均值运算后，我们终于把一张完整的feature
+map填满了。</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IeOwg1"><img
+src="https://z3.ax1x.com/2021/11/04/IeOwg1.png"
+alt="IeOwg1.png" /></a></p>
+<p>feature
+map是每一个feature从原始图像中提取出来的“特征”。其中的值，<strong>越接近为1</strong>表示对应位置和feature的<strong>匹配越完整</strong>，越是接近-1，表示对应位置和feature的反面匹配越完整，而<strong>值接近0</strong>的表示对应位置<strong>没有任何匹配</strong>或者说没有什么关联。</p>
+<p>一个feature作用于图片产生一张feature
+map，对这张X图来说，我们用的是3个feature，因此最终产生3个 feature
+map。</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IeXEx1"><img
+src="https://z3.ax1x.com/2021/11/04/IeXEx1.png"
+alt="IeXEx1.png" /></a></p>
 <p>至此，卷积运算的部分就讲完啦！~</p>
-<h2 id="非线性激活层"><a href="#非线性激活层" class="headerlink" title="非线性激活层"></a>非线性激活层</h2><blockquote>
+<h2 id="非线性激活层">非线性激活层</h2>
+<blockquote>
 <p>卷积层对原图运算多个卷积产生一组线性激活响应，而非线性激活层是对之前的结果进行一个非线性的激活响应。</p>
 </blockquote>
 <p>这是一个很官方的说法，不知道大家看到上面这句话是不是都觉得要看晕了。</p>
 <p>嗯~ o(<em>￣▽￣</em>)o 其实真的没有那么复杂啦！</p>
 <p>本系列的文章秉承着“说人话！”的原则，着力于用最简单通俗的语言来为大家解释书上那些看不懂的概念。</p>
-<p>在神经网络中用到最多的非线性激活函数是<strong>Relu函数</strong> ，它的公式定义如下：</p>
-<p>f(x)&#x3D;max(0,x)</p>
+<p>在神经网络中用到最多的非线性激活函数是<strong>Relu函数</strong>
+，它的公式定义如下：</p>
+<p>f(x)=max(0,x)</p>
 <p>即，保留大于等于0的值，其余所有小于0的数值直接改写为0。</p>
 <p>为什么要这么做呢？上面说到，卷积后产生的特征图中的值，越靠近1表示与该特征越关联，越靠近-1表示越不关联，而我们进行特征提取时，为了使得数据更少，操作更方便，就直接舍弃掉那些不相关联的数据。</p>
-<p>如下图所示：&gt;&#x3D;0的值不变</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IeXLdO"><img src="https://z3.ax1x.com/2021/11/04/IeXLdO.png" alt="IeXLdO.png"></a></p>
+<p>如下图所示：&gt;=0的值不变</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IeXLdO"><img
+src="https://z3.ax1x.com/2021/11/04/IeXLdO.png"
+alt="IeXLdO.png" /></a></p>
 <p>而&lt;0的值一律改写为0</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/Iejuyq"><img src="https://z3.ax1x.com/2021/11/04/Iejuyq.png" alt="Iejuyq.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/Iejuyq"><img
+src="https://z3.ax1x.com/2021/11/04/Iejuyq.png"
+alt="Iejuyq.png" /></a></p>
 <p>得到<strong>非线性激活函数</strong>作用后的结果：</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IezVYD"><img src="https://z3.ax1x.com/2021/11/04/IezVYD.png" alt="IezVYD.png"></a></p>
-<h2 id="pooling池化层"><a href="#pooling池化层" class="headerlink" title="pooling池化层"></a>pooling池化层</h2><p>卷积操作后，我们得到了一张张有着不同值的feature map，尽管数据量比原图少了很多，但还是过于庞大（比较深度学习动不动就几十万张训练图片），因此接下来的池化操作就可以发挥作用了，它最大的目标就是减少数据量。</p>
-<p>池化分为两种，Max Pooling 最大池化、Average Pooling平均池化。顾名思义，最大池化就是取最大值，平均池化就是取平均值。</p>
-<p>拿最大池化举例：选择池化尺寸为2x2，因为选定一个2x2的窗口，在其内选出最大值更新进新的feature map。</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/ImCeEt"><img src="https://z3.ax1x.com/2021/11/04/ImCeEt.png" alt="ImCeEt.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IezVYD"><img
+src="https://z3.ax1x.com/2021/11/04/IezVYD.png"
+alt="IezVYD.png" /></a></p>
+<h2 id="pooling池化层">pooling池化层</h2>
+<p>卷积操作后，我们得到了一张张有着不同值的feature
+map，尽管数据量比原图少了很多，但还是过于庞大（比较深度学习动不动就几十万张训练图片），因此接下来的池化操作就可以发挥作用了，它最大的目标就是减少数据量。</p>
+<p>池化分为两种，Max Pooling 最大池化、Average
+Pooling平均池化。顾名思义，最大池化就是取最大值，平均池化就是取平均值。</p>
+<p>拿最大池化举例：选择池化尺寸为2x2，因为选定一个2x2的窗口，在其内选出最大值更新进新的feature
+map。</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/ImCeEt"><img
+src="https://z3.ax1x.com/2021/11/04/ImCeEt.png"
+alt="ImCeEt.png" /></a></p>
 <p>同样向右依据步长滑动窗口。</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/ImFSNq"><img src="https://z3.ax1x.com/2021/11/04/ImFSNq.png" alt="ImFSNq.png"></a></p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/ImFjxO"><img src="https://z3.ax1x.com/2021/11/04/ImFjxO.png" alt="ImFjxO.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/ImFSNq"><img
+src="https://z3.ax1x.com/2021/11/04/ImFSNq.png"
+alt="ImFSNq.png" /></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/ImFjxO"><img
+src="https://z3.ax1x.com/2021/11/04/ImFjxO.png"
+alt="ImFjxO.png" /></a></p>
 <p>最终得到池化后的feature map。可明显发现数据量减少了很多。</p>
 <p>因为最大池化保留了每一个小块内的最大值，所以它相当于保留了这一块最佳匹配结果（因为值越接近1表示匹配越好）。这也就意味着它不会具体关注窗口内到底是哪一个地方匹配了，而只关注是不是有某个地方匹配上了。这也就能够看出，CNN能够发现图像中是否具有某种特征，而不用在意到底在哪里具有这种特征。这也就能够帮助解决之前提到的计算机逐一像素匹配的死板做法。</p>
-<p>到这里就介绍了CNN的基本配置—卷积层、Relu层、池化层。</p>
+<p>到这里就介绍了CNN的基本配置---卷积层、Relu层、池化层。</p>
 <p>在常见的几种CNN中，这三层都是可以堆叠使用的，将前一层的输入作为后一层的输出。比如：</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/ImAB7j"><img src="https://z3.ax1x.com/2021/11/04/ImAB7j.png" alt="ImAB7j.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/ImAB7j"><img
+src="https://z3.ax1x.com/2021/11/04/ImAB7j.png"
+alt="ImAB7j.png" /></a></p>
 <p>也可以自行添加更多的层以实现更为复杂的神经网络。</p>
 <p>而最后的全连接层、神经网络的训练与优化，更多内容将在下一篇文章中继续。</p>
 
@@ -452,7 +496,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CNN"><span class="nav-number">1.</span> <span class="nav-text">CNN</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%BC%E8%AE%BA"><span class="nav-number">1.1.</span> <span class="nav-text">导论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%B7%E7%A7%AF%E8%BF%90%E7%AE%97"><span class="nav-number">1.2.</span> <span class="nav-text">卷积运算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%9E%E7%BA%BF%E6%80%A7%E6%BF%80%E6%B4%BB%E5%B1%82"><span class="nav-number">1.3.</span> <span class="nav-text">非线性激活层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pooling%E6%B1%A0%E5%8C%96%E5%B1%82"><span class="nav-number">1.4.</span> <span class="nav-text">pooling池化层</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#cnn"><span class="nav-number">1.</span> <span class="nav-text">CNN</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%BC%E8%AE%BA"><span class="nav-number">1.1.</span> <span class="nav-text">导论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%B7%E7%A7%AF%E8%BF%90%E7%AE%97"><span class="nav-number">1.2.</span> <span class="nav-text">卷积运算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%9E%E7%BA%BF%E6%80%A7%E6%BF%80%E6%B4%BB%E5%B1%82"><span class="nav-number">1.3.</span> <span class="nav-text">非线性激活层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pooling%E6%B1%A0%E5%8C%96%E5%B1%82"><span class="nav-number">1.4.</span> <span class="nav-text">pooling池化层</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -468,7 +512,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-count">53</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
