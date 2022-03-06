@@ -282,28 +282,6 @@
       </div>
 
       <h2 class="my-post-title">
-          <a class="my-post-title-link" href="/2022/03/04/REALITY/" itemprop="url">
-            
-              <span itemprop="name">REALITY</span>
-            
-          </a>
-      </h2>
-
-    </header>
-  </article>
-
-  <article class="my-post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="my-post-header">
-
-      <div class="my-post-meta">
-        <time class="my-post-time" itemprop="dateCreated"
-              datetime="2022-03-04T20:46:25+08:00"
-              content="2022-03-04">
-          03-04
-        </time>
-      </div>
-
-      <h2 class="my-post-title">
           <a class="my-post-title-link" href="/2022/03/04/DramaSomeday/" itemprop="url">
             
               <span itemprop="name">Drama Someday</span>
@@ -387,7 +365,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-count">54</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -441,6 +419,25 @@
   </span>
   <span class="author" itemprop="copyrightHolder">aeowind</span>
 </div>
+
+
+
+  <script>
+    var OriginTitle = document.title;
+    var titleTime;
+    document.addEventListener('visibilitychange', function() {
+      if (document.hidden) {
+        document.title = '(*^▽^*)我藏好了哦~' + OriginTitle;
+        clearTimeout(titleTime);
+      } else {
+        document.title = 'q(≧▽≦q)被你发现啦~' + OriginTitle;
+        titleTime = setTimeout(function() {
+          document.title = OriginTitle;
+        }, 2000);
+      }
+    });
+  </script>
+
 
         
 
