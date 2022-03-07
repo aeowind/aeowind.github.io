@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|EB Garamond:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"aeowind.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="想当年我离家时她已十八，有一颗善良的心和一卷长发">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一文搞懂ThreadLocal原理">
+<meta property="og:url" content="https://aeowind.github.io/2022/03/07/%E4%B8%80%E6%96%87%E6%90%9E%E6%87%82ThreadLocal%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="Aeo&#39;s Blog">
+<meta property="og:description" content="想当年我离家时她已十八，有一颗善良的心和一卷长发">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-03-07T13:59:20.231Z">
+<meta property="article:modified_time" content="2022-03-07T14:06:04.777Z">
+<meta property="article:author" content="aeowind">
+<meta property="article:tag" content="学习">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="面经">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://aeowind.github.io/2022/03/07/%E4%B8%80%E6%96%87%E6%90%9E%E6%87%82ThreadLocal%E5%8E%9F%E7%90%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>一文搞懂ThreadLocal原理 | Aeo's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Aeo's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">你要静候 再静候</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://aeowind.github.io/2022/03/07/%E4%B8%80%E6%96%87%E6%90%9E%E6%87%82ThreadLocal%E5%8E%9F%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="aeowind">
+      <meta itemprop="description" content="爱上一场认真的消遣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Aeo's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          一文搞懂ThreadLocal原理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-03-07 21:59:20 / 修改时间：22:06:04" itemprop="dateCreated datePublished" datetime="2022-03-07T21:59:20+08:00">2022-03-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">学习</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/%E9%9D%A2%E7%BB%8F/" itemprop="url" rel="index"><span itemprop="name">面经</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/%E9%9D%A2%E7%BB%8F/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description"><blockquote class="blockquote-center">想当年我离家时她已十八，有一颗善良的心和一卷长发</blockquote></div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>当多线程访问共享可变数据时，涉及到线程间同步的问题，并不是所有时候，都要用到共享数据，所以就需要线程封闭出场了。</p>
+<p>数据都被封闭在各自的线程之中，就不需要同步，这种通过将数据封闭在线程中而避免使用同步的技术称为<strong>线程封闭</strong>。</p>
+<h2 id="什么是-threadlocal">什么是 ThreadLocal</h2>
+<p>ThreadLocal 是 Java
+里一种特殊变量，它是一个线程级别变量，每个线程都有一个 ThreadLocal
+就是每个线程都拥有了自己独立的一个变量，竞态条件被彻底消除了，在并发模式下是绝对安全的变量。</p>
+<p>可以通过
+<code>ThreadLocal&lt;T&gt; value = new ThreadLocal&lt;T&gt;();</code>
+来使用。</p>
+<p>会自动在每一个线程上创建一个 T
+的副本，副本之间彼此独立，互不影响，可以用 ThreadLocal
+存储一些参数，以便在线程中多个方法中使用，用以代替方法传参的做法。</p>
+<p>下面通过例子来了解下 ThreadLocal：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">Copypublic <span class="keyword">class</span> <span class="title">ThreadLocalDemo</span> &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * ThreadLocal变量，每个线程都有一个副本，互不干扰</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> final ThreadLocal&lt;String&gt; THREAD_LOCAL = <span class="keyword">new</span> ThreadLocal&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(<span class="params">String[] args</span>) throws Exception</span> &#123;</span><br><span class="line">        <span class="keyword">new</span> ThreadLocalDemo().threadLocalTest();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">threadLocalTest</span>() throws Exception</span> &#123;</span><br><span class="line">        <span class="comment">// 主线程设置值</span></span><br><span class="line">        THREAD_LOCAL.<span class="keyword">set</span>(<span class="string">&quot;wupx&quot;</span>);</span><br><span class="line">        String v = THREAD_LOCAL.<span class="keyword">get</span>();</span><br><span class="line">        System.<span class="keyword">out</span>.println(<span class="string">&quot;Thread-0线程执行之前，&quot;</span> + Thread.currentThread().getName() + <span class="string">&quot;线程取到的值：&quot;</span> + v);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span>()</span> &#123;</span><br><span class="line">                String v = THREAD_LOCAL.<span class="keyword">get</span>();</span><br><span class="line">                System.<span class="keyword">out</span>.println(Thread.currentThread().getName() + <span class="string">&quot;线程取到的值：&quot;</span> + v);</span><br><span class="line">                <span class="comment">// 设置 threadLocal</span></span><br><span class="line">                THREAD_LOCAL.<span class="keyword">set</span>(<span class="string">&quot;huxy&quot;</span>);</span><br><span class="line">                v = THREAD_LOCAL.<span class="keyword">get</span>();</span><br><span class="line">                System.<span class="keyword">out</span>.println(<span class="string">&quot;重新设置之后，&quot;</span> + Thread.currentThread().getName() + <span class="string">&quot;线程取到的值为：&quot;</span> + v);</span><br><span class="line">                System.<span class="keyword">out</span>.println(Thread.currentThread().getName() + <span class="string">&quot;线程执行结束&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">        <span class="comment">// 等待所有线程执行结束</span></span><br><span class="line">        Thread.sleep(<span class="number">3000L</span>);</span><br><span class="line">        v = THREAD_LOCAL.<span class="keyword">get</span>();</span><br><span class="line">        System.<span class="keyword">out</span>.println(<span class="string">&quot;Thread-0线程执行之后，&quot;</span> + Thread.currentThread().getName() + <span class="string">&quot;线程取到的值：&quot;</span> + v);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先通过 <code>static final</code> 定义了一个
+<code>THREAD_LOCAL</code> 变量，其中 <code>static</code>
+是为了确保全局只有一个保存 String 对象的 ThreadLocal
+实例；<code>final</code> 确保 ThreadLocal
+的实例不可更改，防止被意外改变，导致放入的值和取出来的不一致，另外还能防止
+ThreadLocal
+的内存泄漏。上面的例子是演示在不同的线程中获取它会得到不同的结果，运行结果如下：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CopyTh<span class="built_in">read-0</span>线程执行之前，main线程取到的值：wupx</span><br><span class="line">Th<span class="built_in">read-0</span>线程取到的值：null</span><br><span class="line">重新设置之后Th<span class="built_in">read-0</span>线程取到的值为：huxy</span><br><span class="line">Th<span class="built_in">read-0</span>线程执行结束</span><br><span class="line">Th<span class="built_in">read-0</span>线程执行之后，main线程取到的值：wupx</span><br></pre></td></tr></table></figure>
+<p>首先在 <code>Thread-0</code> 线程执行之前，先给
+<code>THREAD_LOCAL</code> 设置为
+<code>wupx</code>，然后可以取到这个值，然后通过创建一个新的线程以后去取这个值，发现新线程取到的为
+null，意外着这个变量在不同线程中取到的值是不同的，不同线程之间对于
+ThreadLocal 会有对应的副本，接着在线程 <code>Thread-0</code> 中执行对
+<code>THREAD_LOCAL</code> 的修改，将值改为
+<code>huxy</code>，可以发现线程 <code>Thread-0</code> 获取的值变为了
+<code>huxy</code>，主线程依然会读取到属于它的副本数据
+<code>wupx</code>，这就是线程的封闭。</p>
+<p>看到这里，我相信大家一定会好奇 ThreadLocal
+是如何做到多个线程对同一对象 set 操作，但是 get 获取的值还都是每个线程
+set 的值呢，接下来就让我们进入源码解析环节：</p>
+<h2 id="threadlocal-源码解析">ThreadLocal 源码解析</h2>
+<p>首先看下 ThreadLocal 都有哪些重要属性：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Copy<span class="comment">// 当前 ThreadLocal 的 hashCode，由 nextHashCode() 计算而来，用于计算当前 ThreadLocal 在 ThreadLocalMap 中的索引位置</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">threadLocalHashCode</span> <span class="operator">=</span> nextHashCode();</span><br><span class="line"><span class="comment">// 哈希魔数，主要与斐波那契散列法以及黄金分割有关</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">HASH_INCREMENT</span> <span class="operator">=</span> <span class="number">0x61c88647</span>;</span><br><span class="line"><span class="comment">// 返回计算出的下一个哈希值，其值为 i * HASH_INCREMENT，其中 i 代表调用次数</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">nextHashCode</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> nextHashCode.getAndAdd(HASH_INCREMENT);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 保证了在一台机器中每个 ThreadLocal 的 threadLocalHashCode 是唯一的</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="type">AtomicInteger</span> <span class="variable">nextHashCode</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AtomicInteger</span>();</span><br></pre></td></tr></table></figure>
+<p>其中的 <code>HASH_INCREMENT</code> 也不是随便取的，它转化为十进制是
+<code>1640531527</code>，<code>2654435769</code> 转换成 int 类型就是
+<code>-1640531527</code>，<code>2654435769</code> 等于
+<code>(√5-1)/2</code> 乘以 2 的 32 次方。<code>(√5-1)/2</code>
+就是黄金分割数，近似为 <code>0.618</code>，也就是说
+<code>0x61c88647</code> 理解为一个黄金分割数乘以 2 的 32
+次方，它可以保证 nextHashCode 生成的哈希值，均匀的分布在 2
+的幂次方上，且小于 2 的 32 次方。</p>
+<p>下面是 javaspecialists 中一篇文章对它的介绍：</p>
+<blockquote>
+<p>This number represents the golden ratio (sqrt(5)-1) times two to the
+power of 31 ((sqrt(5)-1) * (2^31)). The result is then a golden number,
+either 2654435769 or -1640531527.</p>
+</blockquote>
+<p>下面用例子来证明下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Copyprivate <span class="built_in">static</span> <span class="keyword">final</span> <span class="keyword">int</span> HASH_INCREMENT = <span class="number">0x61c88647</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="built_in">static</span> <span class="keyword">void</span> <span class="title function_ invoke__">main</span>(String[] args) throws <span class="built_in">Exception</span> &#123;</span><br><span class="line">    <span class="keyword">int</span> n = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">int</span> max = <span class="number">2</span> &lt;&lt; (n - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; max; i++) &#123;</span><br><span class="line">        System.out.<span class="keyword">print</span>(i * HASH_INCREMENT &amp; (max - <span class="number">1</span>));</span><br><span class="line">        System.out.<span class="keyword">print</span>(<span class="string">&quot; &quot;</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果为：<code>0 7 14 21 28 3 10 17 24 31 6 13 20 27 2 9 16 23 30 5 12 19 26 1 8 15 22 29 4 11 18 25</code></p>
+<p>可以发现元素索引值完美的散列在数组当中，并没有出现冲突。</p>
+<h3 id="threadlocalmap">ThreadLocalMap</h3>
+<p>除了上述属性外，还有一个重要的属性 ThreadLocalMap，ThreadLocalMap 是
+ThreadLocal 的静态内部类，当一个线程有多个 ThreadLocal
+时，需要一个容器来管理多个 ThreadLocal，ThreadLocalMap
+的作用就是管理线程中多个 ThreadLocal，源码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Copystatic</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadLocalMap</span> </span>&#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 键值对实体的存储结构</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	static <span class="class"><span class="keyword">class</span> <span class="title">Entry</span> <span class="keyword">extends</span> <span class="title">WeakReference&lt;ThreadLocal&lt;?&gt;&gt;</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 当前线程关联的 value，这个 value 并没有用弱引用追踪</span></span><br><span class="line">		<span class="type">Object</span> value;</span><br><span class="line"></span><br><span class="line">		<span class="comment">/**</span></span><br><span class="line"><span class="comment">		 * 构造键值对</span></span><br><span class="line"><span class="comment">		 *</span></span><br><span class="line"><span class="comment">		 * @param k k 作 key,作为 key 的 ThreadLocal 会被包装为一个弱引用</span></span><br><span class="line"><span class="comment">		 * @param v v 作 value</span></span><br><span class="line"><span class="comment">		 */</span></span><br><span class="line">		<span class="type">Entry</span>(<span class="type">ThreadLocal</span>&lt;?&gt; k, <span class="type">Object</span> v) &#123;</span><br><span class="line">			<span class="keyword">super</span>(k);</span><br><span class="line">			value = v;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 初始容量，必须为 2 的幂</span></span><br><span class="line">	<span class="keyword">private</span> static <span class="keyword">final</span> int <span class="type">INITIAL_CAPACITY</span> = <span class="number">16</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 存储 ThreadLocal 的键值对实体数组，长度必须为 2 的幂</span></span><br><span class="line">	<span class="keyword">private</span> <span class="type">Entry</span>[] table;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// ThreadLocalMap 元素数量</span></span><br><span class="line">	<span class="keyword">private</span> int size = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 扩容的阈值，默认是数组大小的三分之二</span></span><br><span class="line">	<span class="keyword">private</span> int threshold;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从源码中看到 ThreadLocalMap 其实就是一个简单的 Map
+结构，底层是数组，有初始化大小，也有扩容阈值大小，数组的元素是
+Entry，<strong>Entry 的 key 就是 ThreadLocal 的引用，value 是
+ThreadLocal 的值</strong>。ThreadLocalMap 解决 hash
+冲突的方式采用的是<strong>线性探测法</strong>，如果发生冲突会继续寻找下一个空的位置。</p>
+<p>这样的就有可能会发生内存泄漏的问题，下面让我们进行分析：</p>
+<h3 id="threadlocal-内存泄漏">ThreadLocal 内存泄漏</h3>
+<p>ThreadLocal 在没有外部强引用时，发生 GC 时会被回收，那么
+ThreadLocalMap 中保存的 key 值就变成了 null，而 Entry 又被
+threadLocalMap 对象引用，threadLocalMap 对象又被 Thread
+对象所引用，那么当 Thread 一直不终结的话，value
+对象就会一直存在于内存中，也就导致了内存泄漏，直至 Thread
+被销毁后，才会被回收。</p>
+<p>那么如何避免内存泄漏呢？</p>
+<p>在使用完 ThreadLocal 变量后，需要我们手动 remove 掉，防止
+ThreadLocalMap 中 Entry 一直保持对 value 的强引用，导致 value
+不能被回收，其中 remove 源码如下所示：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Copy<span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 清理当前 ThreadLocal 对象关联的键值对</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span>()</span> &#123;</span><br><span class="line">	<span class="comment">// 返回当前线程持有的 map</span></span><br><span class="line">	ThreadLocalMap m = getMap(Thread.currentThread());</span><br><span class="line">	<span class="keyword">if</span> (m != <span class="literal">null</span>) &#123;</span><br><span class="line">		<span class="comment">// 从 map 中清理当前 ThreadLocal 对象关联的键值对</span></span><br><span class="line">		m.<span class="keyword">remove</span>(<span class="keyword">this</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>remove 方法的时序图如下所示：</p>
+<p><a target="_blank" rel="noopener" href="https://img-blog.csdnimg.cn/20200405150646681.png"><img
+src="https://img-blog.csdnimg.cn/20200405150646681.png"
+alt="img" /></a></p>
+<p>remove 方法是先获取到当前线程的 ThreadLocalMap，并且调用了它的 remove
+方法，从 map 中清理当前 ThreadLocal 对象关联的键值对，这样 value
+就可以被 GC 回收了。</p>
+<p>那么 ThreadLocal 是如何实现线程隔离的呢？</p>
+<h3 id="threadlocal-的-set-方法">ThreadLocal 的 set 方法</h3>
+<p>我们先去看下 ThreadLocal 的 set 方法，源码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Copy<span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 为当前 ThreadLocal 对象关联 value 值</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> value 要存储在此线程的线程副本的值</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">set</span><span class="params">(T value)</span> &#123;</span><br><span class="line">	<span class="comment">// 返回当前ThreadLocal所在的线程</span></span><br><span class="line">	<span class="type">Thread</span> <span class="variable">t</span> <span class="operator">=</span> Thread.currentThread();</span><br><span class="line">	<span class="comment">// 返回当前线程持有的map</span></span><br><span class="line">	<span class="type">ThreadLocalMap</span> <span class="variable">map</span> <span class="operator">=</span> getMap(t);</span><br><span class="line">	<span class="keyword">if</span> (map != <span class="literal">null</span>) &#123;</span><br><span class="line">		<span class="comment">// 如果 ThreadLocalMap 不为空，则直接存储&lt;ThreadLocal, T&gt;键值对</span></span><br><span class="line">		map.set(<span class="built_in">this</span>, value);</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="comment">// 否则，需要为当前线程初始化 ThreadLocalMap，并存储键值对 &lt;this, firstValue&gt;</span></span><br><span class="line">		createMap(t, value);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>set 方法的作用是把我们想要存储的 value 给保存进去。set
+方法的流程主要是：</p>
+<ul>
+<li>先获取到当前线程的引用</li>
+<li>利用这个引用来获取到 ThreadLocalMap</li>
+<li>如果 map 为空，则去创建一个 ThreadLocalMap</li>
+<li>如果 map 不为空，就利用 ThreadLocalMap 的 set 方法将 value 添加到
+map 中</li>
+</ul>
+<p>set 方法的时序图如下所示：</p>
+<p><a target="_blank" rel="noopener" href="https://img-blog.csdnimg.cn/2020040514180914.png"><img
+src="https://img-blog.csdnimg.cn/2020040514180914.png"
+alt="img" /></a></p>
+<p>其中 map 就是我们上面讲到的
+ThreadLocalMap，可以看到它是通过当前线程对象获取到的
+ThreadLocalMap，接下来我们看 getMap方法的源代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Copy</span><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 返回当前线程 thread 持有的 ThreadLocalMap</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> t 当前线程</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> <span class="variable">ThreadLocalMap</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="title class_">ThreadLocalMap</span> <span class="title function_">getMap</span>(<span class="params">Thread t</span>) &#123;</span><br><span class="line">	<span class="keyword">return</span> t.<span class="property">threadLocals</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>getMap 方法的作用主要是获取当前线程内的 ThreadLocalMap 对象，原来这个
+ThreadLocalMap 是线程的一个属性，下面让我们看看 Thread
+中的相关代码：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Copy<span class="comment">/**</span></span><br><span class="line"><span class="comment"> * ThreadLocal 的 ThreadLocalMap 是线程的一个属性，所以在多线程环境下 threadLocals 是线程安全的</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">ThreadLocal.ThreadLocalMap threadLocals = <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
+<p>可以看出每个线程都有 ThreadLocalMap 对象，被命名为
+<code>threadLocals</code>，默认为 null，所以每个线程的 ThreadLocals
+都是隔离独享的。</p>
+<p>调用 ThreadLocalMap.set() 时，会把当前 <code>threadLocal</code>
+对象作为 key，想要保存的对象作为 value，存入 map。</p>
+<p>其中 ThreadLocalMap.set() 的源码如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">Copy<span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 在 map 中存储键值对&lt;key, value&gt;</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> key   threadLocal</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> value 要设置的 value 值</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_ invoke__">set</span>(ThreadLocal<span class="meta">&lt;?</span>&gt; key, Object value) &#123;</span><br><span class="line">	Entry[] tab = table;</span><br><span class="line">	<span class="keyword">int</span> len = tab.length;</span><br><span class="line">	<span class="comment">// 计算 key 在数组中的下标</span></span><br><span class="line">	<span class="keyword">int</span> i = key.threadLocalHashCode &amp; (len - <span class="number">1</span>);</span><br><span class="line">	<span class="comment">// 遍历一段连续的元素，以查找匹配的 ThreadLocal 对象</span></span><br><span class="line">	<span class="keyword">for</span> (Entry e = tab[i]; e != <span class="literal">null</span>; e = tab[i = <span class="title function_ invoke__">nextIndex</span>(i, len)]) &#123;</span><br><span class="line">		<span class="comment">// 获取该哈希值处的ThreadLocal对象</span></span><br><span class="line">		ThreadLocal<span class="meta">&lt;?</span>&gt; k = e.<span class="title function_ invoke__">get</span>();</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 键值ThreadLocal匹配，直接更改map中的value</span></span><br><span class="line">		<span class="keyword">if</span> (k == key) &#123;</span><br><span class="line">			e.value = value;</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 若 key 是 null，说明 ThreadLocal 被清理了，直接替换掉</span></span><br><span class="line">		<span class="keyword">if</span> (k == <span class="literal">null</span>) &#123;</span><br><span class="line">			<span class="title function_ invoke__">replaceStaleEntry</span>(key, value, i);</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 直到遇见了空槽也没找到匹配的ThreadLocal对象，那么在此空槽处安排ThreadLocal对象和缓存的value</span></span><br><span class="line">	tab[i] = <span class="keyword">new</span> <span class="title class_">Entry</span>(key, value);</span><br><span class="line">	<span class="keyword">int</span> sz = ++size;</span><br><span class="line">	<span class="comment">// 如果没有元素被清理，那么就要检查当前元素数量是否超过了容量阙值(数组大小的三分之二)，以便决定是否扩容</span></span><br><span class="line">	<span class="keyword">if</span> (!<span class="title function_ invoke__">cleanSomeSlots</span>(i, sz) &amp;&amp; sz &gt;= threshold) &#123;</span><br><span class="line">		<span class="comment">// 扩容的过程也是对所有的 key 重新哈希的过程</span></span><br><span class="line">		<span class="title function_ invoke__">rehash</span>();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>相信到这里，大家应该对 Thread、ThreadLocal 以及 ThreadLocalMap
+的关系有了进一步的理解，下图为三者之间的关系：</p>
+<p><a target="_blank" rel="noopener" href="https://img-blog.csdnimg.cn/20200405125741464.png"><img
+src="https://img-blog.csdnimg.cn/20200405125741464.png"
+alt="img" /></a></p>
+<h3 id="threadlocal-的-get-方法">ThreadLocal 的 get 方法</h3>
+<p>了解完 set 方法后，让我们看下 get 方法，源码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">Copy<span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 返回当前 ThreadLocal 对象关联的值</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> T <span class="title function_">get</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="comment">// 返回当前 ThreadLocal 所在的线程</span></span><br><span class="line">	<span class="type">Thread</span> <span class="variable">t</span> <span class="operator">=</span> Thread.currentThread();</span><br><span class="line">	<span class="comment">// 从线程中拿到 ThreadLocalMap</span></span><br><span class="line">	<span class="type">ThreadLocalMap</span> <span class="variable">map</span> <span class="operator">=</span> getMap(t);</span><br><span class="line">	<span class="keyword">if</span> (map != <span class="literal">null</span>) &#123;</span><br><span class="line">		<span class="comment">// 从 map 中拿到 entry</span></span><br><span class="line">		ThreadLocalMap.<span class="type">Entry</span> <span class="variable">e</span> <span class="operator">=</span> map.getEntry(<span class="built_in">this</span>);</span><br><span class="line">		<span class="comment">// 如果不为空，读取当前 ThreadLocal 中保存的值</span></span><br><span class="line">		<span class="keyword">if</span> (e != <span class="literal">null</span>) &#123;</span><br><span class="line">			<span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">			<span class="type">T</span> <span class="variable">result</span> <span class="operator">=</span> (T) e.value;</span><br><span class="line">			<span class="keyword">return</span> result;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 若 map 为空，则对当前线程的 ThreadLocal 进行初始化，最后返回当前的 ThreadLocal 对象关联的初值，即 value</span></span><br><span class="line">	<span class="keyword">return</span> setInitialValue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>get 方法的主要流程为：</p>
+<ul>
+<li>先获取到当前线程的引用</li>
+<li>获取当前线程内部的 ThreadLocalMap</li>
+<li>如果 map 存在，则获取当前 ThreadLocal 对应的 value 值</li>
+<li>如果 map 不存在或者找不到 value 值，则调用 setInitialValue()
+进行初始化</li>
+</ul>
+<p>get 方法的时序图如下所示：</p>
+<p><a target="_blank" rel="noopener" href="https://img-blog.csdnimg.cn/20200405141521235.png"><img
+src="https://img-blog.csdnimg.cn/20200405141521235.png"
+alt="img" /></a></p>
+<p>其中每个 Thread 的 ThreadLocalMap 以 <code>threadLocal</code> 作为
+key，保存自己线程的 <code>value</code>
+副本，也就是保存在每个线程中，并没有保存在 ThreadLocal 对象中。</p>
+<p>其中 ThreadLocalMap.getEntry() 方法的源码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Copy<span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 返回 key 关联的键值对实体</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> key threadLocal</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> Entry <span class="title function_">getEntry</span><span class="params">(ThreadLocal&lt;?&gt; key)</span> &#123;</span><br><span class="line">	<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> key.threadLocalHashCode &amp; (table.length - <span class="number">1</span>);</span><br><span class="line">	<span class="type">Entry</span> <span class="variable">e</span> <span class="operator">=</span> table[i];</span><br><span class="line">	<span class="comment">// 若 e 不为空，并且 e 的 ThreadLocal 的内存地址和 key 相同，直接返回</span></span><br><span class="line">	<span class="keyword">if</span> (e != <span class="literal">null</span> &amp;&amp; e.get() == key) &#123;</span><br><span class="line">		<span class="keyword">return</span> e;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="comment">// 从 i 开始向后遍历找到键值对实体</span></span><br><span class="line">		<span class="keyword">return</span> getEntryAfterMiss(key, i, e);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="threadlocalmap-的-resize-方法">ThreadLocalMap 的 resize
+方法</h3>
+<p>当 ThreadLocalMap 中的 ThreadLocal
+的个数超过容量阈值时，ThreadLocalMap 就要开始扩容了，我们一起来看下
+resize 的源代码：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">Copy<span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 扩容，重新计算索引，标记垃圾值，方便 GC 回收</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">resize</span>()</span> &#123;</span><br><span class="line">	Entry[] oldTab = table;</span><br><span class="line">	<span class="built_in">int</span> oldLen = oldTab.length;</span><br><span class="line">	<span class="built_in">int</span> newLen = oldLen * <span class="number">2</span>;</span><br><span class="line">	<span class="comment">// 新建一个数组，按照2倍长度扩容</span></span><br><span class="line">	Entry[] newTab = <span class="keyword">new</span> Entry[newLen];</span><br><span class="line">	<span class="built_in">int</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 将旧数组的值拷贝到新数组上</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="built_in">int</span> j = <span class="number">0</span>; j &lt; oldLen; ++j) &#123;</span><br><span class="line">		Entry e = oldTab[j];</span><br><span class="line">		<span class="keyword">if</span> (e != <span class="literal">null</span>) &#123;</span><br><span class="line">			ThreadLocal&lt;?&gt; k = e.<span class="keyword">get</span>();</span><br><span class="line">			<span class="comment">// 若有垃圾值，则标记清理该元素的引用，以便GC回收</span></span><br><span class="line">			<span class="keyword">if</span> (k == <span class="literal">null</span>) &#123;</span><br><span class="line">				e.<span class="keyword">value</span> = <span class="literal">null</span>;</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				<span class="comment">// 计算 ThreadLocal 在新数组中的位置</span></span><br><span class="line">				<span class="built_in">int</span> h = k.threadLocalHashCode &amp; (newLen - <span class="number">1</span>);</span><br><span class="line">				<span class="comment">// 如果发生冲突，使用线性探测往后寻找合适的位置</span></span><br><span class="line">				<span class="keyword">while</span> (newTab[h] != <span class="literal">null</span>) &#123;</span><br><span class="line">					h = nextIndex(h, newLen);</span><br><span class="line">				&#125;</span><br><span class="line">				newTab[h] = e;</span><br><span class="line">				count++;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 设置新的扩容阈值，为数组长度的三分之二</span></span><br><span class="line">	setThreshold(newLen);</span><br><span class="line">	size = count;</span><br><span class="line">	table = newTab;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>resize 方法主要是进行扩容，同时会将垃圾值标记方便 GC
+回收，扩容后数组大小是原来数组的两倍。</p>
+<h2 id="threadlocal-应用场景">ThreadLocal 应用场景</h2>
+<p>ThreadLocal 的特性也导致了应用场景比较广泛，主要的应用场景如下：</p>
+<ul>
+<li>线程间数据隔离，各线程的 ThreadLocal 互不影响</li>
+<li>方便同一个线程使用某一对象，避免不必要的参数传递</li>
+<li>全链路追踪中的 traceId 或者流程引擎中上下文的传递一般采用
+ThreadLocal</li>
+<li>Spring 事务管理器采用了 ThreadLocal</li>
+<li>Spring MVC 的 RequestContextHolder 的实现使用了 ThreadLocal</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> 学习</a>
+              <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
+              <a href="/tags/%E9%9D%A2%E7%BB%8F/" rel="tag"><i class="fa fa-tag"></i> 面经</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/03/04/%E6%88%91%E5%9C%A8%E5%8D%9A%E5%AE%A2%E8%83%8C%E5%8F%A4%E8%AF%97/" rel="prev" title="一些喜欢的诗词">
+      <i class="fa fa-chevron-left"></i> 一些喜欢的诗词
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-threadlocal"><span class="nav-number">1.</span> <span class="nav-text">什么是 ThreadLocal</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#threadlocal-%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">ThreadLocal 源码解析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#threadlocalmap"><span class="nav-number">2.1.</span> <span class="nav-text">ThreadLocalMap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#threadlocal-%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F"><span class="nav-number">2.2.</span> <span class="nav-text">ThreadLocal 内存泄漏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#threadlocal-%E7%9A%84-set-%E6%96%B9%E6%B3%95"><span class="nav-number">2.3.</span> <span class="nav-text">ThreadLocal 的 set 方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#threadlocal-%E7%9A%84-get-%E6%96%B9%E6%B3%95"><span class="nav-number">2.4.</span> <span class="nav-text">ThreadLocal 的 get 方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#threadlocalmap-%E7%9A%84-resize-%E6%96%B9%E6%B3%95"><span class="nav-number">2.5.</span> <span class="nav-text">ThreadLocalMap 的 resize
+方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#threadlocal-%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">3.</span> <span class="nav-text">ThreadLocal 应用场景</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="aeowind"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">aeowind</p>
+  <div class="site-description" itemprop="description">爱上一场认真的消遣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/aeowind" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;aeowind" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.douban.com/people/129971630/" title="douban → https:&#x2F;&#x2F;www.douban.com&#x2F;people&#x2F;129971630&#x2F;" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>douban</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aeowind</span>
+</div>
+
+
+
+  <script>
+    var OriginTitle = document.title;
+    var titleTime;
+    document.addEventListener('visibilitychange', function() {
+      if (document.hidden) {
+        document.title = '(*^▽^*)我藏好了哦~' + OriginTitle;
+        clearTimeout(titleTime);
+      } else {
+        document.title = 'q(≧▽≦q)被你发现啦~' + OriginTitle;
+        titleTime = setTimeout(function() {
+          document.title = OriginTitle;
+        }, 2000);
+      }
+    });
+  </script>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"react":{"opacity":1},"log":false});</script></body>
+</html>
+
+<!-- 页面点击小红心 -->
+
+      <script type="text/javascript" src="/js/clicklove.js"></script>
+
