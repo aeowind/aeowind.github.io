@@ -28,7 +28,7 @@
 <meta property="og:description" content="某一剎骤觉 感情深得可爱">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-03-04T12:46:25.399Z">
-<meta property="article:modified_time" content="2022-03-06T06:40:48.893Z">
+<meta property="article:modified_time" content="2022-03-08T09:04:14.022Z">
 <meta property="article:author" content="aeowind">
 <meta property="article:tag" content="学习">
 <meta property="article:tag" content="算法">
@@ -227,7 +227,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-06 14:40:48" itemprop="dateModified" datetime="2022-03-06T14:40:48+08:00">2022-03-06</time>
+                <time title="修改时间：2022-03-08 17:04:14" itemprop="dateModified" datetime="2022-03-08T17:04:14+08:00">2022-03-08</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -268,12 +268,17 @@
       
         <h4 id="gradient-descent">Gradient Descent</h4>
 <p>梯度下降的目标是使损失函数L最小化， <span class="math display">\[
-θ∗=arg min L(θ) \]</span> <a
+θ∗=arg min L(θ)
+\]</span> <a
 target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200603152209444.png"><img
 src="https://gitee.com/scarleatt/image/raw/master/img/image-20200603152209444.png"
 alt="image-20200603152209444" /></a></p>
 <h4 id="learning-rate">Learning Rate</h4>
-<p>从θ0θ0开始，先计算出θ0θ0的梯度，其中红色箭头表示梯度的方向，蓝色箭头表示移动的方向。
+<p>从 <span class="math display">\[
+θ0
+\]</span> 开始，先计算出 <span class="math display">\[
+θ0
+\]</span> 的梯度，其中红色箭头表示梯度的方向，蓝色箭头表示移动的方向。
 梯度的方向是函数值在这个点增长最快的方向，想要使损失函数L的值达到最小值，就必须要往相反的方向运动。</p>
 <p><a
 target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200603152117920.png"><img
@@ -296,10 +301,14 @@ alt="image-20200603161210664" /></a></p>
 <p>由于手动设置learning
 rate会导致很多问题，就出现了一些自适应的梯度调整方法。</p>
 <ul>
-<li></li>
-<li>在经过多次的训练后，离local
-minimum的距离已经很近了，所以这时可以使用小的learning rate；</li>
-<li>在经过t次的训练后，learning rate可以衰减为ηt=ηt+1√ηt=ηt+1</li>
+<li><p>刚开始训练时，我们离local
+minimum的距离还很远，因此可以使用稍大的learning rate；</p></li>
+<li><p>在经过多次的训练后，离local
+minimum的距离已经很近了，所以这时可以使用小的learning rate；</p></li>
+<li><p>在经过t次的训练后，learning rate可以衰减为<a
+target="_blank" rel="noopener" href="https://imgtu.com/i/bgANKx"><img
+src="https://s1.ax1x.com/2022/03/08/bgANKx.png"
+alt="bgANKx.png" /></a></p></li>
 </ul>
 <h4 id="adagrad">Adagrad</h4>
 <blockquote>
@@ -307,28 +316,49 @@ minimum的距离已经很近了，所以这时可以使用小的learning rate；
 square of its previous derivatives</strong></p>
 </blockquote>
 <h5 id="理论推导">理论推导</h5>
-<p>使用这个公式来更新参数w，wt+1←wt−ηtσtgtwt+1←wt−ηtσtgt
-其中，t表示第t次的update，gt=∂L(θt)∂wgt=∂L(θt)∂w，是损失函数L对参数w的导数，σtσt表示其先前导数的均方根（root
-mean square）</p>
+<p>使用这个公式来更新参数w，</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/bgE9zR"><img
+src="https://s1.ax1x.com/2022/03/08/bgE9zR.png"
+alt="bgE9zR.png" /></a></p>
+<p>其中，t表示第t次的update，</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/bgEQyt"><img
+src="https://s1.ax1x.com/2022/03/08/bgEQyt.png"
+alt="bgEQyt.png" /></a></p>
+<p>是损失函数L对参数w的导数， <span class="math display">\[
+σt
+\]</span> 表示其先前导数的均方根（root mean square）</p>
 <p>计算w的具体例子如下所示，</p>
 <p><a
 target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200603165047318.png"><img
 src="https://gitee.com/scarleatt/image/raw/master/img/image-20200603165047318.png"
 alt="image-20200603165047318" /></a></p>
-<p>得出了σtσt和ηtηt的表达式后，再带入原式，消除分母上的t+1−−−−√t+1即可得出下面的公式，</p>
+<p>得出了 <span class="math display">\[
+σt
+\]</span> 和 <span class="math display">\[
+ηt
+\]</span> 的表达式后，再带入原式，消除分母上的</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/bgEWlR"><img
+src="https://s1.ax1x.com/2022/03/08/bgEWlR.png"
+alt="bgEWlR.png" /></a></p>
+<p>即可得出下面的公式，</p>
 <p><a
 target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200603165417281.png"><img
 src="https://gitee.com/scarleatt/image/raw/master/img/image-20200603165417281.png"
 alt="image-20200603165417281" /></a></p>
 <h5 id="contradiction">Contradiction</h5>
 <p>如上图所示，对于一般的梯度下降算法（vanilla gradient
-descent），当梯度g越大时，步长就越大；对于Adagrad，
-gtgt在分子上，梯度越大步长也越大，∑ti=0(gi)2∑i=0t(gi)2在分母上，数值越大步长也就越小，看似出现了一个矛盾。</p>
+descent），当梯度g越大时，步长就越大；对于Adagrad，</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/bgVLUU"><img
+src="https://s1.ax1x.com/2022/03/08/bgVLUU.png"
+alt="bgVLUU.png" /></a>在分子上，梯度越大步长也越大，</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/bgVyut"><img
+src="https://s1.ax1x.com/2022/03/08/bgVyut.png"
+alt="bgVyut.png" /></a>在分母上，数值越大步长也就越小，看似出现了一个矛盾。</p>
 <p><a
 target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200603172539601.png"><img
 src="https://gitee.com/scarleatt/image/raw/master/img/image-20200603172539601.png"
 alt="image-20200603172539601" /></a></p>
-<p>有学者对此也做出了解释，认为Adagrad可以解释gtgt和∑ti=0(gi)2∑i=0t(gi)2之间的反差，造成了反差的效果。</p>
+<p>有学者对此也做出了解释，认为Adagrad可以解释两者之间的反差，造成了反差的效果。</p>
 <p><a
 target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200603173305074.png"><img
 src="https://gitee.com/scarleatt/image/raw/master/img/image-20200603173305074.png"
@@ -338,21 +368,31 @@ alt="image-20200603173305074" /></a></p>
 target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200603174942400.png"><img
 src="https://gitee.com/scarleatt/image/raw/master/img/image-20200603174942400.png"
 alt="image-20200603174942400" /></a></p>
-<p>对于左图中的两个参数w1和w2，画两条直线，保持其中一个变量不变，得出另一个变量的变化曲线，分别对应右图中的曲线。在右图中，对于w1中的a点和w2中的c点，c点距离minimum的距离最近，但梯度却更大。因此在分析梯度和步长时，我们不能只考虑一阶导数的大小，还必须要要考虑二阶导数的大小，即y‘′=2ay‘′=2a。</p>
+<p>对于左图中的两个参数w1和w2，画两条直线，保持其中一个变量不变，得出另一个变量的变化曲线，分别对应右图中的曲线。在右图中，对于w1中的a点和w2中的c点，c点距离minimum的距离最近，但梯度却更大。因此在分析梯度和步长时，我们不能只考虑一阶导数的大小，还必须要要考虑二阶导数的大小，即
+<span class="math display">\[
+y‘′=2ay‘′=2a
+\]</span> 。</p>
 <p>右图中的w1曲线，曲率半径比w2的曲线更大，一阶导数变化得更平缓，因此二阶导数的变化就比w2大</p>
 <p><a
 target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200603175920345.png"><img
 src="https://gitee.com/scarleatt/image/raw/master/img/image-20200603175920345.png"
 alt="image-20200603175920345" /></a></p>
-<p>再来回顾下Adagrad中每次更新w的表达式，wt+1←wt−η∑tt=0(gi)2√gtwt+1←wt−η∑t=0t(gi)2gt</p>
-<p>一阶导数用gtgt表示，二阶导数的值则用分母中的∑ti=0(gi)2∑i=0t(gi)2来进行评估，即使用一阶导数的值来表示二阶导数的值。</p>
+<p>再来回顾下Adagrad中每次更新w的表达式，</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/bgmd4U"><img
+src="https://s1.ax1x.com/2022/03/08/bgmd4U.png"
+alt="bgmd4U.png" /></a></p>
+<p>一阶导数用gt表示，二阶导数的值则用分母中的</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/bgmW4O"><img
+src="https://s1.ax1x.com/2022/03/08/bgmW4O.png"
+alt="bgmW4O.png" /></a></p>
+<p>来进行评估，即使用一阶导数的值来表示二阶导数的值。</p>
 <p><a
 target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200603180425226.png"><img
 src="https://gitee.com/scarleatt/image/raw/master/img/image-20200603180425226.png"
 alt="image-20200603180425226" /></a></p>
 <h4 id="stochastic-gradient-descent">Stochastic Gradient Descent</h4>
 <p>对于传统的梯度下降算法，损失函数L的计算包含了所有的样本;
-随机梯度下降算法，损失函数LnLn则只使用其中一个样本，计算效率可以提高很多</p>
+随机梯度下降算法，损失函数Ln则只使用其中一个样本，计算效率可以提高很多</p>
 <p><a
 target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200603215238564.png"><img
 src="https://gitee.com/scarleatt/image/raw/master/img/image-20200603215238564.png"
@@ -374,54 +414,70 @@ target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/maste
 src="https://gitee.com/scarleatt/image/raw/master/img/image-20200603220106332.png"
 alt="image-20200603220106332" /></a></p>
 <p>x2对应w2，x1对应w1，对于同一个w1、w2，但x2的数值不同</p>
-<p>在左图中，由于x1的数值相对于x2来说都很小，x1的变化对于y来说影响很小，w1对y的影响也很小，对loss的影响也小，因此梯度∂L∂w1∂L∂w1在w1方向的变换也比较平缓；x2的数值较大，对loss的影响也大，因此梯度∂L∂w2∂L∂w2在w2方向的变换就比较sharp</p>
+<p>在左图中，由于x1的数值相对于x2来说都很小，x1的变化对于y来说影响很小，w1对y的影响也很小，对loss的影响也小，因此梯度∂L/∂w1在w1方向的变换也比较平缓；x2的数值较大，对loss的影响也大，因此梯度∂L/∂w2在w2方向的变换就比较sharp</p>
 <p>在右图中，x1和x2的规模（scale）是接近的，对y的影响不相上下，对loss的影响也差不多</p>
 <h5 id="计算">计算</h5>
 <p><a
 target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200603225755433.png"><img
 src="https://gitee.com/scarleatt/image/raw/master/img/image-20200603225755433.png"
 alt="image-20200603225755433" /></a></p>
-<p>计算方式：用mimi表示当前样本的平均值，σiσi为当前样本的标准差，i表示维度，xrixir表示第r个example，使用公式xri←xri−miσixir←xir−miσi来进行归一化计算</p>
+<p>计算方式：用mimi表示当前样本的平均值，σi为当前样本的标准差，i表示维度，xri表示第r个example，使用上图中的公式来进行归一化计算</p>
 <p>feature
-scaling其实就是将每一个example都进行归一化，使之服从标准正态分布f(x)=12π√e−x22f(x)=12πe−x22</p>
-<p>X−X¯D(x)−−−−√∼N(0,1)X−X¯D(x)∼N(0,1)</p>
+scaling其实就是将每一个example都进行归一化，使之服从标准正态分布<a
+target="_blank" rel="noopener" href="https://imgtu.com/i/bgKO56"><img
+src="https://s1.ax1x.com/2022/03/08/bgKO56.png"
+alt="bgKO56.png" /></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/bgMlaq"><img
+src="https://s1.ax1x.com/2022/03/08/bgMlaq.png"
+alt="bgMlaq.png" /></a></p>
 <h4 id="gradient-descent-theory">Gradient Descent Theory</h4>
 <h5 id="question">Question</h5>
-<p>在求解最小化问题时，θ∗=arg min L(θ)θ∗=arg min
-L(θ)，每次更新θθ的值，并不一定能使L(θ0)&gt;L(θ1)&gt;L(θ2)&gt;⋯𝐿(θ0)&gt;𝐿(θ1)&gt;𝐿(θ2)&gt;⋯成立</p>
-<p>对于给出的θ1,θ2θ1,θ2，我们要如何根据这些值来找出最小的loss？这也是我们接下来会研究的问题</p>
+<p>在求解最小化问题时，θ∗=arg min
+L(θ)，每次更新θ的值，并不一定能使L(θ0)&gt;L(θ1)&gt;L(θ2)&gt;⋯𝐿(θ0)&gt;𝐿(θ1)&gt;𝐿(θ2)&gt;⋯成立</p>
+<p>对于给出的θ1,θ2，我们要如何根据这些值来找出最小的loss？这也是我们接下来会研究的问题</p>
 <p><a
 target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200604110917247.png"><img
 src="https://gitee.com/scarleatt/image/raw/master/img/image-20200604110917247.png"
 alt="image-20200604110917247" /></a></p>
 <h5 id="taylor-series">Taylor Series</h5>
 <p>泰勒公式定义如下，将函数h(x)在x=x0处展开</p>
-<p>h(x)=∑k=0∞h(k)(x0)k!(x−x0)kh(x)=∑k=0∞h(k)(x0)k!(x−x0)k</p>
-<p>当x→x0x→x0时，表达式可写为h(x)≈h(x0)+h′(x0)(x−x0)h(x)≈h(x0)+h′(x0)(x−x0)</p>
-<p>对于二元函数，当x→x0,y→y0x→x0,y→y0时，相应的表达式可以简化为</p>
-<p>h(x,y)≈h(x0,y0)+∂h(x0,y0)∂x(x−x0)+∂h(x0,y0)∂y(y−y0)h(x,y)≈h(x0,y0)+∂h(x0,y0)∂x(x−x0)+∂h(x0,y0)∂y(y−y0)</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/bgQAm9"><img
+src="https://s1.ax1x.com/2022/03/08/bgQAm9.png"
+alt="bgQAm9.png" /></a></p>
+<p>当x→x0时，表达式可写为h(x)≈h(x0)+h′(x0)(x−x0)</p>
+<p>对于二元函数，当x→x0,y→y时，相应的表达式可以简化为</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/bglCNt"><img
+src="https://s1.ax1x.com/2022/03/08/bglCNt.md.png"
+alt="bglCNt.md.png" /></a></p>
 <h5 id="back-to-formal-derivation">Back to Formal Derivation</h5>
 <p>损失函数loss可以用以下公式表示，</p>
-<p>L(θ)=L(a,b)+∂L(a,b)∂θ1(θ1−a)+∂L(a,b)∂θ2(θ2−b)L(θ)=L(a,b)+∂L(a,b)∂θ1(θ1−a)+∂L(a,b)∂θ2(θ2−b)</p>
-<p>简化表达形式，令s=L(a,b), u=∂L(a,b)∂θ1, v=∂L(a,b)∂θ2s=L(a,b),
-u=∂L(a,b)∂θ1, v=∂L(a,b)∂θ2</p>
-<p>则L(θ)≈s+u(θ1−a)+v(θ2−b)L(θ)≈s+u(θ1−a)+v(θ2−b)</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/bgl13T"><img
+src="https://s1.ax1x.com/2022/03/08/bgl13T.md.png"
+alt="bgl13T.md.png" /></a></p>
+<p>简化表达形式，令<a target="_blank" rel="noopener" href="https://imgtu.com/i/bglO5q"><img
+src="https://s1.ax1x.com/2022/03/08/bglO5q.png"
+alt="bglO5q.png" /></a></p>
+<p>则<a target="_blank" rel="noopener" href="https://imgtu.com/i/bg1KqH"><img
+src="https://s1.ax1x.com/2022/03/08/bg1KqH.png"
+alt="bg1KqH.png" /></a></p>
 <p>如下图所示，在图中red
-circle的范围内，找到θ1,θ2θ1,θ2，使得loss最小化，设red
-circle的半径为d，圆心坐标为(a,b)，就新增了一个限制条件(θ1−a)2+(θ2−b)2≤d2(θ1−a)2+(θ2−b)2≤d2</p>
+circle的范围内，找到θ1,θ2，使得loss最小化，设red
+circle的半径为d，圆心坐标为(a,b)，就新增了一个限制条件(θ1−a)2+(θ2−b)2≤d2</p>
 <p><a
 target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200604114112061.png"><img
 src="https://gitee.com/scarleatt/image/raw/master/img/image-20200604114112061.png"
 alt="image-20200604114112061" /></a></p>
-<p>由于s与θ1,θ2θ1,θ2不相关，这里把s项去掉，L(θ)L(θ)可以转为内积</p>
-<p>L(θ)min≈u(θ1−a)+v(θ2−b)=(u,v)⋅(θ1−a,θ2−b)=(u,v)⋅(Δθ1,Δθ2)L(θ)min≈u(θ1−a)+v(θ2−b)=(u,v)⋅(θ1−a,θ2−b)=(u,v)⋅(Δθ1,Δθ2)</p>
-<p>当(Δθ1,Δθ2)(Δθ1,Δθ2)与(u,v)(u,v)方向相反时，两者的内积为最小值，由于两者的模长不同，用参数ηη来表示两者之间的关系。</p>
+<p>由于s与θ1,θ2不相关，这里把s项去掉，L(θ)可以转为内积</p>
+<p>L(θ)min≈u(θ1−a)+v(θ2−b)=(u,v)</p>
+<p>当(Δθ1,Δθ2与(u,v方向相反时，两者的内积为最小值，由于两者的模长不同，用参数η来表示两者之间的关系。</p>
 <p><a
 target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200604114656448.png"><img
 src="https://gitee.com/scarleatt/image/raw/master/img/image-20200604114656448.png"
 alt="image-20200604114656448" /></a></p>
-<p>由于Δθ1=θ1−a,Δθ2=θ2−bΔθ1=θ1−a,Δθ2=θ2−b，则θ1=a+Δθ1,θ2=b+Δθ2θ1=a+Δθ1,θ2=b+Δθ2，可得出</p>
-<p>[θ1θ2]=[ab]−η[uv]=[ab]−η⎡⎣⎢∂L(a,b)∂θ1∂L(a,b)∂θ2⎤⎦⎥[θ1θ2]=[ab]−η[uv]=[ab]−η[∂L(a,b)∂θ1∂L(a,b)∂θ2]</p>
+<p>由于Δθ1=θ1−a,Δθ2=θ2−b，则θ1=a+Δθ1,θ2=b+Δθ2，可得出</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/bg1Usg"><img
+src="https://s1.ax1x.com/2022/03/08/bg1Usg.md.png"
+alt="bg1Usg.md.png" /></a></p>
 <h5 id="limitation">Limitation</h5>
 <p>在真实的实验环境中，我们往往会设置一个临界值（比如10−410−4），当该点的梯度小于该值（即≈0≈0）时，就停止训练。</p>
 <p>因此，gradient descent的限制是，gradient为0的点并不一定是local
@@ -532,7 +588,7 @@ alt="image-20200604123420086" /></a></p>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-count">55</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
