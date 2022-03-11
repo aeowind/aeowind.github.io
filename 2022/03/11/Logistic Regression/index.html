@@ -20,21 +20,22 @@
     var CONFIG = {"hostname":"aeowind.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="你说感到万分沮丧，甚至开始怀疑人生。要知道伤心总是难免的，在每一个梦醒时分">
+  <meta name="description" content="赠你哈啰吉蒂那玩具 这天早变作茉莉香水">
 <meta property="og:type" content="article">
-<meta property="og:title" content="人生愿望清单">
-<meta property="og:url" content="https://aeowind.github.io/2022/03/04/%E4%BA%BA%E7%94%9F%E6%84%BF%E6%9C%9B%E6%B8%85%E5%8D%95/index.html">
+<meta property="og:title" content="Logistic Regression">
+<meta property="og:url" content="https://aeowind.github.io/2022/03/11/Logistic%20Regression/index.html">
 <meta property="og:site_name" content="Aeo&#39;s Blog">
-<meta property="og:description" content="你说感到万分沮丧，甚至开始怀疑人生。要知道伤心总是难免的，在每一个梦醒时分">
+<meta property="og:description" content="赠你哈啰吉蒂那玩具 这天早变作茉莉香水">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-03-04T12:46:25.480Z">
-<meta property="article:modified_time" content="2021-10-08T11:33:43.916Z">
+<meta property="article:published_time" content="2022-03-11T12:40:12.752Z">
+<meta property="article:modified_time" content="2022-03-11T12:43:47.790Z">
 <meta property="article:author" content="aeowind">
-<meta property="article:tag" content="杂记">
-<meta property="article:tag" content="碎碎念">
+<meta property="article:tag" content="学习">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="深度学习">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://aeowind.github.io/2022/03/04/%E4%BA%BA%E7%94%9F%E6%84%BF%E6%9C%9B%E6%B8%85%E5%8D%95/">
+<link rel="canonical" href="https://aeowind.github.io/2022/03/11/Logistic%20Regression/">
 
 
 <script id="page-configurations">
@@ -47,7 +48,7 @@
   };
 </script>
 
-  <title>人生愿望清单 | Aeo's Blog</title>
+  <title>Logistic Regression | Aeo's Blog</title>
   
 
 
@@ -201,7 +202,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://aeowind.github.io/2022/03/04/%E4%BA%BA%E7%94%9F%E6%84%BF%E6%9C%9B%E6%B8%85%E5%8D%95/">
+    <link itemprop="mainEntityOfPage" href="https://aeowind.github.io/2022/03/11/Logistic%20Regression/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -214,7 +215,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          人生愿望清单
+          Logistic Regression
         </h1>
 
         <div class="post-meta">
@@ -223,27 +224,25 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2022-03-04 20:46:25" itemprop="dateCreated datePublished" datetime="2022-03-04T20:46:25+08:00">2022-03-04</time>
+              <time title="创建时间：2022-03-11 20:40:12 / 修改时间：20:43:47" itemprop="dateCreated datePublished" datetime="2022-03-11T20:40:12+08:00">2022-03-11</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-10-08 19:33:43" itemprop="dateModified" datetime="2021-10-08T19:33:43+08:00">2021-10-08</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9D%82%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">杂记</span></a>
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">学习</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9D%82%E8%AE%B0/%E7%A2%8E%E7%A2%8E%E5%BF%B5/" itemprop="url" rel="index"><span itemprop="name">碎碎念</span></a>
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a>
                 </span>
             </span>
 
@@ -255,7 +254,7 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span id="busuanzi_value_page_pv"></span>
             </span>
-            <div class="post-description"><blockquote class="blockquote-center">你说感到万分沮丧，甚至开始怀疑人生。要知道伤心总是难免的，在每一个梦醒时分</blockquote></div>
+            <div class="post-description"><blockquote class="blockquote-center">赠你哈啰吉蒂那玩具 这天早变作茉莉香水</blockquote></div>
 
         </div>
       </header>
@@ -266,28 +265,124 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <ol type="1">
-<li><p>养一只猫，稳定下来生活清闲后，养一条狗</p></li>
-<li><p>有一个自己的厨房，周末琢磨好吃的菜</p></li>
-<li><p>去一趟大西北环线</p></li>
-<li><p>穿30号球衣见到库里</p></li>
-<li><p>学会钢琴</p></li>
-<li><p>在电影方面变得很专业，多看电影多读相关的书</p></li>
-<li><p>有一个自己的咖啡角</p></li>
-<li><p>在阳台放舒服的沙发和小茶几</p></li>
-<li><p>30而立</p></li>
-<li><p>用自己挣的钱带全家旅游</p></li>
-<li><p>希望父母永远不必再为我担心</p></li>
-<li><p>遇见一个坚定选择自己的人</p></li>
-<li><p>去做志愿者保护野生动物</p></li>
-<li><p>永远保持体重在100-105斤之间</p></li>
-<li><p>去一次贝加尔湖</p></li>
-<li><p>在海边居住一年，感受四季和海水的变化</p></li>
-<li><p>顺利研究生毕业</p></li>
-<li><p>拿到一个不错的校招offer</p></li>
-<li><p>努力变成外向人格</p></li>
-<li><p>家人可以不必经受伤病，健康的变老</p></li>
-</ol>
+        <h4 id="review">Review</h4>
+<p>我们可以得出z的简易表达式z=w⋅x+bz=w⋅x+b，可得出</p>
+<p>P(C1|x)=σ(z)=σ(w⋅x+b)P(C1|x)=σ(z)=σ(w⋅x+b)</p>
+<p>当得出N1,N2,μ1,μ2,∑N1,N2,μ1,μ2,∑时，就可以计算出w和b的值。</p>
+<h4 id="three-steps">Three Steps</h4>
+<h5 id="step1-function-set">Step1: Function Set</h5>
+<p>把所有的w和b都要包括进来，这里使用的function set就是sigmoid函数，</p>
+<p><a
+target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200606111122013.png"><img
+src="https://gitee.com/scarleatt/image/raw/master/img/image-20200606111122013.png"
+alt="image-20200606111122013" /></a></p>
+<h5 id="step2-goodness-of-a-function">Step2: Goodness of a Function</h5>
+<p>对于给定的一组w和b，得出似然函数L(w,b)的表达式，对于一个二分类问题，类别C1的概率为fw,b(xi),
+i=1,2,4,…Nfw,b(xi),
+i=1,2,4,…N，而类别C2的概率则为1−fw,b(x3)1−fw,b(x3)。找出相对应的<span
+class="math inline">\(w^{*},b^{*}\)</span>，使得L取得最大值。</p>
+<p><a
+target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200606111627142.png"><img
+src="https://gitee.com/scarleatt/image/raw/master/img/image-20200606111627142.png"
+alt="image-20200606111627142" /></a></p>
+<p>对于训练数据集，我们设C1的y<sup>=1y</sup>=1，C2的y<sup>=0y</sup>=0，服从Bernoulli
+distribution。在函数前面加-号就可以使原来的最大化函数，转化为对目标的最小化。</p>
+<p><a
+target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200606112102628.png"><img
+src="https://gitee.com/scarleatt/image/raw/master/img/image-20200606112102628.png"
+alt="image-20200606112102628" /></a></p>
+<p>这时原来的似然函数L转化为了一个新形式，把原来的乘法变成了ln项相加，可以方便后边对w的求导</p>
+<p><a
+target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200606112315406.png"><img
+src="https://gitee.com/scarleatt/image/raw/master/img/image-20200606112315406.png"
+alt="image-20200606112315406" /></a></p>
+<p>现在我们的目标就转化为了找出<span
+class="math inline">\(w^*,b^*=argmin-lnL(w,b)\)</span>，交叉熵的形式为</p>
+<p>−lnL(w,b)=∑n−[y<sup>nlnfw,b(xn)+(1−y</sup>n)ln(1−fw,b(xn))−lnL(w,b)=∑n−[y<sup>nlnfw,b(xn)+(1−y</sup>n)ln(1−fw,b(xn))</p>
+<h5 id="step3-find-the-best-function">Step3: Find the best function</h5>
+<p>为了找出那组使得−lnL(w,b)−lnL(w,b)最小化的参数<span
+class="math inline">\(w^*,b^*\)</span>，这里我们使用了Gradient
+Descent方法</p>
+<p>fw,b(x)=σ(x)=11+e−z,z=w⋅x+b=∑iwixi+bfw,b(x)=σ(x)=11+e−z,z=w⋅x+b=∑iwixi+b</p>
+<p>对wi求导，</p>
+<p><a
+target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200606113919943.png"><img
+src="https://gitee.com/scarleatt/image/raw/master/img/image-20200606113919943.png"
+alt="image-20200606113919943" /></a></p>
+<p><a
+target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200606113959065.png"><img
+src="https://gitee.com/scarleatt/image/raw/master/img/image-20200606113959065.png"
+alt="image-20200606113959065" /></a></p>
+<p>分别得出∂lnfw,b(x)∂wi,∂ln(1−fw,b(x))∂wi∂lnfw,b(x)∂wi,∂ln(1−fw,b(x))∂wi，代入原式子，化简可得</p>
+<p><a
+target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200606114230182.png"><img
+src="https://gitee.com/scarleatt/image/raw/master/img/image-20200606114230182.png"
+alt="image-20200606114230182" /></a></p>
+<p>得出梯度∂(−lnL(w,b))∂wi=∑n−(y<sup>n−fw,b(xn))xni∂(−lnL(w,b))∂wi=∑n−(y</sup>n−fw,b(xn))xin，代入每次的梯度更新公式，</p>
+<p>wi←wi−η∂(−lnL(w,b))∂wi=wi−η∑n−(y<sup>n−fw,b(xn))xniwi←wi−η∂(−lnL(w,b))∂wi=wi−η∑n−(y</sup>n−fw,b(xn))xin</p>
+<h5 id="logistic-regression-square-error是否可行">Logistic Regression +
+Square error是否可行</h5>
+<p>按照之前的步骤，先得出fw,b(x),L(f)fw,b(x),L(f)的表达式，第三步再求导，可以发现一个问题，代入训练数据集的y<sup>y</sup>后，梯度总是为0，模型最后无法训练，所以这样的结合是不可行的。</p>
+<p><a
+target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200606115052273.png"><img
+src="https://gitee.com/scarleatt/image/raw/master/img/image-20200606115052273.png"
+alt="image-20200606115052273" /></a></p>
+<p><a
+target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200606115706601.png"><img
+src="https://gitee.com/scarleatt/image/raw/master/img/image-20200606115706601.png"
+alt="image-20200606115706601" /></a></p>
+<h5 id="cross-entropy-v.s.-square-error">Cross Entropy v.s. Square
+Error</h5>
+<p>下图我们将Cross entropy和square error进行了对比，黑色网格线表示cross
+entropy，红色表示square error</p>
+<p><a
+target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200606115544160.png"><img
+src="https://gitee.com/scarleatt/image/raw/master/img/image-20200606115544160.png"
+alt="image-20200606115544160" /></a></p>
+<p>对于cross
+entropy，loss变化较大，曲线比较sharp，相应的微分也较大，每次跨越的步长也较长</p>
+<p>对于square
+error，loss曲线变化比较平缓，微分值很小，每次跨越的步长也小，当gradient接近于0的时候，参数就很有可能不再更新，训练也会停下来。就算将gradient设置为很小的值，使训练不那么容易停下来，但由于每次跨越的步长很小很小，也会出现训练非常缓慢的问题</p>
+<h4 id="logistic-vs-linear-regression">Logistic vs Linear
+Regression</h4>
+<p><a
+target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200606121346151.png"><img
+src="https://gitee.com/scarleatt/image/raw/master/img/image-20200606121346151.png"
+alt="image-20200606121346151" /></a></p>
+<p><a
+target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200606121324734.png"><img
+src="https://gitee.com/scarleatt/image/raw/master/img/image-20200606121324734.png"
+alt="image-20200606121324734" /></a></p>
+<h4 id="discriminative-v.s.-generative">Discriminative v.s.
+Generative</h4>
+<p>logistic
+regression我们称之为Discriminative方法；而我们将gaussian来描述posterior
+probability，称之为Generative方法。虽然都使用了相同的函数表达式，但需要找到的参数却是不同的。</p>
+<p><a
+target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200606122040582.png"><img
+src="https://gitee.com/scarleatt/image/raw/master/img/image-20200606122040582.png"
+alt="image-20200606122040582" /></a></p>
+<p>logistic
+regression<strong>没有实质性的假设</strong>，要求直接找出对应的w和b。但generative
+model<strong>做出了假设</strong>，假设输入的数据是服从Gaussian分布的，需要先找出μ1,μ2,∑−1μ1,μ2,∑−1，再根据这些值得出相对应的w和b。</p>
+<p><a
+target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200606143847987.png"><img
+src="https://gitee.com/scarleatt/image/raw/master/img/image-20200606143847987.png"
+alt="image-20200606143847987" /></a></p>
+<h5 id="example">Example</h5>
+<p><a
+target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200606143950210.png"><img
+src="https://gitee.com/scarleatt/image/raw/master/img/image-20200606143950210.png"
+alt="image-20200606143950210" /></a></p>
+<p>对于包含13个example
+的训练数据，对于图中所示的测试数据，我们可以明显看出测试example属于Class1，那么通过Naive
+Bayes（朴素贝叶斯）计算的结果也是这样吗？下面我们将开始验证，</p>
+<p>P(x|C1)=P(x1=1|C1)×P(x2=1|C1)=1×1P(x|C2)=P(x1=1|C2)×P(x2=1|C2)=13×13P(x|C1)=P(x1=1|C1)×P(x2=1|C1)=1×1P(x|C2)=P(x1=1|C2)×P(x2=1|C2)=13×13</p>
+<p><a
+target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200606144006375.png"><img
+src="https://gitee.com/scarleatt/image/raw/master/img/image-20200606144006375.png"
+alt="image-20200606144006375" /></a></p>
+<p>根据这个计算结果可知，属于Class1的概率是小于0.5的，因此可以看出根据朴素贝叶斯算法算出，测试的example是属于Class2，和我们的直觉是相反的。==这是由于训练数据集中属于Class1的数量太少了，==比例只有1/13。在实际生活中的模型训练中，我们也必须要避免数据集的差异对实验结果造成的影响，数据集中每个类别所占的比例应该是差别不大的。</p>
 
     </div>
 
@@ -298,8 +393,9 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/%E6%9D%82%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 杂记</a>
-              <a href="/tags/%E7%A2%8E%E7%A2%8E%E5%BF%B5/" rel="tag"><i class="fa fa-tag"></i> 碎碎念</a>
+              <a href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> 学习</a>
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"><i class="fa fa-tag"></i> 算法</a>
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> 深度学习</a>
           </div>
 
         
@@ -308,13 +404,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/03/04/%E9%9D%A2%E7%BB%8F%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="prev" title="消息中间件">
-      <i class="fa fa-chevron-left"></i> 消息中间件
+    <a href="/2022/03/09/2018/" rel="prev" title="2018">
+      <i class="fa fa-chevron-left"></i> 2018
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/03/04/%E4%B9%A6%E5%8D%95/" rel="next" title="一枚书单">
-      一枚书单 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -373,6 +466,11 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#review"><span class="nav-number">1.</span> <span class="nav-text">Review</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#three-steps"><span class="nav-number">2.</span> <span class="nav-text">Three Steps</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#step1-function-set"><span class="nav-number">2.1.</span> <span class="nav-text">Step1: Function Set</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#step2-goodness-of-a-function"><span class="nav-number">2.2.</span> <span class="nav-text">Step2: Goodness of a Function</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#step3-find-the-best-function"><span class="nav-number">2.3.</span> <span class="nav-text">Step3: Find the best function</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#logistic-regression-square-error%E6%98%AF%E5%90%A6%E5%8F%AF%E8%A1%8C"><span class="nav-number">2.4.</span> <span class="nav-text">Logistic Regression +
+Square error是否可行</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#cross-entropy-v.s.-square-error"><span class="nav-number">2.5.</span> <span class="nav-text">Cross Entropy v.s. Square
+Error</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#logistic-vs-linear-regression"><span class="nav-number">3.</span> <span class="nav-text">Logistic vs Linear
+Regression</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#discriminative-v.s.-generative"><span class="nav-number">4.</span> <span class="nav-text">Discriminative v.s.
+Generative</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#example"><span class="nav-number">4.1.</span> <span class="nav-text">Example</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
