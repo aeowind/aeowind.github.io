@@ -28,7 +28,7 @@
 <meta property="og:description" content="同你背静夜思，睇港片，对未来没打算">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-03-04T12:46:25.459Z">
-<meta property="article:modified_time" content="2022-03-10T05:22:44.157Z">
+<meta property="article:modified_time" content="2022-03-11T02:44:30.662Z">
 <meta property="article:author" content="aeowind">
 <meta property="article:tag" content="学习">
 <meta property="article:tag" content="Java">
@@ -232,7 +232,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-10 13:22:44" itemprop="dateModified" datetime="2022-03-10T13:22:44+08:00">2022-03-10</time>
+                <time title="修改时间：2022-03-11 10:44:30" itemprop="dateModified" datetime="2022-03-11T10:44:30+08:00">2022-03-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -272,7 +272,7 @@
 
       
         <h1 id="java类加载机制">Java类加载机制</h1>
-<p>Java虚拟机把描述类的数据从Class文件加载到内存，并对数据进行校验、转换解析和初始化，最终形成可以被虚拟机直接使用的Java类型，这个过程被称作<strong>虚拟机的类加载机制</strong>。</p>
+<p>Java虚拟机把描述类的数据从<code>class文件</code>加载到内存，并对数据进行校验、转换解析和初始化，最终形成可以被虚拟机直接使用的<code>Java类型</code>，这个过程被称作<strong>虚拟机的类加载机制</strong>。</p>
 <h2 id="类加载的时机">类加载的时机</h2>
 <ul>
 <li>隐式加载 new 创建类的实例</li>
@@ -436,7 +436,7 @@ class)</strong> 是支持抽象类定义的两种机制。</p>
 <p><strong>相同点：</strong></p>
 </blockquote>
 <ol type="1">
-<li><p>都不能被实例化</p></li>
+<li><p>都不能被<strong>实例化</strong></p></li>
 <li><p>接口的实现类或抽象类的子类都只有实现了接口或抽象类中的方法后才能实例化。</p></li>
 </ol>
 <blockquote>
@@ -577,7 +577,7 @@ id="stringstringbuilder和stringbuffer的区别">String，StringBuilder和String
 <p>那么JVM就会像上面说的那样，不断的创建、回收对象来进行这个操作了。速度就会很慢。</p>
 <p>再来说线程安全</p>
 <p><strong>在线程安全上，StringBuilder是线程不安全的，而StringBuffer是线程安全的</strong></p>
-<p>如果一个StringBuffer对象在字符串缓冲区被多个线程使用时，StringBuffer中很多方法可以带有synchronized关键字，所以可以保证线程是安全的，但StringBuilder的方法则没有该关键字，所以不能保证线程安全，有可能会出现一些错误的操作。所以如果要进行的操作是多线程的，那么就要使用StringBuffer，但是在单线程的情况下，还是建议使用速度比较快的StringBuilder。</p>
+<p>如果一个StringBuffer对象在字符串缓冲区被多个线程使用时，<code>StringBuffer</code>中很多方法可以带有<code>synchronized</code>关键字，所以可以保证线程是安全的，但StringBuilder的方法则没有该关键字，所以不能保证线程安全，有可能会出现一些错误的操作。所以如果要进行的操作是多线程的，那么就要使用StringBuffer，但是在单线程的情况下，还是建议使用速度比较快的StringBuilder。</p>
 <p>总结一下</p>
 <ul>
 <li><p><strong>String</strong>：适用于少量的字符串操作的情况</p></li>
@@ -589,7 +589,7 @@ id="stringstringbuilder和stringbuffer的区别">String，StringBuilder和String
 <li><p>对于<strong>==</strong>，如果作用于基本数据类型的变量，则直接比较其存储的
 “值”是否相等；
 如果作用于引用类型的变量，则比较的是所指向的对象的地址。</p></li>
-<li><p>对于<strong>equals</strong>方法，注意：equals方法不能作用于基本数据类型的变量。如果没有对equals方法进行重写，则比较的是<strong>引用类型的变量所指向的对象的地址</strong>；诸如String、Date等类对equals方法进行了<strong>重写的话，比较的是所指向的对象的内容。</strong></p></li>
+<li><p>对于<strong>equals</strong>方法，注意：equals方法不能作用于基本数据类型的变量。如果没有对equals方法进行重写，则比较的是<strong>引用类型的变量所指向的对象的地址</strong>；诸如String、Date等类对equals方法进行了重写的话，比较的是所指向的对象的<strong>内容</strong>。</p></li>
 </ol>
 <h1
 id="java访问修饰符有哪些都有什么区别">Java访问修饰符有哪些？都有什么区别？</h1>
