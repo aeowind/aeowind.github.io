@@ -28,7 +28,7 @@
 <meta property="og:description" content="赠你哈啰吉蒂那玩具 这天早变作茉莉香水">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-03-11T12:40:12.752Z">
-<meta property="article:modified_time" content="2022-03-11T12:43:47.790Z">
+<meta property="article:modified_time" content="2022-03-11T13:49:28.788Z">
 <meta property="article:author" content="aeowind">
 <meta property="article:tag" content="学习">
 <meta property="article:tag" content="算法">
@@ -226,7 +226,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-03-11 20:40:12 / 修改时间：20:43:47" itemprop="dateCreated datePublished" datetime="2022-03-11T20:40:12+08:00">2022-03-11</time>
+              <time title="创建时间：2022-03-11 20:40:12 / 修改时间：21:49:28" itemprop="dateCreated datePublished" datetime="2022-03-11T20:40:12+08:00">2022-03-11</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -266,9 +266,9 @@
 
       
         <h4 id="review">Review</h4>
-<p>我们可以得出z的简易表达式z=w⋅x+bz=w⋅x+b，可得出</p>
-<p>P(C1|x)=σ(z)=σ(w⋅x+b)P(C1|x)=σ(z)=σ(w⋅x+b)</p>
-<p>当得出N1,N2,μ1,μ2,∑N1,N2,μ1,μ2,∑时，就可以计算出w和b的值。</p>
+<p>我们可以得出z的简易表达式z=w⋅x+b，可得出</p>
+<p>P(C1|x)=σ(z)=σ(w⋅x+b)</p>
+<p>当得出N1,N2,μ1,μ2,∑时，就可以计算出w和b的值。</p>
 <h4 id="three-steps">Three Steps</h4>
 <h5 id="step1-function-set">Step1: Function Set</h5>
 <p>把所有的w和b都要包括进来，这里使用的function set就是sigmoid函数，</p>
@@ -277,15 +277,19 @@ target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/maste
 src="https://gitee.com/scarleatt/image/raw/master/img/image-20200606111122013.png"
 alt="image-20200606111122013" /></a></p>
 <h5 id="step2-goodness-of-a-function">Step2: Goodness of a Function</h5>
-<p>对于给定的一组w和b，得出似然函数L(w,b)的表达式，对于一个二分类问题，类别C1的概率为fw,b(xi),
-i=1,2,4,…Nfw,b(xi),
-i=1,2,4,…N，而类别C2的概率则为1−fw,b(x3)1−fw,b(x3)。找出相对应的<span
-class="math inline">\(w^{*},b^{*}\)</span>，使得L取得最大值。</p>
+<p>对于给定的一组w和b，得出似然函数L(w,b)的表达式，对于一个二分类问题，类别C1的概率为<a
+target="_blank" rel="noopener" href="https://imgtu.com/i/bo6Arq"><img
+src="https://s1.ax1x.com/2022/03/11/bo6Arq.png"
+alt="bo6Arq.png" /></a>，</p>
+<p>而类别C2的概率则为<a target="_blank" rel="noopener" href="https://imgtu.com/i/bo6tIO"><img
+src="https://s1.ax1x.com/2022/03/11/bo6tIO.png"
+alt="bo6tIO.png" /></a>。</p>
+<p>找出相对应的w,b，使得L取得最大值。</p>
 <p><a
 target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200606111627142.png"><img
 src="https://gitee.com/scarleatt/image/raw/master/img/image-20200606111627142.png"
 alt="image-20200606111627142" /></a></p>
-<p>对于训练数据集，我们设C1的y<sup>=1y</sup>=1，C2的y<sup>=0y</sup>=0，服从Bernoulli
+<p>对于训练数据集，我们设C1的y<sup>=1，C2的y</sup>=0，服从Bernoulli
 distribution。在函数前面加-号就可以使原来的最大化函数，转化为对目标的最小化。</p>
 <p><a
 target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200606112102628.png"><img
@@ -296,14 +300,19 @@ alt="image-20200606112102628" /></a></p>
 target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200606112315406.png"><img
 src="https://gitee.com/scarleatt/image/raw/master/img/image-20200606112315406.png"
 alt="image-20200606112315406" /></a></p>
-<p>现在我们的目标就转化为了找出<span
-class="math inline">\(w^*,b^*=argmin-lnL(w,b)\)</span>，交叉熵的形式为</p>
-<p>−lnL(w,b)=∑n−[y<sup>nlnfw,b(xn)+(1−y</sup>n)ln(1−fw,b(xn))−lnL(w,b)=∑n−[y<sup>nlnfw,b(xn)+(1−y</sup>n)ln(1−fw,b(xn))</p>
+<p>现在我们的目标就转化为了找出<a target="_blank" rel="noopener" href="https://imgtu.com/i/bo2mIf"><img
+src="https://s1.ax1x.com/2022/03/11/bo2mIf.png"
+alt="bo2mIf.png" /></a>，</p>
+<p>交叉熵的形式为</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/bo2JZq"><img
+src="https://s1.ax1x.com/2022/03/11/bo2JZq.md.png"
+alt="bo2JZq.md.png" /></a></p>
 <h5 id="step3-find-the-best-function">Step3: Find the best function</h5>
-<p>为了找出那组使得−lnL(w,b)−lnL(w,b)最小化的参数<span
-class="math inline">\(w^*,b^*\)</span>，这里我们使用了Gradient
+<p>为了找出那组使得−lnL(w,b)最小化的参数，这里我们使用了Gradient
 Descent方法</p>
-<p>fw,b(x)=σ(x)=11+e−z,z=w⋅x+b=∑iwixi+bfw,b(x)=σ(x)=11+e−z,z=w⋅x+b=∑iwixi+b</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/bo26dx"><img
+src="https://s1.ax1x.com/2022/03/11/bo26dx.md.png"
+alt="bo26dx.md.png" /></a></p>
 <p>对wi求导，</p>
 <p><a
 target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200606113919943.png"><img
@@ -313,16 +322,26 @@ alt="image-20200606113919943" /></a></p>
 target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200606113959065.png"><img
 src="https://gitee.com/scarleatt/image/raw/master/img/image-20200606113959065.png"
 alt="image-20200606113959065" /></a></p>
-<p>分别得出∂lnfw,b(x)∂wi,∂ln(1−fw,b(x))∂wi∂lnfw,b(x)∂wi,∂ln(1−fw,b(x))∂wi，代入原式子，化简可得</p>
+<p>分别得出<a target="_blank" rel="noopener" href="https://imgtu.com/i/boRQk6"><img
+src="https://s1.ax1x.com/2022/03/11/boRQk6.png"
+alt="boRQk6.png" /></a>，</p>
+<p>代入原式子，化简可得</p>
 <p><a
 target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200606114230182.png"><img
 src="https://gitee.com/scarleatt/image/raw/master/img/image-20200606114230182.png"
 alt="image-20200606114230182" /></a></p>
-<p>得出梯度∂(−lnL(w,b))∂wi=∑n−(y<sup>n−fw,b(xn))xni∂(−lnL(w,b))∂wi=∑n−(y</sup>n−fw,b(xn))xin，代入每次的梯度更新公式，</p>
-<p>wi←wi−η∂(−lnL(w,b))∂wi=wi−η∑n−(y<sup>n−fw,b(xn))xniwi←wi−η∂(−lnL(w,b))∂wi=wi−η∑n−(y</sup>n−fw,b(xn))xin</p>
+<p>得出梯度<a target="_blank" rel="noopener" href="https://imgtu.com/i/boRYXd"><img
+src="https://s1.ax1x.com/2022/03/11/boRYXd.png"
+alt="boRYXd.png" /></a>，</p>
+<p>代入每次的梯度更新公式，</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/boR0tf"><img
+src="https://s1.ax1x.com/2022/03/11/boR0tf.md.png"
+alt="boR0tf.md.png" /></a></p>
 <h5 id="logistic-regression-square-error是否可行">Logistic Regression +
 Square error是否可行</h5>
-<p>按照之前的步骤，先得出fw,b(x),L(f)fw,b(x),L(f)的表达式，第三步再求导，可以发现一个问题，代入训练数据集的y<sup>y</sup>后，梯度总是为0，模型最后无法训练，所以这样的结合是不可行的。</p>
+<p>按照之前的步骤，先得出<a target="_blank" rel="noopener" href="https://imgtu.com/i/bofUFP"><img
+src="https://s1.ax1x.com/2022/03/11/bofUFP.png"
+alt="bofUFP.png" /></a>的表达式，第三步再求导，可以发现一个问题，代入训练数据集的y^后，梯度总是为0，模型最后无法训练，所以这样的结合是不可行的。</p>
 <p><a
 target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200606115052273.png"><img
 src="https://gitee.com/scarleatt/image/raw/master/img/image-20200606115052273.png"
@@ -364,7 +383,10 @@ src="https://gitee.com/scarleatt/image/raw/master/img/image-20200606122040582.pn
 alt="image-20200606122040582" /></a></p>
 <p>logistic
 regression<strong>没有实质性的假设</strong>，要求直接找出对应的w和b。但generative
-model<strong>做出了假设</strong>，假设输入的数据是服从Gaussian分布的，需要先找出μ1,μ2,∑−1μ1,μ2,∑−1，再根据这些值得出相对应的w和b。</p>
+model<strong>做出了假设</strong>，假设输入的数据是服从Gaussian分布的，需要先找出<a
+target="_blank" rel="noopener" href="https://imgtu.com/i/bofrLj"><img
+src="https://s1.ax1x.com/2022/03/11/bofrLj.png"
+alt="bofrLj.png" /></a>，再根据这些值得出相对应的w和b。</p>
 <p><a
 target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200606143847987.png"><img
 src="https://gitee.com/scarleatt/image/raw/master/img/image-20200606143847987.png"
@@ -377,7 +399,9 @@ alt="image-20200606143950210" /></a></p>
 <p>对于包含13个example
 的训练数据，对于图中所示的测试数据，我们可以明显看出测试example属于Class1，那么通过Naive
 Bayes（朴素贝叶斯）计算的结果也是这样吗？下面我们将开始验证，</p>
-<p>P(x|C1)=P(x1=1|C1)×P(x2=1|C1)=1×1P(x|C2)=P(x1=1|C2)×P(x2=1|C2)=13×13P(x|C1)=P(x1=1|C1)×P(x2=1|C1)=1×1P(x|C2)=P(x1=1|C2)×P(x2=1|C2)=13×13</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/bof4lF"><img
+src="https://s1.ax1x.com/2022/03/11/bof4lF.md.png"
+alt="bof4lF.md.png" /></a></p>
 <p><a
 target="_blank" rel="noopener" href="https://gitee.com/scarleatt/image/raw/master/img/image-20200606144006375.png"><img
 src="https://gitee.com/scarleatt/image/raw/master/img/image-20200606144006375.png"
