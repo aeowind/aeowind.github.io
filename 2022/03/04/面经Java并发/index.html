@@ -28,7 +28,7 @@
 <meta property="og:description" content="这是一个没有营养的晚上，在严重缺乏维他命B及维他命C的情况下，我开始不停地想念你">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-03-04T12:46:25.458Z">
-<meta property="article:modified_time" content="2022-03-09T09:50:42.269Z">
+<meta property="article:modified_time" content="2022-03-24T02:35:39.778Z">
 <meta property="article:author" content="aeowind">
 <meta property="article:tag" content="学习">
 <meta property="article:tag" content="Java">
@@ -232,7 +232,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-09 17:50:42" itemprop="dateModified" datetime="2022-03-09T17:50:42+08:00">2022-03-09</time>
+                <time title="修改时间：2022-03-24 10:35:39" itemprop="dateModified" datetime="2022-03-24T10:35:39+08:00">2022-03-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -332,7 +332,7 @@ alt="7rmHVs.md.png" /></a></p>
 </ul></li>
 </ul>
 <h1 id="线程之间为什么是不可见的">线程之间为什么是不可见的</h1>
-<p>关于线程之间为什么是不可见的，谈到这个问题时我觉得有必要先了解一下线程执行时的一个内存空间；在Java中每一个的线程都有一块独立的内存空间，俗称线程工作区，当它们去执行临界区的资源（共享资源）时，都会先去主内存将共享资源复制一份到自己的工作内存中再进行操作，最后再把操作完的副本写入到主内存中；看似表面上是直接操作了共享资源，其实实际上是操作了共享资源的副本；</p>
+<p>关于线程之间为什么是不可见的，谈到这个问题时我觉得有必要先了解一下线程执行时的一个内存空间；在Java中每一个的线程都有一块<strong>独立的内存空间</strong>，俗称线程工作区，<strong>当它们去执行临界区的资源</strong>（共享资源）时，都会先去主内存将共享资源复制一份到自己的工作内存中再进行操作，最后再把操作完的副本写入到主内存中；看似表面上是直接操作了共享资源，其实实际上是操作了共享资源的副本；</p>
 <p>线程内存之间的关系图：</p>
 <p><a target="_blank" rel="noopener" href="https://imgtu.com/i/TP6hjK"><img
 src="https://s4.ax1x.com/2021/12/16/TP6hjK.md.png"
@@ -935,7 +935,7 @@ alt="703uP1.md.png" /></a></p>
 <p><a target="_blank" rel="noopener" href="https://imgtu.com/i/708GlV"><img
 src="https://s4.ax1x.com/2022/01/18/708GlV.md.png"
 alt="708GlV.md.png" /></a></p>
-<p><strong>重量级锁</strong>在并发非常高的情况下启用，就是锁的竞争非常激励，比如线程1首先将在线程栈上开辟一定的空间来存储mark
+<p><strong>重量级锁</strong>在并发非常高的情况下启用，就是锁的竞争非常激烈，比如线程1首先将在线程栈上开辟一定的空间来存储mark
 word，并且相互指向，然后开始执行同步代码，而这个时候很多线程都过来了，那么这些线程也要拷贝markword到线程栈中，然后cas修改lock
 record与mark
 word的相互指向，这个时候只有一个线程能够成功，其他线程都需要cas，如果线程1没有同步代码块没有指向完成，其他线程是没有办法自旋成功，那么就就那些锁膨胀，升级为重量级锁，重量级锁升级过后线程的阻塞是由内核进行处理的，所以性能较低。</p>
