@@ -28,7 +28,7 @@
 <meta property="og:description" content="Satellites contain us Traffic lights control us Rockets shoot us up into the stars">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-03-04T12:46:25.471Z">
-<meta property="article:modified_time" content="2022-03-25T05:33:48.813Z">
+<meta property="article:modified_time" content="2022-03-28T10:42:26.650Z">
 <meta property="article:author" content="aeowind">
 <meta property="article:tag" content="学习">
 <meta property="article:tag" content="Java">
@@ -232,7 +232,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-25 13:33:48" itemprop="dateModified" datetime="2022-03-25T13:33:48+08:00">2022-03-25</time>
+                <time title="修改时间：2022-03-28 18:42:26" itemprop="dateModified" datetime="2022-03-28T18:42:26+08:00">2022-03-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1216,6 +1216,56 @@ Resolver首先根据逻辑视图名解析成物理视图名即具体的页面地
 <p><strong>View（视图）</strong>
 springmvc框架提供了很多的View视图类型的支持，包括：jstlView、freemarkerView、pdfView等。我们最常用的视图就是jsp。</p>
 <p>一般情况下需要通过页面标签或页面模版技术将模型数据通过页面展示给用户，需要由程序员根据业务需求开发具体的页面。</p>
+<h1 id="spring事务传播机制">spring事务传播机制</h1>
+<p>简单的理解就是多个事务方法相互调用时,事务如何在这些方法间传播。</p>
+<p>因为 spring 是使用 aop 来代理事务控制
+，是针对于接口或类的，所以在同一个 service
+类中两个方法的调用，传播机制是不生效的</p>
+<h2 id="传播机制类型">传播机制类型</h2>
+<p>下面的类型都是针对于被调用方法来说的，理解起来要想象成两个 service
+方法的调用才可以。</p>
+<h3 id="propagation_required-默认">PROPAGATION_REQUIRED (默认)</h3>
+<ul>
+<li>支持当前事务，如果当前没有事务，则新建事务</li>
+<li>如果当前存在事务，则加入当前事务，合并成一个事务</li>
+</ul>
+<h3 id="requires_new">REQUIRES_NEW</h3>
+<ul>
+<li>新建事务，如果当前存在事务，则把当前事务挂起</li>
+<li>这个方法会独立提交事务，不受调用者的事务影响，父级异常，它也是正常提交</li>
+</ul>
+<h3 id="nested">NESTED</h3>
+<ul>
+<li>如果当前存在事务，它将会成为父级事务的一个子事务，方法结束后并没有提交，只有等父事务结束才提交</li>
+<li>如果当前没有事务，则新建事务</li>
+<li>如果它异常，父级可以捕获它的异常而不进行回滚，正常提交</li>
+<li>但如果父级异常，它必然回滚，这就是和 <code>REQUIRES_NEW</code>
+的区别</li>
+</ul>
+<h3 id="supports">SUPPORTS</h3>
+<ul>
+<li>如果当前存在事务，则加入事务</li>
+<li>如果当前不存在事务，则以非事务方式运行，这个和不写没区别</li>
+</ul>
+<h3 id="not_supported">NOT_SUPPORTED</h3>
+<ul>
+<li>以非事务方式运行</li>
+<li>如果当前存在事务，则把当前事务挂起</li>
+</ul>
+<h3 id="mandatory">MANDATORY</h3>
+<ul>
+<li>如果当前存在事务，则运行在当前事务中</li>
+<li>如果当前无事务，则抛出异常，也即父级方法必须有事务</li>
+</ul>
+<h3 id="never">NEVER</h3>
+<ul>
+<li>以非事务方式运行，如果当前存在事务，则抛出异常，即父级方法必须无事务</li>
+</ul>
+<h3 id="一点小说明">一点小说明</h3>
+<p>一般用得比较多的是 <code>PROPAGATION_REQUIRED</code>，
+<code>REQUIRES_NEW</code>；</p>
+<p><code>REQUIRES_NEW</code>
+一般用在子方法需要单独事务，暂时找不到例子，以后补充 。</p>
 
     </div>
 
@@ -1308,7 +1358,7 @@ springmvc框架提供了很多的View视图类型的支持，包括：jstlView�
 MVC？它解决了什么问题？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFspring-boot%E5%AE%83%E8%A7%A3%E5%86%B3%E4%BA%86%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98"><span class="nav-number">15.3.</span> <span class="nav-text">什么是Spring
 Boot？它解决了什么问题？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#springspring-mvcspring-boot-%E4%B8%89%E8%80%85%E6%AF%94%E8%BE%83"><span class="nav-number">15.4.</span> <span class="nav-text">Spring，Spring MVC，Spring
 Boot 三者比较</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#springboot-%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%E5%8E%9F%E7%90%86"><span class="nav-number">16.</span> <span class="nav-text">SpringBoot 自动装配原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-springboot-%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D"><span class="nav-number">16.1.</span> <span class="nav-text">什么是 SpringBoot 自动装配？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#springboot-%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%E7%9A%84"><span class="nav-number">16.2.</span> <span class="nav-text">SpringBoot
-是如何实现自动装配的？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#enableautoconfiguration%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%E7%9A%84%E6%A0%B8%E5%BF%83%E6%B3%A8%E8%A7%A3"><span class="nav-number">16.2.1.</span> <span class="nav-text">@EnableAutoConfiguration:实现自动装配的核心注解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#autoconfigurationimportselector%E5%8A%A0%E8%BD%BD%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%E7%B1%BB"><span class="nav-number">16.2.2.</span> <span class="nav-text">AutoConfigurationImportSelector:加载自动装配类</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#mybatis%E7%9A%84%E4%B8%80%E7%BA%A7%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB"><span class="nav-number">17.</span> <span class="nav-text">mybatis的一级二级缓存有什么区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#mybatisibatis%E4%B8%AD%E5%92%8C%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">18.</span> <span class="nav-text">MyBatis&#x2F;Ibatis中#和$的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#spring%E7%9A%84%E6%B3%A8%E5%85%A5%E6%96%B9%E5%BC%8F%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="nav-number">19.</span> <span class="nav-text">spring的注入方式有哪些</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#jwt%E5%AE%9E%E7%8E%B0%E5%8D%95%E7%82%B9%E7%99%BB%E5%BD%95%E5%8F%8A%E6%B5%81%E7%A8%8B%E6%8F%8F%E8%BF%B0"><span class="nav-number">20.</span> <span class="nav-text">JWT实现单点登录及流程描述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%8D%95%E7%82%B9%E7%99%BB%E5%BD%95"><span class="nav-number">20.1.</span> <span class="nav-text">什么是单点登录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E7%82%B9%E7%99%BB%E5%BD%95%E6%B5%81%E7%A8%8B"><span class="nav-number">20.2.</span> <span class="nav-text">单点登录流程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#springmvc%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-number">21.</span> <span class="nav-text">SpringMVC工作流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#springmvc%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E4%BB%8B%E7%BB%8D"><span class="nav-number">21.1.</span> <span class="nav-text">SpringMVC核心组件介绍</span></a></li></ol></li></ol></div>
+是如何实现自动装配的？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#enableautoconfiguration%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%E7%9A%84%E6%A0%B8%E5%BF%83%E6%B3%A8%E8%A7%A3"><span class="nav-number">16.2.1.</span> <span class="nav-text">@EnableAutoConfiguration:实现自动装配的核心注解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#autoconfigurationimportselector%E5%8A%A0%E8%BD%BD%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%E7%B1%BB"><span class="nav-number">16.2.2.</span> <span class="nav-text">AutoConfigurationImportSelector:加载自动装配类</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#mybatis%E7%9A%84%E4%B8%80%E7%BA%A7%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB"><span class="nav-number">17.</span> <span class="nav-text">mybatis的一级二级缓存有什么区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#mybatisibatis%E4%B8%AD%E5%92%8C%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">18.</span> <span class="nav-text">MyBatis&#x2F;Ibatis中#和$的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#spring%E7%9A%84%E6%B3%A8%E5%85%A5%E6%96%B9%E5%BC%8F%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="nav-number">19.</span> <span class="nav-text">spring的注入方式有哪些</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#jwt%E5%AE%9E%E7%8E%B0%E5%8D%95%E7%82%B9%E7%99%BB%E5%BD%95%E5%8F%8A%E6%B5%81%E7%A8%8B%E6%8F%8F%E8%BF%B0"><span class="nav-number">20.</span> <span class="nav-text">JWT实现单点登录及流程描述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%8D%95%E7%82%B9%E7%99%BB%E5%BD%95"><span class="nav-number">20.1.</span> <span class="nav-text">什么是单点登录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E7%82%B9%E7%99%BB%E5%BD%95%E6%B5%81%E7%A8%8B"><span class="nav-number">20.2.</span> <span class="nav-text">单点登录流程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#springmvc%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-number">21.</span> <span class="nav-text">SpringMVC工作流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#springmvc%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E4%BB%8B%E7%BB%8D"><span class="nav-number">21.1.</span> <span class="nav-text">SpringMVC核心组件介绍</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#spring%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E6%9C%BA%E5%88%B6"><span class="nav-number">22.</span> <span class="nav-text">spring事务传播机制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%A0%E6%92%AD%E6%9C%BA%E5%88%B6%E7%B1%BB%E5%9E%8B"><span class="nav-number">22.1.</span> <span class="nav-text">传播机制类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#propagation_required-%E9%BB%98%E8%AE%A4"><span class="nav-number">22.1.1.</span> <span class="nav-text">PROPAGATION_REQUIRED (默认)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#requires_new"><span class="nav-number">22.1.2.</span> <span class="nav-text">REQUIRES_NEW</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nested"><span class="nav-number">22.1.3.</span> <span class="nav-text">NESTED</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#supports"><span class="nav-number">22.1.4.</span> <span class="nav-text">SUPPORTS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#not_supported"><span class="nav-number">22.1.5.</span> <span class="nav-text">NOT_SUPPORTED</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mandatory"><span class="nav-number">22.1.6.</span> <span class="nav-text">MANDATORY</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#never"><span class="nav-number">22.1.7.</span> <span class="nav-text">NEVER</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E7%82%B9%E5%B0%8F%E8%AF%B4%E6%98%8E"><span class="nav-number">22.1.8.</span> <span class="nav-text">一点小说明</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -1324,14 +1374,14 @@ Boot 三者比较</span></a></li></ol></li><li class="nav-item nav-level-1"><a c
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">59</span>
+          <span class="site-state-item-count">60</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-count">30</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
