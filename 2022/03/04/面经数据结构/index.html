@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://segmentfault.com/img/bVDcJA">
 <meta property="og:image" content="https://segmentfault.com/img/bVDcJM">
 <meta property="article:published_time" content="2022-03-04T12:46:25.474Z">
-<meta property="article:modified_time" content="2022-03-10T09:06:16.121Z">
+<meta property="article:modified_time" content="2022-04-07T14:15:59.472Z">
 <meta property="article:author" content="aeowind">
 <meta property="article:tag" content="学习">
 <meta property="article:tag" content="面经">
@@ -238,7 +238,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-10 17:06:16" itemprop="dateModified" datetime="2022-03-10T17:06:16+08:00">2022-03-10</time>
+                <time title="修改时间：2022-04-07 22:15:59" itemprop="dateModified" datetime="2022-04-07T22:15:59+08:00">2022-04-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -316,7 +316,7 @@ Sort)（熟悉）</h2>
 <ul>
 <li><strong>时间复杂度: <code>T(n) = O(n²)</code></strong></li>
 <li><strong>空间复杂度: <code>O(1)</code></strong></li>
-<li>*稳定性：<code>稳定</code>**</li>
+<li><strong>稳定性：<code>稳定</code></strong></li>
 </ul>
 <figure>
 <img src="https://segmentfault.com/img/bVDcJz" alt="插入排序.gif" />
@@ -418,6 +418,159 @@ Sort)（堆很重要，堆排序根据个人情况掌握）</h2>
 <p>类似于树结构，有大根堆（父节点的值小于或等于子节点的值）和小根堆（父节点的值大于或等于子节点的值）</p>
 <h3 id="栈">栈</h3>
 <p>栈是一个先进后出（FILO）的数据结构</p>
+<h1 id="数组与链表的区别">数组与链表的区别</h1>
+<p><strong>数组</strong>：查询效率高，新增和修改需要移动元素效率低，内存分配是<strong>连续的内存</strong>，扩容需要重新分配内存。</p>
+<p><strong>链表</strong>：新增和修改效率高，只需要修改指针指向就好。链表查询效率低，需要从链表头依次查找。内存分配<strong>不需要连续的内存</strong>，占用连续内存少。</p>
+<h1 id="简述什么是b树">简述什么是B+树</h1>
+<h1 id="btree">B+Tree</h1>
+<p>B+Tree 是在 B-Tree
+基础上的一种优化，使其更适合实现外存储索引结构。</p>
+<p><strong>B+Tree 与 B-Tree
+的结构很像，但是也有几个自己的特性</strong>：</p>
+<ul>
+<li>所有的非叶子节点只存储关键字信息。</li>
+<li>所有卫星数据（具体数据）都存在叶子结点中。</li>
+<li>所有的叶子结点中包含了全部元素的信息。</li>
+<li>所有叶子节点之间都有一个链指针。</li>
+</ul>
+<h1 id="红黑树与二叉平衡树的区别">红黑树与二叉平衡树的区别</h1>
+<ol type="1">
+<li><p>红黑树放弃了追求完全平衡，<strong>追求大致平衡</strong>，在与平衡二叉树的时间复杂度相差不大的情况下，保证每次插入最多只需要三次旋转就能达到平衡，实现起来也更为简单。</p></li>
+<li><p>平衡二叉树追求<strong>绝对平衡</strong>，条件比较苛刻，实现起来比较麻烦，每次插入新节点之后需要旋转的次数不能预知。</p></li>
+</ol>
+<h1 id="堆的时间复杂度分析">堆的时间复杂度分析</h1>
+<p>所谓堆排序就是每次取堆的根结点为最大值，然后将最后一个节点作为根节点，进行堆调整，堆排序的时间等于<strong>建堆</strong>和<strong>进行堆调整的时间</strong>，所以堆排序的时间复杂度是O(n<em>log
+n + n) =O(n</em>log n)。</p>
+<h1 id="二叉平衡树的介绍">二叉平衡树的介绍</h1>
+<p>平衡二叉搜索树（Self-balancing binary search
+tree）又被称为AVL树（有别于AVL算法），且具有以下性质：它是一棵空树或它的左右两个子树的高度差的绝对值不超过1，并且左右两个子树都是一棵平衡二叉树。</p>
+<h1 id="手写堆排序">手写堆排序</h1>
+<h2 id="二叉堆介绍">二叉堆介绍</h2>
+<p>我们知道，树有很多种，最常用的就是二叉树了。二叉树又有满二叉树和完全二叉树。而二叉堆，就是基于完全二叉树的一种数据结构。它有以下两个特性。</p>
+<ol type="1">
+<li>首先它是一个完全二叉树</li>
+<li>其次，堆中的任意一个父节点的值都大于等于（或小于）它的左右孩子节点。</li>
+</ol>
+<p>因此，根据第二个特性，就把二叉堆分为大顶堆（或叫最大堆），和小顶堆（或叫最小堆）。</p>
+<p>顾名思义，大顶堆，就是父节点大于等于左右孩子节点的堆，小顶堆就是父节点小于左右孩子节点的堆。</p>
+<p>看一下大顶堆的示例图，小顶堆类似，只不过是小值在上而已。</p>
+<figure>
+<img
+src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/4/3/1713f5f9ab0aa9ff~tplv-t2oaga2asx-zoom-in-crop-mark:1304:0:0:0.awebp"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>注意：大顶堆只保证父节点大于左右孩子节点的值，不需要保证左右孩子节点之间的大小顺序。如图中，7
+的左子节点 6 比右子节点 1 大，而 8 的左子节点 4 却比右子节点 5
+小。（小顶堆同理）</p>
+<h2 id="构建二叉堆">构建二叉堆</h2>
+<p>二叉堆的定义我们知道了，那么给你一个无序的完全二叉树，怎么把它构建成二叉堆呢？</p>
+<p>我们以大顶堆为例。给定以下一个数组，（完全二叉树一般用数组来存储）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;4, 1, 9, 3, 7, 8, 5, 6, 2&#125;复制代码</span><br></pre></td></tr></table></figure>
+<p>我们画出它的初始状态，然后分析怎么一步一步构建成大顶堆。</p>
+<figure>
+<img
+src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/4/3/1713f5fa1249a7b1~tplv-t2oaga2asx-zoom-in-crop-mark:1304:0:0:0.awebp"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>由于大顶堆，父节点的值都大于左右孩子节点，所以树的根节点肯定是所有节点中值最大的。因此，我们需要从树的最后一层开始，逐渐的把大值向上调整（左右孩子节点中较大的节点和父节点交换），直到第一层。</p>
+<p>其实，更具体的说，应该是从下面的非叶子节点开始调整。想一想，为什么。</p>
+<p>反向思考一下，如果从第一层开始调整的话，例如图中就是 4 和 9
+交换位置之后，你不能保证 9
+就是所有节点的最大值（额，图中的例子可能不是太好，正好是 9
+最大）。如果下边还有比 9
+大的数字，你最终还是需要从下面向上遍历调整。那么，我还不如一开始就直接从下向上调整呢。</p>
+<p>另外，为什么从从最下面的非叶子节点（图中节点 3
+）开始。因为叶子节点的下面已经没有子节点了，它只能和父节点比较，从叶子节点开始没有意义。</p>
+<p>第一步，以 3 为父节点开始，比较他们的子节点 6和 2 ，6最大，然后和 3
+交换位置。</p>
+<figure>
+<img
+src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/4/3/1713f5fb6368ee37~tplv-t2oaga2asx-zoom-in-crop-mark:1304:0:0:0.awebp"
+alt="①" />
+<figcaption aria-hidden="true">①</figcaption>
+</figure>
+<p>第二步，6 和 7 比较，7 最大，7 和 1 交换位置。</p>
+<figure>
+<img
+src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/4/3/1713f5fb86a28646~tplv-t2oaga2asx-zoom-in-crop-mark:1304:0:0:0.awebp"
+alt="②" />
+<figcaption aria-hidden="true">②</figcaption>
+</figure>
+<p>第三步，7 和 9 比较，9 最大，9 和 4 交换位置。</p>
+<figure>
+<img
+src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/4/3/1713f5fbabc2d281~tplv-t2oaga2asx-zoom-in-crop-mark:1304:0:0:0.awebp"
+alt="③" />
+<figcaption aria-hidden="true">③</figcaption>
+</figure>
+<p>第四步，我们发现交换位置之后，4 下边还有比它大的，因此还需要以 4
+为父节点和它的左右子节点进行比较。发现 8 最大，然后 8 和 4
+交换位置。</p>
+<figure>
+<img
+src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/4/3/1713f5fbd03d5063~tplv-t2oaga2asx-zoom-in-crop-mark:1304:0:0:0.awebp"
+alt="④" />
+<figcaption aria-hidden="true">④</figcaption>
+</figure>
+<p>最终，实现了一个大顶堆的构建。下面以代码实现交换过程。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 调整为大顶堆</span><br><span class="line"> * @param arr   待调整的数组</span><br><span class="line"> * @param parent   当前父节点的下标</span><br><span class="line"> * @param length   需要对多少个元素进行调整</span><br><span class="line"> */</span><br><span class="line">private static void adjustHeap(int[] arr, int parent, int length)&#123;</span><br><span class="line">    //临时保存父节点</span><br><span class="line">    int temp = arr[parent];</span><br><span class="line">    //左子节点的下标</span><br><span class="line">    int child = 2 * parent + 1;</span><br><span class="line">    //如果子节点的下标大于等于当前需要比较的元素个数，则结束循环</span><br><span class="line">    while(child &lt; length)&#123;</span><br><span class="line">        //判断左子节点和右子节点的大小,若右边大，则把child定位到右边</span><br><span class="line">        if(child + 1 &lt; length &amp;&amp; arr[child] &lt; arr[child + 1])&#123;</span><br><span class="line">            child ++;</span><br><span class="line">        &#125;</span><br><span class="line">        //若child大于父节点，则交换位置，否则退出循环</span><br><span class="line">        if(arr[child] &gt; temp)&#123;</span><br><span class="line">            //父子节点交换位置</span><br><span class="line">            arr[parent] = arr[child];</span><br><span class="line">            //因为交换位置之后，不能保证当前的子节点是它子树的最大值，所以需要继续向下比较，</span><br><span class="line">            //把当前子节点设置为下次循环的父节点，同时，找到它的左子节点，继续下次循环</span><br><span class="line">            parent = child;</span><br><span class="line">            child = 2 * parent + 1;</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            //如果当前子节点小于等于父节点，则说明此时的父节点已经是最大值了，</span><br><span class="line">            //因此无需继续循环</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //把当前节点值替换为最开始暂存的父节点值</span><br><span class="line">    arr[parent] = temp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">    int[] arr = &#123;4,1,9,3,7,8,5,6,2&#125;;</span><br><span class="line">    //构建一个大顶堆，从最下面的非叶子节点开始向上遍历</span><br><span class="line">    for (int i = arr.length/2 - 1 ; i &gt;= 0; i--) &#123;</span><br><span class="line">        adjustHeap(arr,i,arr.length);</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(Arrays.toString(arr));</span><br><span class="line">&#125;     </span><br><span class="line">//打印结果：  [9, 7, 8, 6, 1, 4, 5, 3, 2]。 和我们分析的结果一模一样复制代码</span><br></pre></td></tr></table></figure>
+<p>在 while 循环中，if(arr[child] &gt; temp) else的逻辑，
+对应的就是图中的第三步和第四步。即需要确保，交换后的子节点要比它下边的孩子节点都大，不然需要继续循环，调整位置。</p>
+<h2 id="堆排序">堆排序</h2>
+<p>堆排序就是利用大顶堆或者小顶堆的特性来进行排序的。</p>
+<p>它的基本思想就是：</p>
+<ol type="1">
+<li>把当前数组构建成一个大顶堆。</li>
+<li>此时，根节点肯定是所有节点中最大的值，让它和末尾元素交换位置，则最后一个元素就是最大值。</li>
+<li>把剩余的 n - 1个元素重新构建成一个大顶堆，就会得到 n-1
+个元素中的最大值。重复执行此动作，就会把所有的元素调整为有序了。</li>
+</ol>
+<p><strong>步骤：</strong></p>
+<p>还是以上边的数组为例，看一下堆排序的过程。</p>
+<p>一共有九个元素，把它调整为大顶堆，然后把堆顶元素 9 和末尾元素 2
+交换位置。</p>
+<figure>
+<img
+src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/4/3/1713f5fc156c62a3~tplv-t2oaga2asx-zoom-in-crop-mark:1304:0:0:0.awebp"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>此时，9已经有序了，不需要调整。然后把剩余八个元素调整为大顶堆，再把这八个元素的堆顶元素和末尾元素交换位置，如下，8
+和 3 交换位置。</p>
+<figure>
+<img
+src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/4/3/1713f5fc38553433~tplv-t2oaga2asx-zoom-in-crop-mark:1304:0:0:0.awebp"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>此时，8和 9
+已经有序了，不需要调整。然后把剩余七个元素调整为大顶堆，再把这七个元素的堆顶元素和末尾元素交换位置。如下，
+7 和 2 交换位置。</p>
+<figure>
+<img
+src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/4/3/1713f5fc6203f499~tplv-t2oaga2asx-zoom-in-crop-mark:1304:0:0:0.awebp"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>以此类推，经过 n - 1
+次循环调整，到了最后只剩下一个元素的时候，就不需要再比较了，因为它已经是最小值了。</p>
+<figure>
+<img
+src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/4/3/1713f5fc8765b36c~tplv-t2oaga2asx-zoom-in-crop-mark:1304:0:0:0.awebp"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>看起来好像过程很复杂，但其实是非常高效的。没有增删，直接在原来的数组上修改就可以。因为我们知道数组的增删是比较慢的，每次删除，插入元素，都要移动数组后边的
+n 个元素。此外，也不占用额外的空间。</p>
+<p>代码实现：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">//堆排序，大顶堆，升序</span><br><span class="line">private static void heapSort(int[] arr)&#123;</span><br><span class="line">    //构建一个大顶堆，从最下面的非叶子节点开始向上遍历</span><br><span class="line">    for (int i = arr.length/2 - 1 ; i &gt;= 0; i--) &#123;</span><br><span class="line">        adjustHeap(arr,i,arr.length);</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(Arrays.toString(arr));</span><br><span class="line">    //循环执行以下操作：1.交换堆顶元素和末尾元素 2.重新调整为大顶堆</span><br><span class="line">    for (int i = arr.length - 1; i &gt; 0; i--) &#123;</span><br><span class="line">        //将堆顶最大的元素与末尾元素互换，则数组中最后的元素变为最大值</span><br><span class="line">        int temp = arr[i];</span><br><span class="line">        arr[i] = arr[0];</span><br><span class="line">        arr[0] = temp;</span><br><span class="line">        //从堆顶开始重新调整结构，使之成为大顶堆</span><br><span class="line">        // i代表当前数组需要调整的元素个数，是逐渐递减的</span><br><span class="line">        adjustHeap(arr,0,i);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;复制代码</span><br></pre></td></tr></table></figure>
+<p><strong>时间复杂度和空间复杂度：</strong></p>
+<p>堆排序，每次调整为大顶堆的时间复杂度为 O(logn)，而 n
+个元素，总共需要循环调整 n-1 次 ，所以堆排序的时间复杂度就是
+O(nlogn)。它的数学推导比较复杂，感兴趣的同学可以自己查看相关资料。</p>
+<p>由于没有占用额外的内存空间，因此，堆排序的空间复杂度为 O(1)。</p>
 
     </div>
 
@@ -508,7 +661,7 @@ Sort)（堆很重要，堆排序根据个人情况掌握）</h2>
 Sort)（了解）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">算法分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8Finsertion-sort%E7%86%9F%E6%82%89"><span class="nav-number">1.3.</span> <span class="nav-text">插入排序(Insertion
 Sort)（熟悉）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90-2"><span class="nav-number">1.3.1.</span> <span class="nav-text">算法分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F%E7%9A%84%E6%94%B9%E8%BF%9B%E4%BA%8C%E5%88%86%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F"><span class="nav-number">1.4.</span> <span class="nav-text">插入排序的改进：二分插入排序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90-3"><span class="nav-number">1.4.1.</span> <span class="nav-text">算法分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F%E7%9A%84%E6%9B%B4%E9%AB%98%E6%95%88%E6%94%B9%E8%BF%9B%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8Fshell-sort"><span class="nav-number">1.5.</span> <span class="nav-text">插入排序的更高效改进：希尔排序(Shell
 Sort)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90-4"><span class="nav-number">1.5.1.</span> <span class="nav-text">算法分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8Fmerge-sort%E9%87%8D%E7%82%B9"><span class="nav-number">1.6.</span> <span class="nav-text">归并排序(Merge Sort)（重点）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.6.1.</span> <span class="nav-text">算法描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E6%80%9D%E8%B7%AF"><span class="nav-number">1.6.2.</span> <span class="nav-text">算法思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90-5"><span class="nav-number">1.6.3.</span> <span class="nav-text">算法分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A0%86%E6%8E%92%E5%BA%8Fheap-sort%E5%A0%86%E5%BE%88%E9%87%8D%E8%A6%81%E5%A0%86%E6%8E%92%E5%BA%8F%E6%A0%B9%E6%8D%AE%E4%B8%AA%E4%BA%BA%E6%83%85%E5%86%B5%E6%8E%8C%E6%8F%A1"><span class="nav-number">1.7.</span> <span class="nav-text">堆排序(Heap
-Sort)（堆很重要，堆排序根据个人情况掌握）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90-6"><span class="nav-number">1.7.1.</span> <span class="nav-text">算法分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8Fquick-sort%E9%87%8D%E7%82%B9"><span class="nav-number">1.8.</span> <span class="nav-text">快速排序(Quick Sort)（重点）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90-7"><span class="nav-number">1.8.1.</span> <span class="nav-text">算法分析</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A0%86%E5%92%8C%E6%A0%88%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">2.</span> <span class="nav-text">堆和栈的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%AD%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">2.1.</span> <span class="nav-text">数据结构中的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A0%86"><span class="nav-number">2.1.1.</span> <span class="nav-text">堆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%88"><span class="nav-number">2.1.2.</span> <span class="nav-text">栈</span></a></li></ol></li></ol></li></ol></div>
+Sort)（堆很重要，堆排序根据个人情况掌握）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90-6"><span class="nav-number">1.7.1.</span> <span class="nav-text">算法分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8Fquick-sort%E9%87%8D%E7%82%B9"><span class="nav-number">1.8.</span> <span class="nav-text">快速排序(Quick Sort)（重点）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90-7"><span class="nav-number">1.8.1.</span> <span class="nav-text">算法分析</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A0%86%E5%92%8C%E6%A0%88%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">2.</span> <span class="nav-text">堆和栈的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%AD%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">2.1.</span> <span class="nav-text">数据结构中的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A0%86"><span class="nav-number">2.1.1.</span> <span class="nav-text">堆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%88"><span class="nav-number">2.1.2.</span> <span class="nav-text">栈</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E4%B8%8E%E9%93%BE%E8%A1%A8%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">3.</span> <span class="nav-text">数组与链表的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0%E4%BB%80%E4%B9%88%E6%98%AFb%E6%A0%91"><span class="nav-number">4.</span> <span class="nav-text">简述什么是B+树</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#btree"><span class="nav-number">5.</span> <span class="nav-text">B+Tree</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%A2%E9%BB%91%E6%A0%91%E4%B8%8E%E4%BA%8C%E5%8F%89%E5%B9%B3%E8%A1%A1%E6%A0%91%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">6.</span> <span class="nav-text">红黑树与二叉平衡树的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A0%86%E7%9A%84%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90"><span class="nav-number">7.</span> <span class="nav-text">堆的时间复杂度分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E5%B9%B3%E8%A1%A1%E6%A0%91%E7%9A%84%E4%BB%8B%E7%BB%8D"><span class="nav-number">8.</span> <span class="nav-text">二叉平衡树的介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%89%8B%E5%86%99%E5%A0%86%E6%8E%92%E5%BA%8F"><span class="nav-number">9.</span> <span class="nav-text">手写堆排序</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E5%A0%86%E4%BB%8B%E7%BB%8D"><span class="nav-number">9.1.</span> <span class="nav-text">二叉堆介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E4%BA%8C%E5%8F%89%E5%A0%86"><span class="nav-number">9.2.</span> <span class="nav-text">构建二叉堆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A0%86%E6%8E%92%E5%BA%8F"><span class="nav-number">9.3.</span> <span class="nav-text">堆排序</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -524,20 +677,20 @@ Sort)（堆很重要，堆排序根据个人情况掌握）</span></a><ol class=
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">60</span>
+          <span class="site-state-item-count">62</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-count">30</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">27</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

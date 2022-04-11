@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|EB Garamond:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"aeowind.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="据说你就是香港的启德机场，是世上最难降落最难停泊的一个城市">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统知识点">
+<meta property="og:url" content="https://aeowind.github.io/2022/04/10/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9F%A5%E8%AF%86%E7%82%B9/index.html">
+<meta property="og:site_name" content="Aeo&#39;s Blog">
+<meta property="og:description" content="据说你就是香港的启德机场，是世上最难降落最难停泊的一个城市">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-10T07:11:12.536Z">
+<meta property="article:modified_time" content="2022-04-11T06:42:31.332Z">
+<meta property="article:author" content="aeowind">
+<meta property="article:tag" content="学习">
+<meta property="article:tag" content="计算机基础">
+<meta property="article:tag" content="操作系统">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://aeowind.github.io/2022/04/10/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9F%A5%E8%AF%86%E7%82%B9/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>操作系统知识点 | Aeo's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Aeo's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">你要静候 再静候</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-movies">
+
+    <a href="/movies/" rel="section"><i class="fa fa-fw fa-film"></i>观影</a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/books/" rel="section"><i class="fa fa-fw fa-book"></i>阅读</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://aeowind.github.io/2022/04/10/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9F%A5%E8%AF%86%E7%82%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="aeowind">
+      <meta itemprop="description" content="爱上一场认真的消遣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Aeo's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          操作系统知识点
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-04-10 15:11:12" itemprop="dateCreated datePublished" datetime="2022-04-10T15:11:12+08:00">2022-04-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-11 14:42:31" itemprop="dateModified" datetime="2022-04-11T14:42:31+08:00">2022-04-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">学习</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">计算机基础</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description"><blockquote class="blockquote-center">据说你就是香港的启德机场，是世上最难降落最难停泊的一个城市</blockquote></div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>与单道程序系统相比，多道程序系统的优点是</p>
+</blockquote>
+<p>多道程序系统通过组织作业（编码或数据）使CPU总有一个作业可执行，从而提高了CPU的利用率、系统吞吐量和I/O设备利用率，但系统要付出额外的开销来组织作业和切换作业。</p>
+<blockquote>
+<p>请求页式管理中的置换算法是为了解决逻辑地址与物理地址的映射问题，这样的说法正确吗</p>
+</blockquote>
+<p>错误。</p>
+<ol type="1">
+<li><p>基本分页存储机制 基本分页存储机制具有一次性和驻留性的特点。</p>
+<ul>
+<li>一次性：将所有作业一次性全部装入内存之后再运行；</li>
+<li>驻留性：装入内存的作业在执行前，会一直驻留在内存中</li>
+</ul></li>
+<li><p>请求分页存储机制
+请求分页存储机制是为了实现存储虚拟化，增加了请求调页和页面置换的功能。</p>
+<ul>
+<li><p>请求调页：在进程执行过程中，如果要访问<strong>不在内存中的页面</strong>，可以使用请求调页功能调入中断，动态的装入需要访问的页面。</p></li>
+<li><p>置换功能：当内存空间已满，但是又需要装入新的页面时，可以使用页面置换功能调出某个页面，以装入需要调入的新页面。</p>
+<p>为了实现请求调页存储，需要的硬件支持：</p></li>
+<li><p>页表机制——主要作用为：<strong>将用户空间中的逻辑地址映射到内存空间中的物理地址</strong></p></li>
+<li><p>缺页中断机构</p></li>
+<li><p>地址变换机构</p></li>
+</ul></li>
+</ol>
+<blockquote>
+<p>若磁盘转速是7200转/分，平均寻道时间是8ms，每个磁道包含1000个扇区，则访问一个扇区的平均存取时间为：</p>
+</blockquote>
+<p>一次磁盘读写操作的时间由寻道时间、延迟时间和传输时间决定。</p>
+<p>磁盘转速7200转/分，1min=60*1000 ms，则一转时间 （60000/7200）ms</p>
+<p>找到目标扇区平均需要转半圈，设磁盘转速为r，故延迟时间=1/（2r）=（60000/7200）*0.5<img
+src="https://www.nowcoder.com/equation?tex=%5Capprox"
+alt="img" />4.17ms</p>
+<p>传输时间=（60000/7200）*（1/1000）<img
+src="https://www.nowcoder.com/equation?tex=%5Capprox"
+alt="img" />0.01ms</p>
+<p>故访问一个扇区的平均存取时间为 4.17+0.01+8<img
+src="https://www.nowcoder.com/equation?tex=%5Capprox"
+alt="img" />12.2ms</p>
+<blockquote>
+<p>进程和程序之间有密切联系，而二者之间的一个本质区别是</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">程序是静态的，进程是动态的</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>虚拟存储技术与（ ）不能配合使用</strong></p>
+</blockquote>
+<p>虚拟存储技术的出现，是建立在程序具有局部性的原理上的，虚拟内存只有在非连续存储管理中才存在：<strong>页式存储、段式存储、段页式存储</strong>。</p>
+<p>而分区管理，是一种<strong>连续存储管理</strong>的方案。</p>
+<p>下面是关于分区管理的一些知识点：</p>
+<p>​
+为了支持多道程序系统和分时系统，支持多个程序并发执行，引入了分区式存储管理。分区式存储管理是把内存分为一些大小相等或不等的分区，操作系统占用其中一个分区，其余的分区由应用程序使用，每个应用程序占用一个或几个分区。分区式存储管理虽然可以支持并发，但难以进行内存分区的共享。</p>
+<p>​ 分区式存储管理引人了两个新的问题：内碎片和外碎片。</p>
+<p>​
+内碎片是占用分区内未被利用的空间，外碎片是占用分区之间难以利用的空闲分区(通常是小空闲分区)。</p>
+<p>​
+为实现分区式存储管理，操作系统应维护的数据结构为分区表或分区链表。表中各表项一般包括每个分区的起始地址、大小及状态(是否已分配)。</p>
+<p>​ 分区式存储管理常采用的一项技术就是内存紧缩(compaction)。</p>
+<blockquote>
+<p>下列I/O组织方式中，主存与外设的数据交换完全是通过CPU执行程序控制完成的是（）。</p>
+</blockquote>
+<p><strong>程序查询方式</strong>：cpu完全介入。主机查询外设的某些状态位，若外设准备就绪，则执行一次IO操作；若外设未准备就绪，主机将再次查询。</p>
+<p><strong>中断</strong>：需要CPU介入。设备控制器发出中断信号，操作系统开始逐个字节从缓冲区读入内存。在数据读入IO设备的缓冲区，发出中断前，CPU可以做其他事。</p>
+<p><strong>DMA</strong>：内存和IO设备直接进行数据交换，不需要CPU干涉。但CPU在传输开始和传输结束介入。</p>
+<p><strong>通道</strong>：能执行有限通道指令的IO控制器，代替CPU控制外设。</p>
+<blockquote>
+<p>进程创建</p>
+</blockquote>
+<p><strong>进程创建</strong>是操作系统执行程序的需要或者用户或进程要求创建一个新的进程。进程创建首先是在进程表中为进程建立一个进程控制块PCB，采用fork()系统调用将复制执行进程的PCB块，U区和内存图像到新的进程。
+主要内容包括:进程创建原语、fork()系统调用的编程举例和UNIX
+V6的fork()源码分析。</p>
+<p><strong>进程</strong>在运行期间通过创建进程系统调用来创建多个新进程。每一个进程都有生命期，即从创建到消亡的时间周期。当操作系统为一个程序构造一个进程控制块并分配地址空间之后，就创建了一个进程。进程的创建来源于以下四个事件。
+・提交一个批处理作业。 ・在终端上一个交互式作业登录。
+・操作系统创建一个服务进程。 ・存在的进程创建新的进程。</p>
+<blockquote>
+<p>在程序运行前，先将一个程序的所有模块以及所需的库函数链接成一个完成的装配模块。这种链接方式称为(
+)。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">静态链接</span><br></pre></td></tr></table></figure>
+<p><strong>静态链接</strong>是指在程序运行前，先将各目标模块及它们所需的库函数，链接成一个完整的装配模块，以后不再拆开的链接方式。</p>
+<p><strong>装入时动态链接</strong>是指将用户源程序编译后得到的一组目标模块，在装入内存时采用边装入边链接的链接方式。</p>
+<p><strong>运行时动态链接</strong>是指对某些目标模块的链接，是在程序执行中需要该目标模块时，才对它进行的链接。</p>
+<blockquote>
+<p>下面（）内存管理方法不能实现虚存</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">静态页式管理</span><br></pre></td></tr></table></figure>
+<p>页式管理有：</p>
+<ol type="1">
+<li>静态页式管理；</li>
+<li>动态页式管理；</li>
+</ol>
+<p>其中，静态页式管理是在作业或进程执行前，把作业或进程全部装进内存中，如果内存中可用页面数小于请求页面数，该作业或进程等待。</p>
+<p>动态页式管理不会把作业或进程一次性全部装进内存，只装入被反复调用或执行的部分，其他部分在执行过程中动态装入。</p>
+<blockquote>
+<p>用磁带作为文件存储介质时，则文件只能组织成（）</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">顺序文件</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>假设磁头当前位于第105道，正在向磁道序号增加的方向移动。现有一个磁道访问请求序列为35，45，12，68，110，180，170，195，采用SCAN调度（电梯调度）算法得到的磁道访问序列是（）。</p>
+</blockquote>
+<p>SCAN算法类似电梯的工作原理。首先，当磁头从105道向序号增加的方向移动时，便会按照从小到大的顺序服务所有大于105的磁道号（110，170，180，195）；往回移动时又会按照从大到小的顺序进行服务（68，45，35，12）。</p>
+<blockquote>
+<p>在下列选项中，属于解除死锁的方法是（）。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">剥夺资源法</span><br></pre></td></tr></table></figure>
+<p>产生死锁的4个必要条件：</p>
+<p>1.互斥条件</p>
+<p>2.请求和保持条件</p>
+<p>3.不可抢占</p>
+<p>4.循环等待条件</p>
+<p>预防死锁主要分为三种：</p>
+<p>1.破坏请求和保持条件</p>
+<p>2.破坏不可抢占条件</p>
+<p>3.破坏循环等待条件</p>
+<p>避免死锁同样属于事先预防的策略，但并不是事先采取某种限制措施，破坏产生思索的必要条件，而是在资源动态分配过程中，防止系统进入不安全状态，以避免发生死锁。</p>
+<p>避免死锁的基本思想就是确保系统始终处于安全状态。最具有代表性的避免死锁的算法是Dijkstra的银行家算法。</p>
+<p>死锁的解除方法（2种）：</p>
+<p>1.抢占资源</p>
+<p>2.终止（或撤销）进程。</p>
+<blockquote>
+<p>文件系统中，若文件的物理站构采用连续结构r则文件控制块FCB中有关文件的物理位置的信息包括(X:首块地址、Y、文件长度、Z索引表地址)中的（
+）</p>
+</blockquote>
+<p>文件的顺序结构是一种最简单的物理结构，只要知道文件在存储设备上的起始地址(首块号)和文件长度(总块数)就能很快地进行存取。</p>
+<blockquote>
+<p>以下不是连续文件的优点的是（）</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">利于文件的动态增长</span><br></pre></td></tr></table></figure>
+<p>【连续分配】</p>
+<p>要求为每一个文件分配一组相邻接的盘块</p>
+<p>优点： (1)顺序访问容易 (2)顺序访问速度快 缺点：
+(1)要求有连续的存储空间 (2)必须事先知道文件的长度</p>
+<p>【链接分配】
+在每个盘块上的链接指针，将同属于一个文件的多个离散的盘块链接成一个链表，而由此所形成的物理文件称为链接文件
+特点： (1)采取了离散分配方式，从而消除了外部碎片
+(2)显著地提高外存空间的利用率，而且也无需事先知道文件的长度
+(3)便于文件动态增长，可动态地再为它分配盘块
+(4)对文件的增、删、改也十分方便</p>
+<p>【索引分配】
+系统在文件分配表(FAT)中为每一个文件分配一个表目，指出该文件的索引表所在的物理块
+特点：需要按链指针进行查找，操作十分缓慢</p>
+<blockquote>
+<p>下列选项中，在用户态执行的是（）。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">命令解释程序</span><br></pre></td></tr></table></figure>
+<p>A：命令解释程序属于命令接口，在用户态执行。</p>
+<p>B：缺页中断，也就是要访问的页不存在主存中，需要操作系统来通过某种策略将页调用主存，它是一种中断，中断都需要在核心态执行。</p>
+<p>C：进程调度，进程都需要操作系统内核的参与支持。</p>
+<p>D：时钟中断，是一种中断，同B。</p>
+<blockquote>
+<p>把作业地址空间中的逻辑地址变成内存中物理地址称为（）</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">重定位</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在可变式分区分配方案中，将空白区在空白区表中按地址递增次序排列是（
+）</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">最先适应算法</span><br></pre></td></tr></table></figure>
+<p><strong>最佳适应</strong>:空闲区按容量大小递增</p>
+<p><strong>最差适应</strong>:空闲区按容量大小递减</p>
+<p><strong>最先适应</strong>:空闲区按地址大小递增</p>
+<blockquote>
+<p>原语是一种特殊的系统调用命令，它的特点是（）。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">执行时不可中断</span><br></pre></td></tr></table></figure>
+<p>原语是由若干个机器指令构成的完成某种特定功能的一段程序，具有不可分割性·即原语的执行必须是连续的，在执行过程中不允许被中断。</p>
+<p>原语通常由若干条指令组成，用来实现某个特定的操作。通过一段不可分割的或不可中断的程序实现其功能。原语是<a
+target="_blank" rel="noopener" href="http://baike.baidu.com/view/880.htm">操作系统</a>的核心，它不是由进程而是由一组<a
+target="_blank" rel="noopener" href="http://baike.baidu.com/view/421086.htm">程序模块</a>所组成，是<a
+target="_blank" rel="noopener" href="http://baike.baidu.com/view/880.htm">操作系统</a>的一个组成部分，它必须在<a
+target="_blank" rel="noopener" href="http://baike.baidu.com/view/2111669.htm">管态</a>(一种机器状态，管态下执行的程序可以执行特权和非特权两类指令，通常把它定义为<a
+target="_blank" rel="noopener" href="http://baike.baidu.com/view/880.htm">操作系统</a>的状态)下执行，并且<a
+target="_blank" rel="noopener" href="http://baike.baidu.com/view/1463836.htm">常驻内存</a>，而个别系统有一部分不在<a
+target="_blank" rel="noopener" href="http://baike.baidu.com/view/2111669.htm">管态</a>下运行。原语和广义指令都可以被进程所调用，两者的差别在于原语有不可中断性，它是通过在执行过程中关闭中断实现的，且一般由<a
+target="_blank" rel="noopener" href="http://baike.baidu.com/view/40873.htm">系统进程</a>调用。许多广义指令的功能都可用<a
+target="_blank" rel="noopener" href="http://baike.baidu.com/view/2111693.htm">目态</a>(一种机器状态，通常把它作为<a
+target="_blank" rel="noopener" href="http://baike.baidu.com/view/1976812.htm">用户程序</a>执行时的状态)下运行的系统进程完成，而不一定要在<a
+target="_blank" rel="noopener" href="http://baike.baidu.com/view/2111669.htm">管态</a>下完成，例如文件的建立、打开、关闭、删除等广义指令，都是借助中断进入<a
+target="_blank" rel="noopener" href="http://baike.baidu.com/view/2111669.htm">管态</a>程序，然后转交给相应的进程，最终由进程实现其功能。引进原语的主要目的是为了实现进程的通信和控制。</p>
+<blockquote>
+<p>用户要求（）系统对用户的请求在一定的时间内给予及时响应。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">分时系统</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">实时系统</span><br></pre></td></tr></table></figure>
+<p>批处理是指用户将一批作业提交给操作系统后就不再干预，由操作系统控制它们自动运行。</p>
+<blockquote>
+<p>操作系统的主要功能是管理计算机系统中的资源，其中（
+）管理主要是对进程进行管理。</p>
+</blockquote>
+<p>在计算机系统中配置操作系统的主要目的是管理计算机系统中提高系统使用效率，合理地组织系统的工作流程，以提高系统吞吐量。操作系统的主要功能是管理计算机系统中进程，其中包括存储器管理和处理机管理，以及设备管理和文件管理。这里的<strong>处理机管理</strong>主要是对进程进行管理。</p>
+<blockquote>
+<p>以下（ ）磁盘调度算法可能导致某些进程发生“饥饿”现象。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SSTF</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>FCFS(First Come First Served
+)先来先服务，英语谚语。在计算机领域中，有时被用以描述数据结构中的队列性质，类似于FIFO（先进先出）。</p></li>
+<li><p>SSTF即最短<a
+target="_blank" rel="noopener" href="https://baike.baidu.com/item/寻道时间">寻道时间</a>优先(ShortestSeekTimeFirst)，该算法选择这样的进程，其要求访问的<a
+target="_blank" rel="noopener" href="https://baike.baidu.com/item/磁道">磁道</a>与当前磁头所在的磁道距离最近，以使每次的寻道时间最短，但这种<a
+target="_blank" rel="noopener" href="https://baike.baidu.com/item/调度算法">调度算法</a>却不能保证<a
+target="_blank" rel="noopener" href="https://baike.baidu.com/item/平均寻道时间">平均寻道时间</a>最短。</p></li>
+<li><p>SCAN电梯调度算法；(这样命名很形象</p></li>
+<li><p>CSCAN循环扫描算法</p></li>
+</ul>
+<blockquote>
+<p>申请设备时使用逻辑设备名将使设备分配的灵活性更强，这样的说法正确吗？</p>
+</blockquote>
+<p>使用逻辑设备名：1.增加设备分配的灵活性 2.易于实现I/O重定向</p>
+<p>使用物理设备名：可以唯一的标识和区分设备</p>
+<blockquote>
+<p>下列选项中，满足短任务优先且不会发生饥饿现象的调度算法是（）。</p>
+</blockquote>
+<p>高响应比优先算法是一种综合考虑任务长度和等待时间的调度算法，响应比=(等待时间+执行时间)/执行时间。高响应比优先算法在等待时间相同的情况下，作业执行时间越短则响应比越高，满足短任务优先。随着长任务的等待时间增加，响应比也会变大，执行机会也就增大，所以不会发生饥饿现象。先来先服务和时间片轮转不符合短任务优先，非抢占式短任务优先会产生饥饿现象。</p>
+<blockquote>
+<p>资源静态分配法可以预防死锁的发生，因为使死锁四个条件中的（）不成立。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">请求和保持条件</span><br></pre></td></tr></table></figure>
+<p>静态分配资源，所有进程在开始运行之前，一次性地申请其在整个运行过程所需的全部资源。但在分配资源时，只要有一种资源不能满足某进程的要求，即使它所需的其他资源都空闲，也不分配给该进程，而让进程等待。</p>
+<blockquote>
+<p>在文件系统中，以下不属于文件保护的方法是</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">读写之后使用关闭命令</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>操作系统在计算机系统中位于（ ）之间</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">计算机硬件和用户软件</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>（）是未开启分页机制的CPU访问存储器内信息时所用的地址。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">基地址</span><br></pre></td></tr></table></figure>
+<p><strong>分页机制的作用</strong>：段机制把虚拟地址转换为线性地址，分页机制进一步把该<strong>线性地址再转换为物理地址</strong>。</p>
+<p><strong>基址寄存器</strong>存放页表的起始地址，将虚拟地址中的页号与基址寄存器中内容相加，得到该虚拟地址所在页对应在内存中的页框号，再将页框号与偏移量相加，就得到对应的物理地址。</p>
+<blockquote>
+<p>处于运行状态的操作系统程序应放在</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">主存中</span><br></pre></td></tr></table></figure>
+<p>程序要执行，必须被CPU调用执行，而前提是装入到主存中</p>
+<blockquote>
+<p>CPU输出数据的速度远远超过打印机的打印速度，影响程序执行速度，为解决这一问题，可以采用（）。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">缓冲技术</span><br></pre></td></tr></table></figure>
+<p>通道是一个独立于CPU的专管输入/输出控制的处理机，它控制设备与内存直接进行数据交换。引入通道的目的是让数据的传输独立于CPU，使CPU从繁重的I/O工作中解脱出来。它有自己的通道指令，这些指令受CPU启动，并在操作结束向CPU发出中断信号。通道技术主要是为了减轻CPU的工作负担，增加了计算机系统的并行工作程度。</p>
+<p>虚拟存储器：它使得应用程序认为它拥有连续的可用的内存，而实际上，它通常是被分隔成多个物理内存碎片，还有部分暂时存储在外部磁盘存储器上，在需要时进行数据交换。</p>
+<p>并行技术可以分为多进程编程和多线程编程。通常用IPC的形式来实现进程间的同步，如管道，信号量，消息队列或者共享存储。在所有IPC敏感词享存储器是最快的。</p>
+<p>缓冲技术是为了缓和CPU和I/O设备速度不匹配的矛盾，提高CPU和I/O设备的并行性，在现代操作系统中，几乎所以的I/O设备在与处理机交换数据时都用了缓存区，并提供获得和释放缓冲区的手段。总的来说，缓冲区技术用到了缓冲区，而缓冲区的引入是为了缓和CPU和I/O设备速度不匹配，从而可以有效的减少CPU的终端频率，提高CPU和I/O设备的并行性。</p>
+<blockquote>
+<p>下列 _____ 不是网络操作系统。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DOS</span><br></pre></td></tr></table></figure>
+<p>dos是磁盘操作系统</p>
+<blockquote>
+<p>缓存替换的LRU算法，假设缓存容量是3,初始为空，则访问1,2,3,3,2,1,4,3,2,1的失败次数是（）</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">7</span><br></pre></td></tr></table></figure>
+<p>LRU是指最近最少使用的被替换</p>
+<p>1 查找失败，因为此时是空的缓存，所以放入1，剩余容量为2</p>
+<p>2 查找失败，此时缓存中只有1，所以放入2，剩余容量为1</p>
+<p>3 查找失败，此时缓存中只有1、2，所以放入3，剩余容量为0</p>
+<p>3 查找成功</p>
+<p>2 查找成功</p>
+<p>1 查找成功</p>
+<p>4
+查找失败，因为此时缓存中只有1、2、3，没有4，所以需要替换最近最少使用的数字，即替换3，放入4，此时缓存的数字为1、2、4，剩余容量为0</p>
+<p>3
+查找失败，因为此时缓存中只有1、2、4，没有3，所以需要替换最近最少使用的数字，即替换2，放入3，此时缓存的数字为1、3、4，剩余容量为0</p>
+<p>2
+查找失败，因为此时缓存中只有1、3、4，没有2，所以需要替换最近最少使用的数字，即替换1，放入2，此时缓存的数字为2、3、4，剩余容量为0</p>
+<p>1
+查找失败，因为此时缓存中只有2、3、4，没有1，所以需要替换最近最少使用的数字，即替换4，放入1，此时缓存的数字为2、3、1，剩余容量为0</p>
+<p>共查找失败7次</p>
+<blockquote>
+<p>处于挂起就绪状态(即静止就绪状态)的进程，可转换为（ ）</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">就绪状态(即活动就绪状态)</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/LVCl4A"><img
+src="https://s1.ax1x.com/2022/04/11/LVCl4A.md.png"
+alt="LVCl4A.md.png" /></a></p>
+<blockquote>
+<p>下面哪些机制可以用于进程间通信？</p>
+</blockquote>
+<p>Linux进程间通信：管道、信号、消息队列、共享内存、信号量、套接字(socket)</p>
+<p>Linux线程间通信：互斥量（mutex），信号量，条件变量</p>
+<p>Windows进程间通信：管道、消息队列、共享内存、信号量 （semaphore）
+、套接字(socket)</p>
+<p>Windows线程间通信：互斥量（mutex），信号量（semaphore）、临界区（critical
+section）、事件（event）</p>
+<blockquote>
+<p>多道程序环境下，每个进程何时获得处理机，何时提出资源请求而暂停等等都是不可预知的，这就是操作系统的()</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">异步性</span><br></pre></td></tr></table></figure>
+<p>操作系统有四个特征：<strong>并发</strong>，共享，异步，虚拟</p>
+<ul>
+<li><strong>并发：</strong>是指两个或多个事件在同一时间间隔内发生。操作系统的并发性是指计算机系统中同时存在多个运行着的程序，因此它应该具有处理和调度多个程序同时执行的能力。</li>
+<li><strong>共享：</strong>是指系统中的资源（硬件资源和信息资源）可以被多个并发执行的程序共同使用，而不是被其中一个独占。资源共享有两种方式：互斥访问和同时访问。</li>
+<li><strong>异步</strong>：在多道程序环境下，允许多个程序并发执行，但由于资源有限，进程的执行不是一贯到底。而是走走停停，以不可预知的速度向前推进，这就是进程的异步性。异步性使得操作系统运行在一种随机的环境下，可能导致进程产生与时间有关的错误。但是只要运行环境相同，操作系统必须保证多次运行程序，都获得相同的结果。</li>
+<li><strong>虚拟：</strong>虚拟性是一种管理技术，把物理上的一个实体变成逻辑上的多个对应物，或把物理上的多个实体变成逻辑上的一个对应物的技术。采用虚拟技术的目的是为用户提供易于使用、方便高效的操作环境。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> 学习</a>
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" rel="tag"><i class="fa fa-tag"></i> 计算机基础</a>
+              <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag"><i class="fa fa-tag"></i> 操作系统</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/04/05/%E9%A1%B9%E7%9B%AE%E6%95%B4%E7%90%86/" rel="prev" title="项目细节理解">
+      <i class="fa fa-chevron-left"></i> 项目细节理解
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/04/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="next" title="计算机网络知识点">
+      计算机网络知识点 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="aeowind"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">aeowind</p>
+  <div class="site-description" itemprop="description">爱上一场认真的消遣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/aeowind" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;aeowind" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.douban.com/people/129971630/" title="douban → https:&#x2F;&#x2F;www.douban.com&#x2F;people&#x2F;129971630&#x2F;" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>douban</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aeowind</span>
+</div>
+
+
+
+  <script>
+    var OriginTitle = document.title;
+    var titleTime;
+    document.addEventListener('visibilitychange', function() {
+      if (document.hidden) {
+        document.title = '(*^▽^*)我藏好了哦~' + OriginTitle;
+        clearTimeout(titleTime);
+      } else {
+        document.title = 'q(≧▽≦q)被你发现啦~' + OriginTitle;
+        titleTime = setTimeout(function() {
+          document.title = OriginTitle;
+        }, 2000);
+      }
+    });
+  </script>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"react":{"opacity":1},"log":false});</script></body>
+</html>
+
+<!-- 页面点击小红心 -->
+
+      <script type="text/javascript" src="/js/clicklove.js"></script>
+
